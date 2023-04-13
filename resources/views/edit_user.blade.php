@@ -4,6 +4,21 @@ increaseBanner="true"
 username="{{$user['name']}}"
 userId="{{$user['id']}}"
 >
+@auth
+<x-slot:navContent>
+    <div class="dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/assets/img/user_avatar.png" alt="User Avatar">
+            <span>{{$user['name']}}</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href={{route('edit_user', ['id' => $user['id']])}}>Configurações</a></li>
+            <li><a class="dropdown-item" href={{route('logout')}}>Sair</a></li>
+        </ul>
+    </div>
+</x-slot:navContent>
+@endauth
+
 <x-slot:bannerContent>
     <div class="container-fluid form py-3 py-lg-5">
         <div class="container d-flex flex-column align-items-center py-2 px-4 p-lg-3">
