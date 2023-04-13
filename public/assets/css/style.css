@@ -208,6 +208,15 @@ header {
     margin-bottom: 0px !important;
 }
 
+.btn-delete {
+    background-color: #FF0000 !important;
+    color: var(--white-color-text) !important;
+    transition: all 250ms ease-in-out !important;
+}
+.btn-delete:hover {
+    background-color: #500b0b !important;
+}
+
 @media(max-width:991px) {
     .container {
         max-width: 100vw;

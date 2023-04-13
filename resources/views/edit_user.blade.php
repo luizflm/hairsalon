@@ -56,11 +56,17 @@ increaseBanner="true"
                 required="true"
                 label="Confirme sua senha"
                 />
-                <x-form.submit_btn btnText="Aplicar alterações" />
+                <x-form.submit_btn btnText="Aplicar alterações" />                
+            </form>
 
-                <a href="{{route('delete_user_action', ['id' => $user['id']])}}"
-                class="btn d-flex justify-content-center btn-delete">Deletar conta</a>
+            <form method="POST" action={{route('delete_user_action', $user['id'])}}>
+                @csrf
+                @method('DELETE')
                 
+                <button type="submit" class="btn btn-delete my-2" 
+                onclick="return confirm('Deseja mesmo deletar sua conta?');">
+                    Deletar conta
+                </button>
             </form>
         </div>
     </div>

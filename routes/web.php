@@ -62,11 +62,4 @@ Route::middleware('auth')->group(function(){
     Route::post('/evaluation', [EvaluationController::class, 'insert']); 
     Route::put('/evaluation/edit/{id}', [EvaluationController::class, 'update']);
     Route::delete('/evaluation/delete/{id}', [EvaluationController::class, 'delete']);
-
-    // products
-    Route::get('/products', [ProductController::class, 'getAll']);
-    Route::get('/product/{id}', [ProductController::class, 'getOne']);
-    Route::post('/product', [ProductController::class, 'insert']);
-    Route::put('/product/edit/{id}', [ProductController::class, 'update']);
-    Route::delete('/product/delete/{id}', [ProductController::class, 'delete']);
 });
