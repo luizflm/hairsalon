@@ -7,7 +7,7 @@ userId="{{$user['id']}}"
 <x-slot:bannerContent>
     <div class="container-fluid form py-3 py-lg-5">
         <div class="container d-flex flex-column align-items-center py-2 px-4 p-lg-3">
-            <div class="form-title">{{$formTitle}}</div>
+            <x-form.form_title title="Configurações" />
             <form method="POST" action="{{route('edit_user_action', ['id' => $user['id']])}}" class="mt-2">
                 @method('PUT')
                 @csrf

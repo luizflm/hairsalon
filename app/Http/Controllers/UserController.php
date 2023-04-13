@@ -11,25 +11,25 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function getInfo($id) {
-        $array = ['error' => ''];
+    // public function getInfo($id) {
+    //     $array = ['error' => ''];
 
-        $user = User::find($id);
-        if($user) {
-            $array['data'] = $user;
-        } else {
-            $array['error'] = 'Usuário não encontrado.';
-            return $array;
-        }
+    //     $user = User::find($id);
+    //     if($user) {
+    //         $array['data'] = $user;
+    //     } else {
+    //         $array['error'] = 'Usuário não encontrado.';
+    //         return $array;
+    //     }
 
-        return $array;
-    }
+    //     return $array;
+    // }
 
     public function updateView($id) {
         $loggedUser = Auth::user();
         $user = User::find($id);
         if($user && $loggedUser->id == $user->id) {
-            return view('edit_user', ['formTitle' => 'Configurações', 'user' => $user]);
+            return view('edit_user', ['user' => $user]);
         } else {
             return redirect()->route('home');
         }
