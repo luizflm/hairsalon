@@ -1,0 +1,252 @@
+:root {
+    --background-dark: #070707;
+    --primary-color-text: #ffce8e;
+    --white-color-text: #fff;
+    --background-grey: rgba(255, 255, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', 'sans-serif';
+    color: var(--primary-color-text) !important;
+}
+
+header {
+    height: 100px;
+    background-color: var(--background-dark);
+}
+
+.navbar .user-area,
+.navbar .nav-logo,
+.navbar .navbar-toggler-area,
+.navbar .collapse {
+    width: 33%;
+}
+
+.navbar .container {
+    background-color: var(--background-dark);
+}
+
+.user-area {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.user-area .dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+}
+.user-area .dropdown-toggle span,
+.user-area .dropdown-toggle img {
+    margin-right: 4px;
+}
+
+.user-area-login {
+    background-color: var(--background-grey);   
+}
+.user-area-login:hover {
+    background-color: var(--primary-color-text);
+    color: var(--white-color-text) !important;
+}
+
+.nav-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-logo img {
+    width: 50px;
+    height: 75px;
+}
+
+.navbar-toggler-area {
+    display: none;
+    justify-content: flex-end;
+}   
+
+.navbar .dropdown .dropdown-menu {
+    background-color: var(--background-dark);
+}
+.navbar .dropdown .dropdown-item:hover {
+    background-color: #111;
+}
+.navbar .collapse ul li.nav-item {
+    border-bottom: 1px solid var(--background-dark);
+    padding: 10px 0;
+}
+.navbar .collapse ul li.nav-item:hover {
+    border-bottom: 1px solid var(--primary-color-text);
+}
+
+
+.navbar-collapse {
+    flex-grow: 0;
+}
+.navbar-collapse ul {
+    justify-content: flex-end !important;
+}
+
+#banner {
+    height: calc(100vh - 100px);
+    background-image: url('/assets/img/hairsalon_ambiente.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#banner .container-fluid {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#banner .banner-text {
+    color: var(--white-color-text) !important;
+    font-size: 60px;
+    font-weight: 500;
+    text-align: center;
+}
+
+#banner .banner-text span {
+    color: var(--primary-color-text) !important;
+}
+
+#contact,
+#hairdressers {
+    border-top: 1px solid var(--primary-color-text);
+    background-color: var(--background-dark);
+}
+
+#contact .contact-info {
+    width: 450px;
+    height: 250px;
+    background-color: rgba(29, 29, 29, 0.9);
+}
+
+#contact .contact-info-item {
+    display: flex;
+    align-items: center;
+}
+
+#contact .contact-info-item:first-child .contact-info-item-img {
+    margin-left: 2px;
+}
+
+#contact .contact-info-item-img {
+    margin-right: 5px;
+}
+
+#contact .contact-right iframe {
+    width: 100%;
+}
+
+#footer {
+    border-top: 1px solid var(--primary-color-text);
+    background-color: var(--background-dark);
+}
+
+.section-title {
+    font-size: 42px;
+}
+
+
+#hairdressers .card,
+#hairdressers .card ul li {
+    background-color: #111;
+}
+
+#hairdressers .card {
+    width: 300px;
+}
+
+#hairdressers .card img {
+    height: 400px;
+    width: 100%;
+}
+
+#hairdressers .card ul li {
+    border: none;
+    border-top:1px solid #333;
+}
+#hairdressers .card ul li:last-child {
+    border-bottom:1px solid #333;
+}
+
+
+#banner .form .container {
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 430px;
+    border-radius: 5px;
+}
+
+#banner .form .form-submit {
+    background-color: var(--background-grey);
+}
+
+#banner .form .form-submit:hover {
+    background-color: var(--primary-color-text);
+    color: var(--white-color-text) !important;
+}
+
+#banner .form .form-title {
+    font-size: 32px;
+}
+
+#banner .form input, 
+#banner .form select,
+#banner .form option {
+    color: var(--background-dark) !important;
+}
+
+#banner.increaseBanner {
+    height: calc(100vh + 100px);
+}
+
+.alert {
+    padding: 0 !important;
+    margin-bottom: 0px !important;
+}
+
+@media(max-width:991px) {
+    .container {
+        max-width: 100vw;
+    }
+
+    .navbar-toggler-area {
+        display: flex;
+    }
+
+    #banner .banner-text {
+        color: var(--white-color-text) !important;
+        font-size: 32px;
+        font-weight: 500;
+    }
+
+    #contact .contact-info {
+        width: 300px;
+        height: 150px;
+    }
+
+    .section-title {
+        font-size: 36px;
+    }
+
+    #banner .form .container {
+        width: 350px;
+    }
+}
+
+@media(max-width: 420px) {
+    #banner .container-fluid {
+        padding: 0 !important;
+        padding-top: 30px !important; 
+    }
+
+    #banner .form .container {
+        max-width: 100vw;
+        padding: 0 !important;
+        padding: 10px 0 !important;
+    }
+
+}
