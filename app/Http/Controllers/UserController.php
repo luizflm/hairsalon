@@ -11,20 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    // public function getInfo($id) {
-    //     $array = ['error' => ''];
-
-    //     $user = User::find($id);
-    //     if($user) {
-    //         $array['data'] = $user;
-    //     } else {
-    //         $array['error'] = 'Usuário não encontrado.';
-    //         return $array;
-    //     }
-
-    //     return $array;
-    // }
-
     public function updateView($id) {
         $loggedUser = Auth::user();
         $user = User::find($id);
