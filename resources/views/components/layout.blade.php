@@ -21,7 +21,16 @@
             <div class="container">
                 <div class="user-area">
                     @auth
-                        {{$navContent ?? ''}}
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/assets/img/user_avatar.png" alt="User Avatar">
+                                <span>{{Auth::user()->name}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href={{route('edit_user', ['id' => Auth::user()->id])}}>Configurações</a></li>
+                                <li><a class="dropdown-item" href={{route('logout')}}>Sair</a></li>
+                            </ul>
+                        </div>
                     @endauth
                     @guest
                         <a href="{{$btnHref ?? ''}}" class="btn user-area-login">{{$btnText ?? ''}}</a>
