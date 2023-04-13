@@ -75,16 +75,13 @@ class UserController extends Controller
     }
 
     public function delete($id) {
-        $array = ['error' => ''];
-
+        $loggedUser = Auth::user();
         $user = User::find($id);
-        if($user) {
-            $user->delete();
-        } else {
-            $array['error'] = 'Usuário não encontrado.';
-            return $array;
-        }
 
-        return $array;
+        if($id == $loggedUser->id) {
+            $user->delete();
+        }
+        
+        return back();
     }
 }

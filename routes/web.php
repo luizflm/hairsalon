@@ -24,9 +24,9 @@ Route::middleware('auth')->group(function(){
     // user
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout'); //
     // Route::get('/user/{id}', [UserController::class, 'getInfo'])->name('get_user_info');
-    Route::get('/user/edit/{id}', [UserController::class, 'updateView'])->name('edit_user');
-    Route::put('/user/edit/{id}', [UserController::class, 'updateAction'])->name('edit_user_action');
-    Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('delete_user_action');
+    Route::get('/user/edit/{id}', [UserController::class, 'updateView'])->name('edit_user'); //
+    Route::put('/user/edit/{id}', [UserController::class, 'updateAction'])->name('edit_user_action'); //
+    Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('delete_user_action'); //
 
     // cabelereiras
     Route::post('/hairdresser', [HairdresserController::class, 'insert']);
