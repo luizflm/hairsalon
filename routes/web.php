@@ -6,7 +6,6 @@ use App\Http\Controllers\DoneServiceController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\HairdresserController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
