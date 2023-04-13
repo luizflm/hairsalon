@@ -54,7 +54,7 @@ userId="{{$user['id']}}"
                 <x-form.input
                 type="password"
                 name="password_confirm"
-                placeholder="Digite sua senha novamente"
+                placeholder="Confirme sua senha"
                 required="true"
                 label="Confirme sua senha"
                 />
