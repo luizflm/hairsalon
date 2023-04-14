@@ -14,18 +14,16 @@ use Illuminate\Support\Facades\Auth;
 class AppointmentController extends Controller
 {
     public function getMyAppointments() {
-        $array = ['error' => '', 'list' => []];
-
         $idUser = Auth::user()->id;
 
-        $appointments = Appointment::where('id_user', $idUser)
+        $appointments = Appointment::where('user_id', $idUser)
         ->where('was_done', '0')
         ->get();
         foreach($appointments as $appointment) {
-            $hairdresser = Hairdresser::find($appointment->id_hairdresser);
+            $hairdresser = Hairdresser::find($appointment->hairdresser_id);
             $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
 
-            $service = HairdresserService::find($appointment->id_service);
+            $service = HairdresserService::find($appointment->service_id);
 
             $appointment = [
                 'id' => $appointment->id,
@@ -34,10 +32,10 @@ class AppointmentController extends Controller
                 'ap_datetime' => $appointment->ap_datetime,
             ];
 
-            $array['list'][] = $appointment;
+            $data[] = $appointment;
         }
 
-        return $array;
+        return view('user_appointments', $data);
     }
     
     public function setAppointmentView() {
