@@ -5,9 +5,18 @@ increaseBanner="true"
 <x-slot:bannerContent>
     <div class="container-fluid form py-3 py-lg-5">
         <div class="container d-flex flex-column align-items-center p-4">
-            <div class="form-title">Agendamento</div>
-            <form class="mt-2">
+            <x-form.form_title title="Agendamento" />
+            <form method="POST" action={{route('set_appointment_action')}} class="mt-2">
                 @csrf
+
+                @if($errors->any())
+                        <div class="alert">
+                            <ul>
+                                <li class="text-center">{{ $errors->first() }}</li>
+                            </ul>
+                        </div>
+                    @endif
+
                 <x-form.input
                 type="date"
                 name="ap_day"
@@ -19,31 +28,27 @@ increaseBanner="true"
                 name="ap_time"
                 required="true"
                 >
-                    <option value="1">09:00</option>
-                    <option value="2">10:00</option>
-                    <option value="3">12:00</option>
-                    <option value="4">13:00</option>
-                    <option value="5">14:00</option>
-                    <option value="6">15:00</option>
-                    <option value="7">16:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
                 </x-form.select>
                 <x-form.select
                 label="Cabelereiro/a"
-                name="hairdresser"
+                name="hairdresser_id"
                 required="true"
                 >
-                    <option value="1">Jane Doe</option>
-                    <option value="2">John Doe</option>
-                    <option value="3">Mary Jane</option>
+                    <option value="1">Luiz</option>
                 </x-form.select>
                 <x-form.select
                 label="Serviço"
-                name="hairdresser_service"
+                name="service_id"
                 required="true"
                 >
                     <option value="1">Unhas</option>
-                    <option value="2">Progresiva</option>
-                    <option value="3">Sobrancelha com henna</option>
                 </x-form.select>
 
                <x-form.submit_btn btnText="Criar agendamento" />

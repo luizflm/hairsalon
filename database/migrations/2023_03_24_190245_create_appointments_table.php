@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->dateTime('ap_datetime');
-            $table->boolean('was_done');
+            $table->boolean('was_done')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('hairdresser_id');
             $table->unsignedBigInteger('hairdresser_service_id');
