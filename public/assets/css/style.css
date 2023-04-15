@@ -211,11 +211,22 @@ header {
 .btn-delete {
     background-color: #FF0000 !important;
     color: var(--white-color-text) !important;
-    transition: all 250ms ease-in-out !important;
 }
 .btn-delete:hover {
     background-color: #500b0b !important;
 }
+
+.btn-edit {
+    background-color: var(--background-grey);
+}
+.btn-edit:hover {
+    background-color: rgba(255, 255, 255, 0.5)
+}
+
+.ap-table {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
 
 @media(max-width:991px) {
     .container {
