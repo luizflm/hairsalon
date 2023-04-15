@@ -23,16 +23,24 @@ class AppointmentController extends Controller
             $hairdresser = Hairdresser::find($appointment->hairdresser_id);
             $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
 
-            $service = HairdresserService::find($appointment->service_id);
+            $service = HairdresserService::find($appointment->hairdresser_service_id);
+
+            $formatedApDatetime = explode(' ', $appointment->ap_datetime);
+            $apDate = $formatedApDatetime[0];
+            $apDate = explode('-', $apDate);
+            $formatedApDate = $apDate[2].'/'.$apDate[1].'/'.$apDate[0];
+
+            $apTime = $formatedApDatetime[1];
 
             $appointment = [
                 'id' => $appointment->id,
                 'hairdresser' => $hairdresser,
-                'service' => $service,
-                'ap_datetime' => $appointment->ap_datetime,
+                'service' => $service->name,
+                'day' => $formatedApDate,
+                'time' => $apTime,
             ];
 
-            $data[] = $appointment;
+            $data['appointments'][] = $appointment;
         }
 
         return view('user_appointments', $data);
