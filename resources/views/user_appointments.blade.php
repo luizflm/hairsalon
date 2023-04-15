@@ -18,9 +18,15 @@ increaseBanner="true"
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $row = 0;
+                            @endphp
                             @foreach($appointments as $appointment)
+                            @php
+                                $row++;
+                            @endphp
                                 <tr>
-                                    <th scope="row">{{$appointment['id']}}</th>
+                                    <th scope="row">{{$row}}</th>
                                     <td>{{$appointment['service']}}</td>
                                     <td>{{$appointment['hairdresser']['name']}}</td>
                                     <td>{{$appointment['day']}}</td>
