@@ -151,6 +151,9 @@ class AppointmentController extends Controller
             $appointment['day'] = $apDate;
             $appointment['time'] = $formatedApDatetime[1];
 
+            $service = HairdresserService::find($appointment->hairdresser_service_id);
+            $appointment['service'] = $service->name;
+
             return view('edit_appointment', ['appointment' => $appointment]);
         }
 
