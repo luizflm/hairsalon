@@ -160,104 +160,101 @@ class AppointmentController extends Controller
         return back();
     }
 
-    public function update($id, Request $request) {
-        $array = ['error' => ''];
-
-        $validator = Validator::make($request->all(), [
-            'id_hairdresser' => 'required',
-            'service' => 'required',
-            'ap_datetime' => 'required|date_format:Y-m-d H:i',
+    public function updateAction($id, Request $request) {
+        $validator = $request->validate([
+            'ap_day' => 'required|date_format:Y-m-d',
+            'ap_time' => 'required|date_format:H:i',
+            'hairdresser_id' => 'required',
+            'service_id' => 'required'
         ]);
-        if(!$validator->fails()) {
-            $idHairdresser = $request->id_hairdresser;
-            $idUser = Auth::user()->id;
-            $service = $request->service;
-            $apDatetime = $request->ap_datetime;
+        if($validator) {
+            $apDay = $request->ap_day;
+            $apTime = $request->ap_time;
+            $apDatetime = $apDay.' '.$apTime;
+            $hairdresserId = $request->hairdresser_id;
+            $serviceId = $request->service_id;
+            $userId = Auth::user()->id;
 
-            $appointment = Appointment::where('id_user', $idUser)
+            $appointment = Appointment::where('user_id', $userId)
             ->where('id', $id)
             ->first();
             if($appointment) {
-                $hdExists = Hairdresser::find($idHairdresser);
-                if($hdExists) { 
-                    $hdService = HairdresserService::where('id_hairdresser', $idHairdresser)
-                    ->where('name', $service)
+                $hdExists = Hairdresser::find($hairdresserId);
+                if($hdExists) { // cabelereiro(a) existe
+                    $hdService = HairdresserService::where('hairdresser_id', $hairdresserId)
+                    ->where('id', $serviceId)
                     ->first();
-                    if($hdService) { 
+                    if($hdService) { // cabelereiro(a) faz o serviço?
                         $now = date('Y-m-d H:i');
                         $apDate = Carbon::createFromFormat('Y-m-d H:i', $apDatetime);
                         $isDateFuture = $apDate->greaterThan($now);
-                        if($isDateFuture === true) { 
+                        if($isDateFuture) { // usuário está marcando horário no futuro ou passado?
                             $hasAppointments = Appointment::where('ap_datetime', $apDatetime)
-                            ->where('id_hairdresser', $idHairdresser)
-                            ->count();
-                            if($hasAppointments === 0) {
+                            ->where('hairdresser_id', $hairdresserId)
+                            ->first();
+                            if(!$hasAppointments || $hasAppointments->id == $appointment->id) { // há um agendamento no horário/dia desejado?
                                 $formatedDate = explode(' ', $apDatetime);
                                 $ap_weekday = date('w', strtotime($formatedDate[0]));
 
-                                $hdAvailability = HairdresserAvailability::where('id_hairdresser', $idHairdresser)
+                                $hdAvailability = HairdresserAvailability::where('hairdresser_id', $hairdresserId)
                                 ->get();
                                 $hdWeekdays = [];
                                 foreach($hdAvailability as $hdAvail) {
                                     $hdWeekdays[] = $hdAvail->weekday;
                                 }
-                                if(in_array($ap_weekday, $hdWeekdays)) {
+                                if(in_array($ap_weekday, $hdWeekdays)) { // cabelereiro(a) trabalha no dia desejado?
                                     $isTimeAvail = HairdresserAvailability::select(['hours'])
-                                    ->where('id_hairdresser', $idHairdresser)
+                                    ->where('hairdresser_id', $hairdresserId)
                                     ->where('weekday', $ap_weekday)
                                     ->first();
                                     $availTimes = $isTimeAvail->hours;
-                                    
+
                                     $hdTimes = explode(', ', $availTimes);
-                                    array_pop($hdTimes);
-                                    if(in_array($formatedDate[1], $hdTimes)) {
-                                        $apDatetime .= ':00';
+                                    array_pop($hdTimes); // removendo ultimo horário para que o ultimo horário seja ex: 15:00 - 16:00
+                                    if(in_array($formatedDate[1], $hdTimes)) {      
+                                        $apDatetime .= ':00';            
                                         $appointment->update([
-                                            'id_hairdresser' => $idHairdresser,
-                                            'id_user' => $idUser,
-                                            'id_service' => $hdService->id,
+                                            'hairdresser_id' => $hairdresserId,
+                                            'user_id' => $userId,
+                                            'hairdresser_service_id' => $serviceId,
                                             'ap_datetime' => $apDatetime,
                                         ]);
-    
-                                        $array['data'] = [
-                                            'updated_appointment' => $appointment,
-                                            'service' => $hdService,
-                                        ];
+
+                                        return redirect()->route('home');
                                     } else {
-                                        $array['error'] = 'O(a) cabelereiro(a) não trabalha no horário desejado.';
-                                        return $array;
+                                        return back()->withErrors([
+                                            'ap_day' => 'O(a) cabelereiro(a) não trabalha no horário desejado.',
+                                        ]);
                                     }
                                 } else {
-                                    $array['error'] = 'O(a) cabelereiro(a) não trabalha no dia desejado.';
-                                    return $array;
+                                    return back()->withErrors([
+                                        'ap_day' => 'O(a) cabelereiro(a) não trabalha no dia desejado.',
+                                    ]);
                                 }
                             } else {
-                                $array['error'] = 'Já há um agendamento para este dia/hora, tente em outro dia/horário.';
-                                return $array;
+                                return back()->withErrors([
+                                    'ap_day' => 'Já há um agendamento para este dia/hora, tente em outro dia/horário.',
+                                ]);
                             }
                         } else {
-                            $array['error'] = 'Data e/ou hora inválida.';
-                            return $array;
+                            return back()->withErrors([
+                                'ap_day' => 'Data e/ou hora inválida.',
+                            ]);
                         }
                     } else {
-                        $array['error'] = 'O(a) cabelereiro não faz o serviço solicitado.';
-                        return $array;
+                        return back()->withErrors([
+                            'ap_day' => 'O(a) cabelereiro não faz o serviço solicitado.',
+                        ]);
                     }
-    
                 } else {
-                    $array['error'] = 'O(a) cabelereiro(a) não foi encontrado.';
-                    return $array;
+                    return back()->withErrors([
+                        'ap_day' => 'O(a) cabelereiro(a) não foi encontrado.',
+                    ]);
                 }
             } else {
-                $array['error'] = 'O agendamento pertence à outra pessoa.';
-                return $array;
+                return redirect()->route('home');
             }
-        } else {
-            $array['error'] = $validator->messages()->first();
-            return $array;
-        }
-
-        return $array;
+        }  
     }
 
     public function delete($id) {

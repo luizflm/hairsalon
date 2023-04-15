@@ -1,5 +1,5 @@
 <x-layout
-page="Hairsalon - Agendamento"
+page="Hairsalon - Editar Agendamento"
 increaseBanner="true"
 >
 <x-slot:bannerContent>
@@ -8,6 +8,7 @@ increaseBanner="true"
             <x-form.form_title title="Editar" />
             <form method="POST" action={{route('edit_appointment_action', $appointment['id'])}} class="mt-2">
                 @csrf
+                @method('PUT')
 
                 @if($errors->any())
                         <div class="alert">
@@ -59,7 +60,7 @@ increaseBanner="true"
                     <option value="1">Unhas</option>
                 </x-form.select>
 
-               <x-form.submit_btn btnText="Criar agendamento" />
+               <x-form.submit_btn btnText="Editar agendamento" />
             </form>
         </div>
     </div>
