@@ -144,7 +144,13 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::find($id);
 
-        if($appointment->id == $loggedUserId) {
+        if($appointment->user_id == $loggedUserId) {
+            $formatedApDatetime = explode(' ', $appointment->ap_datetime);
+            $apDate = $formatedApDatetime[0];
+
+            $appointment['day'] = $apDate;
+            $appointment['time'] = $formatedApDatetime[1];
+
             return view('edit_appointment', ['appointment' => $appointment]);
         }
 

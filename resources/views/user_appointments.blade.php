@@ -33,8 +33,8 @@ increaseBanner="true"
                                     <td>{{$appointment['time']}}</td>  
                                     <td>
                                         <div class="d-flex align-items-center justify-content-center">
-                                            <a href={{route('update_appointment', $appointment['id'])}} class="btn btn-edit me-4">Editar</a>
-                                            <form method="POST" action={{route('delete_appointment', $appointment['id'])}}>
+                                            <a href={{route('edit_appointment', $appointment['id'])}} class="btn btn-edit me-4">Editar</a>
+                                            <form method="POST" action={{route('delete_appointment_action', $appointment['id'])}}>
                                                 @csrf
                                                 @method('DELETE')
                                                 
