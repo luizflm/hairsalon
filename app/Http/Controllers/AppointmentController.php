@@ -139,12 +139,13 @@ class AppointmentController extends Controller
         }
     }
 
-    public function delete($id) {
-        $appointment = Appointment::find($id);
+    public function updateView($id) {
         $loggedUserId = Auth::user()->id;
 
-        if($appointment && $appointment->user_id == $loggedUserId) {
-            $appointment->delete();
+        $appointment = Appointment::find($id);
+
+        if($appointment->id == $loggedUserId) {
+            return view('edit_appointment', ['appointment' => $appointment]);
         }
 
         return back();
@@ -248,6 +249,17 @@ class AppointmentController extends Controller
         }
 
         return $array;
+    }
+
+    public function delete($id) {
+        $appointment = Appointment::find($id);
+        $loggedUserId = Auth::user()->id;
+
+        if($appointment && $appointment->user_id == $loggedUserId) {
+            $appointment->delete();
+        }
+
+        return back();
     }
 }
 
