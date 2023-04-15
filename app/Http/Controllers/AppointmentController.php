@@ -140,17 +140,14 @@ class AppointmentController extends Controller
     }
 
     public function delete($id) {
-        $array = ['error' => ''];
-
         $appointment = Appointment::find($id);
-        if($appointment) {
+        $loggedUserId = Auth::user()->id;
+
+        if($appointment && $appointment->user_id == $loggedUserId) {
             $appointment->delete();
-        } else {
-            $array['error'] = 'Agendamento não encontrado.';
-            return $array;
         }
 
-        return $array;
+        return back();
     }
 
     public function update($id, Request $request) {
