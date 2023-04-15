@@ -37,8 +37,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/appointments', [AppointmentController::class, 'getMyAppointments'])->name('user_appointments'); //
     Route::get('/appointment', [AppointmentController::class, 'setAppointmentView'])->name('set_appointment'); //
     Route::post('/appointment', [AppointmentController::class, 'setAppointmentAction'])->name('set_appointment_action'); //
-    Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment');
-    Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action');
+    Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment'); //
+    Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action'); //
     Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action'); //
     // hd_services
     Route::get('/services', [ServiceController::class, 'getAll']);
