@@ -22,7 +22,7 @@
                 <div class="user-area">
                     @auth
                         <div class="dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center flex-wrap" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="/assets/img/user_avatar.png" alt="User Avatar">
                                 <span>{{Auth::user()->name}}</span>
                             </a>
