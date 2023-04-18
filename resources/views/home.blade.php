@@ -3,20 +3,6 @@ page="Hairsalon - Home"
 btnHref="{{route('login')}}"
 btnText="Fazer Login"
 >
-    @auth
-        <x-slot:navContent>
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/assets/img/user_avatar.png" alt="User Avatar">
-                    <span>{{$user['name']}}</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href={{route('edit_user', $user['id'])}}>Configurações</a></li>
-                    <li><a class="dropdown-item" href={{route('logout')}}>Sair</a></li>
-                </ul>
-            </div>
-        </x-slot:navContent>
-    @endauth
     <x-slot:bannerContent>
         <div class="container-fluid pt-5 p-lg-5">
             <div class="container">
