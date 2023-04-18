@@ -17,7 +17,7 @@ Route::middleware(('guest'))->group(function() {
     Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action'); //
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function(){
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout'); //
