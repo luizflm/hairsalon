@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoneServiceController;
@@ -20,7 +21,9 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('admin')->group(function() {
-     // cabelereiras
+    Route::get('/', [AdminController::class, 'index'])->name('admin_home');
+
+    // cabelereiras
     Route::post('/hairdresser', [HairdresserController::class, 'insert']);
     Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'update']);
     Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete']);
