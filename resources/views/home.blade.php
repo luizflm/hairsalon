@@ -11,7 +11,7 @@ btnText="Fazer Login"
                     <span>{{$user['name']}}</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href={{route('edit_user', ['id' => $user['id']])}}>Configurações</a></li>
+                    <li><a class="dropdown-item" href={{route('edit_user', $user['id'])}}>Configurações</a></li>
                     <li><a class="dropdown-item" href={{route('logout')}}>Sair</a></li>
                 </ul>
             </div>

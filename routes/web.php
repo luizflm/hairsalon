@@ -21,6 +21,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function(){
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout'); //
+    
     // user
     Route::get('/user/edit/{id}', [UserController::class, 'updateView'])->name('edit_user'); //
     Route::put('/user/edit/{id}', [UserController::class, 'updateAction'])->name('edit_user_action'); //
@@ -40,24 +41,25 @@ Route::middleware('auth')->group(function(){
     Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment'); //
     Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action'); //
     Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action'); //
-    // hd_services
-    Route::get('/services', [ServiceController::class, 'getAll']);
-    Route::get('/service/{id}', [ServiceController::class, 'getOne']);
-    Route::post('/service', [ServiceController::class, 'insert']);
-    Route::put('/service/edit/{id}', [ServiceController::class, 'update']);
-    Route::delete('/service/delete/{id}', [ServiceController::class, 'delete']);
+    
+    // // hd_services
+    // Route::get('/services', [ServiceController::class, 'getAll']);
+    // Route::get('/service/{id}', [ServiceController::class, 'getOne']);
+    // Route::post('/service', [ServiceController::class, 'insert']);
+    // Route::put('/service/edit/{id}', [ServiceController::class, 'update']);
+    // Route::delete('/service/delete/{id}', [ServiceController::class, 'delete']);
 
-    // hd_done_services
-    Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
-    Route::get('/done_service/{id}', [DoneServiceController::class, 'getOne']);
-    Route::post('/done_service', [DoneServiceController::class, 'insert']);
-    Route::delete('/done_service/delete/{id}', [DoneServiceController::class, 'delete']);
+    // // hd_done_services
+    // Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
+    // Route::get('/done_service/{id}', [DoneServiceController::class, 'getOne']);
+    // Route::post('/done_service', [DoneServiceController::class, 'insert']);
+    // Route::delete('/done_service/delete/{id}', [DoneServiceController::class, 'delete']);
 
-    // hd_evaluation
-    Route::get('/evaluations', [EvaluationController::class, 'getMyEvaluations']);
-    Route::get('/evaluation/{id}', [EvaluationController::class, 'getOne']);
-    Route::get('/evaluations/{id}', [EvaluationController::class, 'getHairdresserEvaluations']);
-    Route::post('/evaluation', [EvaluationController::class, 'insert']); 
-    Route::put('/evaluation/edit/{id}', [EvaluationController::class, 'update']);
-    Route::delete('/evaluation/delete/{id}', [EvaluationController::class, 'delete']);
+    // // hd_evaluation
+    // Route::get('/evaluations', [EvaluationController::class, 'getMyEvaluations']);
+    // Route::get('/evaluation/{id}', [EvaluationController::class, 'getOne']);
+    // Route::get('/evaluations/{id}', [EvaluationController::class, 'getHairdresserEvaluations']);
+    // Route::post('/evaluation', [EvaluationController::class, 'insert']); 
+    // Route::put('/evaluation/edit/{id}', [EvaluationController::class, 'update']);
+    // Route::delete('/evaluation/delete/{id}', [EvaluationController::class, 'delete']);
 });
