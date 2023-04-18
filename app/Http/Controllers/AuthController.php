@@ -36,12 +36,29 @@ class AuthController extends Controller
                 $formatedName = $name[0];
             }
 
-            $newUser = User::create([
-                'name' => $formatedName,
-                'cpf' => $cpf,
-                'email' => $email,
-                'password' => $hash,
-            ]);
+            if($formatedName === "admin") {
+                $admin = User::where('name', 'admin')->first();
+                if($admin) {
+                    return redirect()->back()->withErrors([
+                        'email' => 'Nome inválido, tente colocar um diferente.',
+                    ])->withInput($request->except(['password', 'password_confirm']));
+                } else {
+                    $newUser = User::create([
+                        'name' => $formatedName,
+                        'cpf' => $cpf,
+                        'email' => $email,
+                        'password' => $hash,
+                        'is_admin' => '1',
+                    ]);
+                }
+            } else {
+                $newUser = User::create([
+                    'name' => $formatedName,
+                    'cpf' => $cpf,
+                    'email' => $email,
+                    'password' => $hash,
+                ]);
+            }
 
             Auth::login($newUser);
 
