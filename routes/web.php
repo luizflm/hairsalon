@@ -21,14 +21,16 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('admin')->group(function() {
-    Route::get('/home', [AdminController::class, 'index'])->name('admin_home');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home');
 
     // cabelereiras
-    Route::post('/hairdresser', [HairdresserController::class, 'insert']);
-    Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'update']);
-    Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete']);
-    Route::get('/hairdresser/{id}', [HairdresserController::class, 'getInfo']);
-    Route::get('/hairdressers', [HairdresserController::class, 'getAll']);
+    Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser');
+    Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action');
+    Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser');
+    Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action');
+    Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action');
+    // Route::get('/hairdresser/{id}', [HairdresserController::class, 'getInfo']);
+    // Route::get('/hairdressers', [HairdresserController::class, 'getAll']);
 
     // hd_services
     // Route::get('/services', [ServiceController::class, 'getAll']);

@@ -44,9 +44,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <x-nav.item-dropdown title="Agendamentos">
-                            <li><a class="dropdown-item" href={{route('set_appointment')}}>Ver todos</a></li>
-                            <li><a class="dropdown-item" href={{route('set_appointment')}}>Ver concluídos</a></li>
-                            <li><a class="dropdown-item" href={{route('set_appointment')}}>Ver não concluídos</a></li>
+                            <li><a class="dropdown-item" href="#">Ver todos</a></li>
+                            <li><a class="dropdown-item" href="#">Ver concluídos</a></li>
+                            <li><a class="dropdown-item" href="#">Ver não concluídos</a></li>
                         </x-nav.item-dropdown>
                         <x-nav.item-dropdown title="Funcionários">
                             <li><a class="dropdown-item" href="#">Adicionar</a></li>
