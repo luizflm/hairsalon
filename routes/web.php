@@ -21,7 +21,7 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('admin')->group(function() {
-    Route::get('/', [AdminController::class, 'index'])->name('admin_home');
+    Route::get('/home', [AdminController::class, 'index'])->name('admin_home');
 
     // cabelereiras
     Route::post('/hairdresser', [HairdresserController::class, 'insert']);
