@@ -14,16 +14,19 @@ class AuthController extends Controller
     }
 
     public function insertAction(Request $request) {
+        $cpf_regex = '/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/';
+
         $validator = $request->validate([
             'email' => 'required|email|unique:users,email',
             'name' => 'required|min:2',
-            'cpf' => 'required|numeric|regex:/^[0-9]+$/|digits:11|unique:users,cpf',
+            'cpf' => ['required', 'regex:'.$cpf_regex, 'unique:users,cpf'],
             'password' => 'required|min:4',
             'password_confirm' => 'required|same:password'
         ]);
         if($validator) {
             $name = $request->name;
             $cpf = $request->cpf;
+            $cpf = str_replace(['.', '-'], '', $cpf);
             $email = $request->email;
             $password = $request->password;
             $hash = Hash::make($password);
