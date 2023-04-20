@@ -16,56 +16,53 @@ class HairdresserController extends Controller
         return view('insert_hairdresser');
     }
 
-    public function insert(Request $request) {
-        $array = ['error' => ''];
-
-        $validator = Validator::make($request->all(), [
+    public function insertAction(Request $request) {
+        $validator = $request->validate([
             'name' => 'required|min:2',
-            'avatar' => 'required|file|mimes:jpg,png',
             'specialties' => 'required',
+            'avatar' => 'required|file|mimes:jpg,png',
         ]);
-        if(!$validator->fails()) {
-            $avatar = $request->file('avatar')->store('public');
-            $avatar = last(explode('/', $avatar));
+        if($validator) {
+            // salvando a foto
+            $avatar = $request->file('avatar')->store('public'); 
+            // pegando o nome da foto "a123124a.jpg"
+            $avatar = last(explode('/', $avatar)); 
 
-            $name = $request->name;
+            $name = $request->name; 
             $name = trim($name," ");
-            $name = explode(' ', $name);
+            // separando os nomes, "Luiz Felipe" nome[0] = "Luiz" nome[1] = "Felipe"
+            $name = explode(' ', $name); 
             if(count($name) > 1) {
+                // se for nome composto ou c sobrenome "Luiz Felipe de Lima Martins" -> "Luiz Martins"
                 $formatedName = $name[0].' '.last($name);
             } else {
-                $formatedName = $name[0];
+                // se for apenas o nome "Luiz", "Pedro"
+                $formatedName = $name[0]; 
             }
 
-            $specialties = $request->specialties;
+            $specialties = $request->specialties; 
+            // separando cada especialidade
             $specialties = explode(',', $specialties);
-            $formatedSp = '';
+            $formatedSpecialty = '';
             foreach($specialties as $spKey => $spValue) {
-                $specialties[$spKey] = trim($specialties[$spKey]," ");
-                $formatedSp .= $specialties[$spKey].', ';
+                // tirando espaços desnecessários de cada especialidade
+                $specialties[$spKey] = trim($specialties[$spKey]," "); 
+                // colocando as especialidades formatadas como string
+                $formatedSpecialty .= $specialties[$spKey].', '; 
             }
-            $formatedSp = substr($formatedSp, 0, strlen($formatedSp) - 2);
+            // removendo o ", " da string, no ultimo item das especialidades
+            $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2); 
 
             $newHairdresser = Hairdresser::create([
                 'name' => $formatedName,
                 'avatar' => $avatar,
-                'specialties' => $formatedSp,
+                'specialties' => $formatedSpecialty,
             ]);
 
-            $avatar = asset('storage/'.$avatar);
-
-            $array['data'] = [
-                'id' => $newHairdresser->id,
-                'name' => $formatedName,
-                'avatar' => $avatar,
-                'specialties' => $specialties,
-            ];
-        } else {
-            $array['error'] = $validator->messages()->first();
-            return $array;
+            return redirect()->back();
         }
 
-        return $array;
+        return redirect()->back()->withInput($request->all());
     }
 
     public function update($id, Request $request) {

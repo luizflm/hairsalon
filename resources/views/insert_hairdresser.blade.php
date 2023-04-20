@@ -4,7 +4,7 @@ page="Hairsalon - Adicionar Cabelereiro(a)"
 <div class="container-fluid form py-3 py-lg-5">
     <div class="container d-flex flex-column align-items-center p-3">
         <x-form.form_title title="Adicionar Funcionário" />
-        <form method="POST" action={{route('insert_hairdresser_action')}} class="mt-2">
+        <form method="POST" enctype="multipart/form-data" action={{route('insert_hairdresser_action')}} class="mt-2">
             @csrf
 
             @if($errors->any())
