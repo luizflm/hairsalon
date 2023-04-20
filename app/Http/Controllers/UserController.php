@@ -24,12 +24,12 @@ class UserController extends Controller
     public function updateAction($id, Request $request) {
         $loggedUser = Auth::user();
         $user = User::find($id);
-        $cpf_regex = '/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/';
+        $request['cpf'] = str_replace(['.', '-'], '', $request['cpf']);
 
         $validator = $request->validate([
             'email' => ['required', 'email', Rule::unique('users')->ignore($loggedUser->id)],
             'name' => ['required', 'min:2'],
-            'cpf' => ['required', 'regex:'.$cpf_regex, Rule::unique('users')->ignore($loggedUser->id)],
+            'cpf' => ['required', 'digits:11', Rule::unique('users')->ignore($loggedUser->id)],
             'password' => ['required', 'min:4'],
             'password_confirm' => ['required', 'same:password'],
         ]);
@@ -48,6 +48,12 @@ class UserController extends Controller
                     $formatedName = $name[0].' '.last($name);
                 } else {
                     $formatedName = $name[0];
+                }
+
+                if($formatedName == "admin") {
+                    return redirect()->back()->withErrors([
+                        'email' => 'Nome inválido.',
+                    ])->withInput($request->except(['password', 'password_confirm']));
                 }
 
                 $user->update([

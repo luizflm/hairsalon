@@ -19,7 +19,7 @@ class AuthController extends Controller
         $validator = $request->validate([
             'email' => 'required|email|unique:users,email',
             'name' => 'required|min:2',
-            'cpf' => ['required', 'regex:'.$cpf_regex, 'unique:users,cpf'],
+            'cpf' => ['required', 'regex:'.$cpf_regex],
             'password' => 'required|min:4',
             'password_confirm' => 'required|same:password'
         ]);
@@ -30,6 +30,13 @@ class AuthController extends Controller
             $email = $request->email;
             $password = $request->password;
             $hash = Hash::make($password);
+
+            $cpfExists = User::where('cpf', $cpf)->first();
+            if($cpfExists) {
+                return redirect()->back()->withErrors([
+                    'email' => 'CPF já está em uso.'
+                ])->withInput($request->except(['password', 'password_confirm']));
+            }
 
             $name = trim($name," ");
             $name = explode(' ', $name);
@@ -67,7 +74,7 @@ class AuthController extends Controller
 
             return redirect()->route('home');
         } else {
-            return back()->onlyInput(['email', 'name', 'cpf']);
+            return redirect()->back()->onlyInput(['email', 'name', 'cpf']);
         }
     }
 
