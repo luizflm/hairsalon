@@ -1,5 +1,5 @@
 <x-admin_layout
-page="Hairsalon - Adicionar Cabelereiro(a)"
+page="Hairsalon - Editar Cabelereiro(a)"
 >
 <div class="container-fluid form py-3 py-lg-5">
     <div class="container d-flex flex-column align-items-center p-3">
