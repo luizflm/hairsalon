@@ -23,11 +23,13 @@ btnText="Fazer Login"
         <div class="container py-5">
             <div class="section-title">Funcionários:</div>
             <div class="row d-flex justify-content-center mt-0 mt-lg-5">
-                <x-card cardTitle="Gabriela" cardImg="sorridente-dona-de-salao-de-cabeleireiro.jpg" cardDescription="Trabalho com cabelos cacheados há 5 anos, sou muito orgulhosa do que faço." >
-                    <li class="list-group-item">Cabelos Cacheados</li>
-                    <li class="list-group-item">Progressiva</li>
-                    <li class="list-group-item">Unhas</li>
-                </x-card>
+                @foreach($hairdressers as $hairdresser)
+                    <x-card cardTitle="{{$hairdresser['name']}}" cardImg="{{$hairdresser['avatar']}}" >
+                        @foreach($hairdresser['specialties'] as $hdSpecialty)
+                        <li class="list-group-item">{{$hdSpecialty}}</li>
+                        @endforeach
+                    </x-card>
+                @endforeach
             </div>
         </div>
     </section>

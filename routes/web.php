@@ -10,7 +10,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home'); //
 
 Route::middleware('guest')->group(function() {
     Route::get('/register', [AuthController::class, 'insertView'])->name('register'); //
