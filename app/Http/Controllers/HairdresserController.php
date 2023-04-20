@@ -65,6 +65,49 @@ class HairdresserController extends Controller
         return redirect()->back()->withInput($request->all());
     }
 
+    public function getAll() {
+        $hairdressers = Hairdresser::all();
+        foreach($hairdressers as $hairdresser) {
+            // arrumando o link da imagem
+            $avatar = asset('storage/'.$hairdresser->avatar);
+
+            $specialties = $hairdresser->specialties;
+            
+            // $availability = HairdresserAvailability::where('id_hairdresser', $hairdresser->id)->get();
+            // $hdAvail = [];
+            // foreach($availability as $avail) {
+            //     $weekday = $avail->weekday;
+            //     $days = [
+            //         1 => 'Segunda-Feira',
+            //         2 => 'Terça-Feira',
+            //         3 => 'Quarta-Feira',
+            //         4 => 'Quinta-Feira',
+            //         5 => 'Sexta-Feira',
+            //         6 => 'Sábado',
+            //         7 => 'Domingo'
+            //     ];
+
+            //     $hours = explode(', ', $avail->hours);
+
+            //     $hdAvail[] = [
+            //         'weekday' => $days[$weekday],
+            //         'hours' => $hours,
+            //     ];
+            // }
+
+            // services
+            // $services = HairdresserService::where('id_hairdresser', $hairdresser->id)->get();
+            // $hdServices = [];
+            // foreach($services as $service) {
+            //     $hdServices[] = [
+            //         'name' => $service->name,
+            //         'price' => $service->price,
+            //     ];
+            // }
+        }
+        return view('hairdressers', ['hairdressers' => $hairdressers]);
+    }
+
     public function update($id, Request $request) {
         $array = ['error' => ''];
 
@@ -209,61 +252,5 @@ class HairdresserController extends Controller
         return $array;
     }
 
-    public function getAll() {
-        $array = ['error' => '', 'list' => []];
-
-        $hairdressers = Hairdresser::all();
-        foreach($hairdressers as $hairdresser) {
-            $avatar = asset('storage/'.$hairdresser->avatar);
-
-            $specialties = $hairdresser->specialties;
-            $specialties = explode(',', $specialties);
-            foreach($specialties as $spKey => $spValue) {
-                $specialties[$spKey] = trim($specialties[$spKey]," ");
-            }
-
-            $availability = HairdresserAvailability::where('id_hairdresser', $hairdresser->id)->get();
-            $hdAvail = [];
-            foreach($availability as $avail) {
-                $weekday = $avail->weekday;
-                $days = [
-                    1 => 'Segunda-Feira',
-                    2 => 'Terça-Feira',
-                    3 => 'Quarta-Feira',
-                    4 => 'Quinta-Feira',
-                    5 => 'Sexta-Feira',
-                    6 => 'Sábado',
-                    7 => 'Domingo'
-                ];
-
-                $hours = explode(', ', $avail->hours);
-
-                $hdAvail[] = [
-                    'weekday' => $days[$weekday],
-                    'hours' => $hours,
-                ];
-            }
-
-            // services
-            $services = HairdresserService::where('id_hairdresser', $hairdresser->id)->get();
-            $hdServices = [];
-            foreach($services as $service) {
-                $hdServices[] = [
-                    'name' => $service->name,
-                    'price' => $service->price,
-                ];
-            }
-
-            $array['list'][] = [
-                'id' => $hairdresser->id,
-                'name' => $hairdresser->name,
-                'avatar' => $avatar,
-                'specialties' => $specialties,
-                'availability' => $hdAvail,
-                'services' => $hdServices,
-            ];
-        }
-
-        return $array;
-    }
+    
 }

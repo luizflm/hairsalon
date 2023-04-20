@@ -50,7 +50,7 @@
                         </x-nav.item-dropdown>
                         <x-nav.item-dropdown title="Funcionários">
                             <li><a class="dropdown-item" href={{route('insert_hairdresser')}}>Adicionar</a></li>
-                            <li><a class="dropdown-item" href="#">Ver todos</a></li>
+                            <li><a class="dropdown-item" href={{route('hairdressers')}}>Ver todos</a></li>
                             <li><a class="dropdown-item" href="#">Adicionar serviço</a></li>
                         </x-nav.item-dropdown>
                         <li class="nav-item"><a href="{{route('admin_home')}}" class="nav-link">Home</a></li>

@@ -9,6 +9,7 @@ use App\Http\Controllers\HairdresserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
+use App\Models\Hairdresser;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -24,8 +25,9 @@ Route::middleware('admin')->group(function() {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin_home');
 
     // cabelereiras
-    Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser');
-    Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action');
+    Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser'); //
+    Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action'); //
+    Route::get('/hairdressers', [HairdresserController::class, 'getAll'])->name('hairdressers'); //
     Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser');
     Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action');
     Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action');
