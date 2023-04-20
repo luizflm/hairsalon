@@ -4,12 +4,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoneServiceController;
-use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\HairdresserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
-use App\Models\Hairdresser;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,8 +29,6 @@ Route::middleware('admin')->group(function() {
     Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser'); //
     Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action'); //
     Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action'); //
-    // Route::get('/hairdresser/{id}', [HairdresserController::class, 'getInfo']);
-    // Route::get('/hairdressers', [HairdresserController::class, 'getAll']);
 
     // hd_services
     // Route::get('/services', [ServiceController::class, 'getAll']);
@@ -63,12 +59,4 @@ Route::middleware('auth')->group(function(){
     Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment'); //
     Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action'); //
     Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action'); //
-    
-    //  hd_evaluation
-    // Route::get('/evaluations', [EvaluationController::class, 'getMyEvaluations']);
-    // Route::get('/evaluation/{id}', [EvaluationController::class, 'getOne']);
-    // Route::get('/evaluations/{id}', [EvaluationController::class, 'getHairdresserEvaluations']);
-    // Route::post('/evaluation', [EvaluationController::class, 'insert']); 
-    // Route::put('/evaluation/edit/{id}', [EvaluationController::class, 'update']);
-    // Route::delete('/evaluation/delete/{id}', [EvaluationController::class, 'delete']);
 });
