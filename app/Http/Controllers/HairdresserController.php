@@ -108,58 +108,68 @@ class HairdresserController extends Controller
         return view('hairdressers', ['hairdressers' => $hairdressers]);
     }
 
-    public function update($id, Request $request) {
-        $array = ['error' => ''];
+    public function updateView($id) {
+        $hairdresser = Hairdresser::find($id);
 
-        $validator = Validator::make($request->all(), [
+        return view('edit_hairdresser', ['hairdresser' => $hairdresser]);
+    }
+
+    public function updateAction($id, Request $request) {
+        $validator = $request->validate([
             'name' => 'required|min:2',
-            'avatar' => 'required|file|mimes:jpg,png',
-            'specialties' => 'required',
+            'avatar' => 'file|mimes:jpg,png',
+            'specialties' => 'required'
         ]);
-        if(!$validator->fails()) {
+        if($validator) {
             $hairdresser = Hairdresser::find($id);
 
-            $avatar = $request->file('avatar')->store('public');
-            $avatar = last(explode('/', $avatar));
-
-            $name = $request->name;
+            if($request->avatar) {
+                $avatar = $request->file('avatar')->store('public');
+                $avatar = last(explode('/', $avatar));
+            }
+       
+            $name = $request->name; 
             $name = trim($name," ");
-            $name = explode(' ', $name);
+            // separando os nomes, "Luiz Felipe" nome[0] = "Luiz" nome[1] = "Felipe"
+            $name = explode(' ', $name); 
             if(count($name) > 1) {
+                // se for nome composto ou c sobrenome "Luiz Felipe de Lima Martins" -> "Luiz Martins"
                 $formatedName = $name[0].' '.last($name);
             } else {
-                $formatedName = $name[0];
+                // se for apenas o nome "Luiz", "Pedro"
+                $formatedName = $name[0]; 
             }
 
-            $specialties = $request->specialties;
-            $specialties = explode(', ', $specialties);
-            $formatedSp = '';
+            $specialties = $request->specialties; 
+            // separando cada especialidade
+            $specialties = explode(',', $specialties);
+            $formatedSpecialty = '';
             foreach($specialties as $spKey => $spValue) {
-                $specialties[$spKey] = trim($specialties[$spKey]," ");
-                $formatedSp .= $specialties[$spKey].', ';
+                // tirando espaços desnecessários de cada especialidade
+                $specialties[$spKey] = trim($specialties[$spKey]," "); 
+                // colocando as especialidades formatadas como string
+                $formatedSpecialty .= $specialties[$spKey].', '; 
             }
-            $formatedSp = substr($formatedSp, 0, strlen($formatedSp) - 2);
+            // removendo o ", " da string, no ultimo item das especialidades
+            $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2); 
 
-            $hairdresser->update([
-                'name' => $formatedName,
-                'avatar' => $avatar,
-                'specialties' => $formatedSp,
-            ]);
-
-            $avatar = asset('storage/'.$avatar);
-
-            $array['data'] = [
-                'id' => $hairdresser->id,
-                'name' => $formatedName,
-                'avatar' => $avatar,
-                'specialties' => $specialties,
-            ];
-        } else {
-            $array['error'] = $validator->messages()->first();
-            return $array;
+            if(!empty($avatar)) { 
+                $hairdresser->update([
+                    'name' => $formatedName,
+                    'avatar' => $avatar,
+                    'specialties' => $formatedSpecialty,
+                ]);
+            } else {
+                $hairdresser->update([
+                    'name' => $formatedName,
+                    'specialties' => $formatedSpecialty,
+                ]);
+            }
+            
+            return redirect()->back();
         }
 
-        return $array;
+        return redirect()->back()->withInput($request->input());
     }
 
     public function delete($id) {
