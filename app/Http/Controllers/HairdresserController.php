@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class HairdresserController extends Controller
 {
+    public function insertView() {
+        return view('insert_hairdresser');
+    }
+
     public function insert(Request $request) {
         $array = ['error' => ''];
 

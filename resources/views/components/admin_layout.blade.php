@@ -49,7 +49,7 @@
                             <li><a class="dropdown-item" href="#">Ver não concluídos</a></li>
                         </x-nav.item-dropdown>
                         <x-nav.item-dropdown title="Funcionários">
-                            <li><a class="dropdown-item" href="#">Adicionar</a></li>
+                            <li><a class="dropdown-item" href={{route('insert_hairdresser')}}>Adicionar</a></li>
                             <li><a class="dropdown-item" href="#">Ver todos</a></li>
                             <li><a class="dropdown-item" href="#">Adicionar serviço</a></li>
                         </x-nav.item-dropdown>

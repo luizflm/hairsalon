@@ -227,6 +227,9 @@ header {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
+#banner form textarea {
+    color: #000 !important;
+}
 
 @media(max-width:991px) {
     .container {
