@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('hairdressers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('specialties');
             $table->string('avatar')->default('default.jpg');
         });
     }
