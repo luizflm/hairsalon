@@ -194,16 +194,11 @@ class ServiceController extends Controller
     
 
     public function delete($id) {
-        $array = ['error' => ''];
-
         $service = HairdresserService::find($id);
         if($service) {
             $service->delete();
-        } else {
-            $array['error'] = 'Serviço não encontrado.';
-            return $array;
         }
-
-        return $array;
+        
+        return redirect()->back();
     }
 }

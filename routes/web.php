@@ -34,9 +34,9 @@ Route::middleware('admin')->group(function() {
     // Route::get('/services/{id}', [ServiceController::class, 'getHairdresserAll']);
     Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service'); //
     Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action'); //
-    Route::get('/service/edit/{id}', [ServiceController::class, 'updateView'])->name('edit_service');
-    Route::put('/service/edit/{id}', [ServiceController::class, 'updateAction'])->name('edit_service_action');
-    // Route::delete('/service/delete/{id}', [ServiceController::class, 'delete']);
+    Route::get('/service/edit/{id}', [ServiceController::class, 'updateView'])->name('edit_service'); // 
+    Route::put('/service/edit/{id}', [ServiceController::class, 'updateAction'])->name('edit_service_action'); //
+    Route::delete('/service/delete/{id}', [ServiceController::class, 'delete']); //
 
     // hd_done_services
     // Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
