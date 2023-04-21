@@ -12,7 +12,7 @@ class ServiceController extends Controller
     public function insertView() {
         $hairdressers = Hairdresser::all();
 
-        return view('service', ['hairdressers' => $hairdressers]);
+        return view('insert_service', ['hairdressers' => $hairdressers]);
     }
 
     public function insertAction(Request $request) {
@@ -54,6 +54,17 @@ class ServiceController extends Controller
                 ])->withInput($request->all());
             }
         }
+    }
+
+    public function updateView($id) {
+        $service = HairdresserService::find($id);
+        $hairdressers = Hairdresser::all();
+
+        if($service) {
+            return view('edit_service', ['service' => $service, 'hairdressers' => $hairdressers]);
+        }
+
+        return redirect()->back();
     }
 
     public function getAll() {
