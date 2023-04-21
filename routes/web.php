@@ -33,7 +33,8 @@ Route::middleware('admin')->group(function() {
     // hd_services
     // Route::get('/services', [ServiceController::class, 'getAll']);
     // Route::get('/service/{id}', [ServiceController::class, 'getOne']);
-    // Route::post('/service', [ServiceController::class, 'insert']);
+    Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service');
+    Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action');
     // Route::put('/service/edit/{id}', [ServiceController::class, 'update']);
     // Route::delete('/service/delete/{id}', [ServiceController::class, 'delete']);
 

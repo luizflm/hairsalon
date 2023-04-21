@@ -9,6 +9,53 @@ use Illuminate\Support\Facades\Validator;
 
 class ServiceController extends Controller
 {
+    public function insertView() {
+        $hairdressers = Hairdresser::all();
+
+        return view('service', ['hairdressers' => $hairdressers]);
+    }
+
+    public function insertAction(Request $request) {
+        $validator = $request->validate([
+            'name' => 'required|min:2',
+            'price' => 'required',
+            'hairdresser_id' => 'required',
+        ]);
+        if($validator) {
+            $hairdresserId = $request->hairdresser_id;
+            $price = $request->price;
+
+            $name = $request->name;
+            $name = trim($name," ");
+
+            $hairdresser = Hairdresser::find($hairdresserId);
+            // vendo se o hairdresser existe
+            if($hairdresser) {
+                // vendo se o hairdresser já tem aquele serviço cadastrado
+                $hasService = HairdresserService::where('hairdresser_id', $hairdresserId)
+                ->where('name', $name)
+                ->first();
+                if(!$hasService) {
+                    HairdresserService::create([
+                        'hairdresser_id' => $hairdresserId,
+                        'name' => $name,
+                        'price' => $price
+                    ]);
+
+                    return redirect()->back();
+                } else {
+                    return redirect()->back()->withErrors([
+                        'name' => 'O(a) cabelereiro(a) já tem esse serviço cadastrado!',
+                    ])->withInput($request->all());
+                }
+            } else {
+                return redirect()->back()->withErrors([
+                    'name' => 'O(a) cabelereiro(a) não foi encontrado.',
+                ])->withInput($request->all());
+            }
+        }
+    }
+
     public function getAll() {
         $array = ['error' => '', 'list' => []];
 
@@ -54,49 +101,7 @@ class ServiceController extends Controller
         return $array;
     }
 
-    public function insert(Request $request) {
-        $array = ['error' => ''];
-
-        $validator = Validator::make($request->all(), [
-            'id_hairdresser' => 'required',
-            'name' => 'required|min:2',
-            'price' => 'required',
-        ]);
-        if(!$validator->fails()) {
-            $idHairdresser = $request->id_hairdresser;
-            $price = $request->price;
-
-            $name = $request->name;
-            $name = trim($name," ");
-
-            $hairdresser = Hairdresser::find($idHairdresser);
-            if($hairdresser) {
-                $hasService = HairdresserService::where('id_hairdresser', $idHairdresser)
-                ->where('name', $name)
-                ->first();
-                if(!$hasService) {
-                    $newService = HairdresserService::create([
-                        'id_hairdresser' => $idHairdresser,
-                        'name' => $name,
-                        'price' => $price
-                    ]);
     
-                    $array['data'] = $newService;
-                } else {
-                    $array['error'] = 'O(a) cabelereiro(a) já tem esse serviço!';
-                    return $array;
-                }
-            } else {
-                $array['error'] = 'Cabelereiro(a) não encontrado(a).';
-                return $array;
-            }
-        } else {
-            $array['error'] = $validator->messages()->first();
-            return $array;
-        }
-
-        return $array;
-    }
 
     public function update($id, Request $request) {
         $array = ['error' => ''];
