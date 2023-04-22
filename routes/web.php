@@ -38,6 +38,11 @@ Route::middleware('admin')->group(function() {
     Route::put('/service/edit/{id}', [ServiceController::class, 'updateAction'])->name('edit_service_action'); //
     Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action'); //
 
+    // appointments (admin)
+    Route::get('/appointments/admin', [AppointmentController::class, 'getAll'])->name('appointments');
+    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done');
+    Route::get('/appointments/admin/undone', [AppointmentController::class, 'getAllUndone'])->name('appointments_undone');
+
     // hd_done_services
     // Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
     // Route::get('/done_service/{id}', [DoneServiceController::class, 'getOne']);
