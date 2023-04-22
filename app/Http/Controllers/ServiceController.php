@@ -11,25 +11,30 @@ class ServiceController extends Controller
     public function getHairdresserAll(Request $request) {
         $page = $request->page;
         $fullServices = HairdresserService::all()->count();
+        $pageCount = ceil($fullServices / 4);
 
         $services = HairdresserService::orderBy('price', 'DESC')
         ->orderBy('id', 'ASC')
         ->paginate(4);
         if($services->items()) {
-            foreach($services as $service) {
-                $hairdresser = Hairdresser::find($service->hairdresser_id);
-    
-                $service = [
-                    'id' => $service->id,
-                    'name' => $service->name,
-                    'price' => $service->price,
-                    'hairdresser' => $hairdresser,
-                ];
-    
-                $servicesList[] = $service;
+            if($page != 0) {
+                if($page <= $pageCount) {
+                    foreach($services as $service) {
+                        $hairdresser = Hairdresser::find($service->hairdresser_id);
+            
+                        $service = [
+                            'id' => $service->id,
+                            'name' => $service->name,
+                            'price' => $service->price,
+                            'hairdresser' => $hairdresser,
+                        ];
+            
+                        $servicesList[] = $service;
+                    }
+        
+                    return view('services', ['services' => $servicesList, 'page' => $page, 'items' => $fullServices]);
+                }
             }
-
-            return view('services', ['services' => $servicesList, 'page' => $page, 'items' => $fullServices]);
         }
 
         return back();

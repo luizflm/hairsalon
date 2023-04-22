@@ -51,9 +51,9 @@ increaseBanner="true"
                 <ul class="pagination justify-content-center py-2">
                   <li class="page-item">
                     @if($page == 1)
-                        <a class="page-link" href={{route('services', ['page' => $page])}}>Previous</a>
+                        <a class="page-link" href={{route('services', ['page' => $page])}}>Anterior</a>
                     @else
-                        <a class="page-link" href={{route('services', ['page' => $page - 1])}}>Previous</a>
+                        <a class="page-link" href={{route('services', ['page' => $page - 1])}}>Anterior</a>
                     @endif
                   </li>
                   @php
@@ -74,7 +74,7 @@ increaseBanner="true"
                         <li class="page-item"><a class="page-link" href={{route('services', ['page' => 3])}}>3</a></li>
                     @endif
                     <li class="page-item">
-                        <a class="page-link" href={{route('services', ['page' => $page + 1])}}>Next</a>
+                        <a class="page-link" href={{route('services', ['page' => $page + 1])}}>Próxima</a>
                     </li>
                 </ul>
             </nav>
