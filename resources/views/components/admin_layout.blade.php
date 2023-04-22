@@ -10,8 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
@@ -32,7 +31,7 @@
                     </div>
                 </div>
                 <div class="nav-logo">
-                    <a href="#"><img src="/assets/img/logo.png" alt="Logo"></a>
+                    <a href={{route('admin_home')}}><img src="/assets/img/logo.png" alt="Logo"></a>
                 </div>
                 <div class="navbar-toggler-area">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -48,12 +47,17 @@
                             <li><a class="dropdown-item" href="#">Ver concluídos</a></li>
                             <li><a class="dropdown-item" href="#">Ver não concluídos</a></li>
                         </x-nav.item-dropdown>
-                        <x-nav.item-dropdown title="Funcionários">
+                        <x-nav.item-dropdown title="Funcionários" class="spaceleft">
                             <li><a class="dropdown-item" href={{route('insert_hairdresser')}}>Adicionar</a></li>
                             <li><a class="dropdown-item" href={{route('hairdressers')}}>Ver todos</a></li>
-                            <li><a class="dropdown-item" href={{route('insert_service')}}>Adicionar serviço</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#">Serviços &raquo; </a>
+                                <ul class="dropdown-menu dropdown-submenu dropdown-submenu-left">
+                                    <li><a class="dropdown-item" href="{{route('insert_service')}}">Adicionar serviço</a></li>
+                                    <li><a class="dropdown-item" href="#">Ver todos</a></li>
+                                </ul>
+                            </li>
                         </x-nav.item-dropdown>
-                        <li class="nav-item"><a href="{{route('admin_home')}}" class="nav-link">Home</a></li>
                     </ul>
                 </div>
             </div>
@@ -72,9 +76,7 @@
         </div>
     </footer>
     
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script src="assets/js/script.js"></script>
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>  
 </body>
-
 </html>
