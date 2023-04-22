@@ -5,10 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\Hairdresser;
 use App\Models\HairdresserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ServiceController extends Controller
 {
+    public function getHairdresserAll(Request $request) {
+        $page = $request->page;
+        $fullServices = HairdresserService::all()->count();
+
+        $services = HairdresserService::orderBy('price', 'DESC')
+        ->orderBy('id', 'ASC')
+        ->paginate(4);
+        if($services->items()) {
+            foreach($services as $service) {
+                $hairdresser = Hairdresser::find($service->hairdresser_id);
+    
+                $service = [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'price' => $service->price,
+                    'hairdresser' => $hairdresser,
+                ];
+    
+                $servicesList[] = $service;
+            }
+
+            return view('services', ['services' => $servicesList, 'page' => $page, 'items' => $fullServices]);
+        }
+
+        return back();
+    }
+
     public function insertView() {
         $hairdressers = Hairdresser::all();
 
@@ -144,54 +170,6 @@ class ServiceController extends Controller
         return redirect()->back()->withInput($request->input());
     }
 
-    public function getAll() {
-        $array = ['error' => '', 'list' => []];
-
-        $services = HairdresserService::orderBy('price', 'DESC')
-        ->orderBy('id', 'ASC')
-        ->get();
-        foreach($services as $service) {
-            $hairdresser = Hairdresser::find($service->id_hairdresser);
-            $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
-
-            $service = [
-                'id' => $service->id,
-                'name' => $service->name,
-                'price' => $service->price,
-                'hairdresser' => $hairdresser,
-            ];
-
-            $array['list'][] = $service;
-        }
-
-        return $array;
-    }
-
-    public function getOne($id) {
-        $array = ['error' => ''];
-
-        $service = HairdresserService::find($id);
-        if($service) {
-            $hairdresser = Hairdresser::find($service->id_hairdresser);
-            $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
-    
-            $array['data'] = [
-                'id' => $service->id,
-                'name' => $service->name,
-                'price' => $service->price,
-                'hairdresser' => $hairdresser,
-            ];
-        } else {
-            $array['error'] = 'Não encontrado.';
-            return $array;
-        }
-   
-        return $array;
-    }
-
-    
-
-    
 
     public function delete($id) {
         $service = HairdresserService::find($id);
@@ -199,6 +177,6 @@ class ServiceController extends Controller
             $service->delete();
         }
         
-        return redirect()->back();
+        return redirect()->route('services', ['page' => 1]);
     }
 }

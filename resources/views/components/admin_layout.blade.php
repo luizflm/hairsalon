@@ -53,8 +53,8 @@
                             <li>
                                 <a class="dropdown-item" href="#">Serviços &raquo; </a>
                                 <ul class="dropdown-menu dropdown-submenu dropdown-submenu-left">
-                                    <li><a class="dropdown-item" href="{{route('insert_service')}}">Adicionar serviço</a></li>
-                                    <li><a class="dropdown-item" href="#">Ver todos</a></li>
+                                    <li><a class="dropdown-item" href={{route('insert_service')}}>Adicionar serviço</a></li>
+                                    <li><a class="dropdown-item" href={{route('services', ['page' => 1])}}>Ver todos</a></li>
                                 </ul>
                             </li>
                         </x-nav.item-dropdown>

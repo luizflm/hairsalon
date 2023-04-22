@@ -31,7 +31,7 @@ Route::middleware('admin')->group(function() {
     Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action'); //
 
     // hd_services
-    // Route::get('/services/{id}', [ServiceController::class, 'getHairdresserAll']);
+    Route::get('/services', [ServiceController::class, 'getHairdresserAll'])->name('services');
     Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service'); //
     Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action'); //
     Route::get('/service/edit/{id}', [ServiceController::class, 'updateView'])->name('edit_service'); // 
