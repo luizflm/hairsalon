@@ -61,7 +61,7 @@ increaseBanner="true"
                     $pageLoop = 1;
                   @endphp
                   @if($items < 12)
-                    @while($pageLoop < $items)
+                    @while($pageLoop <= $items)
                         <li class="page-item"><a class="page-link" href={{route('services', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
                         @php
                             $pageValue++;

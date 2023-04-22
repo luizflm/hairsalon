@@ -32,7 +32,11 @@ class ServiceController extends Controller
                         $servicesList[] = $service;
                     }
         
-                    return view('services', ['services' => $servicesList, 'page' => $page, 'items' => $fullServices]);
+                    return view('services', [
+                        'services' => $servicesList,
+                        'page' => $page,
+                        'items' => $fullServices
+                    ]);
                 }
             }
         }

@@ -39,9 +39,8 @@ Route::middleware('admin')->group(function() {
     Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action'); //
 
     // appointments (admin)
-    Route::get('/appointments/admin', [AppointmentController::class, 'getAll'])->name('appointments');
+    Route::get('/appointments/admin', [AppointmentController::class, 'getAll'])->name('appointments'); // precisa botar a rota de finalizar
     Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done');
-    Route::get('/appointments/admin/undone', [AppointmentController::class, 'getAllUndone'])->name('appointments_undone');
 
     // hd_done_services
     // Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
