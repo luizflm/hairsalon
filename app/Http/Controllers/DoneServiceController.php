@@ -61,7 +61,7 @@ class DoneServiceController extends Controller
         return $array;
     }
 
-    public function insert(Request $request) {
+    public function insertAction(Request $request) {
         $validator = $request->validate([
             'appointment' => 'required',
         ]);
@@ -106,7 +106,7 @@ class DoneServiceController extends Controller
                 }
             }
         }
-        
+
         return back();
     }
 
