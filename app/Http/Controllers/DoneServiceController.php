@@ -62,58 +62,52 @@ class DoneServiceController extends Controller
     }
 
     public function insert(Request $request) {
-        $array = ['error' => ''];
-
-        $validator = Validator::make($request->all(), [
-            'id_appointment' => 'required'
+        $validator = $request->validate([
+            'appointment' => 'required',
         ]);
-        if(!$validator->fails()) {
-            $idAppointment = $request->id_appointment;
-            $idUser = Auth::user()->id;
+        if($validator) {
+            $appointment = $request->appointment;
 
-            $appointment = Appointment::where('id', $idAppointment)
-            ->where('id_user', $idUser)
+            $appointmentId = $appointment['id'];
+            $hairdresserId = $appointment['hairdresser_id'];
+   
+            $doneAppointment = Appointment::where('id', $appointmentId)
+            ->where('hairdresser_id', $hairdresserId)
             ->first();
-            if($appointment) {
-                $isDone = $appointment->was_done;
-                if($isDone === 0) {
-                    $idHairdresser = $appointment->id_hairdresser;
-                    $idService = $appointment->id_service;
-                    $apDateTime = $appointment->ap_datetime;
-    
-                    $apDate = Carbon::createFromFormat('Y-m-d H:i:s', $apDateTime);
-                    $now = date('Y-m-d H:i:s');
-                    $isDateFuture = $apDate->greaterThan($now);
-                    if($isDateFuture === false) { 
-                        $newDoneService = HairdresserDoneService::create([
-                            'id_hairdresser' => $idHairdresser,
-                            'id_service' => $idService,
-                            'service_datetime' => $apDateTime
-                        ]);
-    
-                        $appointment->update([
-                            'was_done' => '1',
-                        ]);
-    
-                        $array['data'] = $newDoneService;
-                    } else {
-                        $array['error'] = 'O serviço ainda não foi realizado.';
-                        return $array;
-                    }
-                } else {
-                    $array['error'] = 'O agendamento já foi marcado como concluído.';
-                    return $array;
-                }
-            } else {
-                $array['error'] = 'Agendamento não encontrado.';
-                return $array;
-            }
-        } else {
-            $array['error'] = $validator->messages()->first();
-            return $array;
-        }
+            if($doneAppointment) {
+                $wasDone = $doneAppointment['was_done'];
+                // verificando se já foi colocado como concluido antes
+                if($wasDone === 0) {
+                    $serviceId = $appointment['hairdresser_service_id'];
 
-        return $array;
+                    $apDate = $appointment['ap_date'];
+                    $formatedApDate = explode('/', $apDate);
+                    $formatedApDate = $formatedApDate[2].'-'.$formatedApDate[1].'-'.$formatedApDate[0];
+        
+                    $apTime = $appointment['ap_time'];
+                    $formatedApTime = $apTime.":00";
+                    $apDatetime = $formatedApDate.' '.$formatedApTime;
+
+                    // verificando se o usuario esta finalizando um agendamento do futuro
+                    $carbonApDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $apDatetime);
+                    $now = date('Y-m-d H:i:s');
+                    $isDateFuture = $carbonApDatetime->greaterThan($now);
+                    if($isDateFuture === false) {
+                        $doneAppointment->update([
+                            'was_done' => 1,
+                        ]);
+
+                        HairdresserDoneService::create([
+                            'service_datetime' => $apDatetime,
+                            'hairdresser_id' => $hairdresserId,
+                            'hairdresser_service_id' => $serviceId,
+                        ]);
+                    }
+                }
+            }
+        }
+        
+        return back();
     }
 
     public function delete($id) {

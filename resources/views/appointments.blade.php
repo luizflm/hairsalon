@@ -29,12 +29,24 @@ increaseBanner="true"
                                 <th scope="row">{{$row}}</th>
                                 <td>{{$appointment['ap_date']}}</td>
                                 <td>{{$appointment['ap_time']}}</td>
-                                <td>{{$appointment['service']}}</td>
-                                <td>{{$appointment['hairdresser']}}</td>
+                                <td>{{$appointment['service']['name']}}</td>
+                                <td>{{$appointment['hairdresser']['name']}}</td>
                                 <td>{{$appointment['user']}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a href="#" class="btn btn-edit me-4">Finalizar</a>
+                                        <form method="POST" action={{route('insert_done_service_action',
+                                        ['appointment' => [
+                                            'id' => $appointment['id'],
+                                            'ap_date' => $appointment['ap_date'],
+                                            'ap_time' => $appointment['ap_time'],
+                                            'hairdresser_id' => $appointment['hairdresser']['id'],
+                                            'hairdresser_service_id' => $appointment['service']['id'],
+                                        ]])}}>
+                                            @csrf
+                                            <button type="submit" class="btn btn-edit me-4" onclick="return confirm('Deseja finalizar o agendamento?');">
+                                                Finalizar
+                                            </button>
+                                        </form>
                                         <a href={{route('edit_appointment', $appointment['id'])}} class="btn btn-edit me-4">Editar</a>
                                         <form method="POST" action={{route('delete_appointment_action', $appointment['id'])}}>
                                             @csrf

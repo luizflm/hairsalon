@@ -279,8 +279,8 @@ class AppointmentController extends Controller
             if($page != 0) {
                 if($page <= $pageCount) {
                     foreach($appointments as $appointment) {
-                        $hairdresserName = Hairdresser::where('id', $appointment['hairdresser_id'])->pluck('name');
-                        $serviceName = HairdresserService::where('id', $appointment['hairdresser_service_id'])->pluck('name');
+                        $hairdresser = Hairdresser::where('id', $appointment['hairdresser_id'])->first();
+                        $service = HairdresserService::where('id', $appointment['hairdresser_service_id'])->first();
                         $userName = User::where('id', $appointment['user_id'])->pluck('name');
 
                         $formatedDatetime = explode(' ', $appointment['ap_datetime']);
@@ -297,8 +297,8 @@ class AppointmentController extends Controller
                             'ap_date' => $formatedApDate,
                             'ap_time' => $formatedApTime,
                             'user' => $userName[0],
-                            'hairdresser' => $hairdresserName[0],
-                            'service' => $serviceName[0],
+                            'hairdresser' => $hairdresser,
+                            'service' => $service,
                         ];
 
                         $apList[] = $appointment;

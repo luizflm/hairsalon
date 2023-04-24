@@ -40,12 +40,12 @@ Route::middleware('admin')->group(function() {
 
     // appointments (admin)
     Route::get('/appointments/admin', [AppointmentController::class, 'getAll'])->name('appointments'); // precisa botar a rota de finalizar
-    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done');
+    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done'); //
 
     // hd_done_services
     // Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
     // Route::get('/done_service/{id}', [DoneServiceController::class, 'getOne']);
-    // Route::post('/done_service', [DoneServiceController::class, 'insert']);
+    Route::post('/done_service', [DoneServiceController::class, 'insert'])->name('insert_done_service_action');
     // Route::delete('/done_service/delete/{id}', [DoneServiceController::class, 'delete']);
 });
 
