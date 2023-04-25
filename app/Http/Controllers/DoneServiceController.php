@@ -61,6 +61,51 @@ class DoneServiceController extends Controller
         return $array;
     }
 
+    public function getComission(Request $request) {
+        $page = $request->page;
+        $currentDate = date('Y-m');
+        $date = $request->date ?? $currentDate;
+
+        if($page != 0) {
+            $hairdressers = Hairdresser::orderBy('id', 'ASC')->get();
+            
+            foreach($hairdressers as $hairdresser) {
+                // serviços do hairdresser no ano/mes desejado
+                $doneServices = HairdresserDoneService::where('hairdresser_id', $hairdresser['id'])
+                ->where('service_datetime', 'LIKE', '%'.$date.'%')
+                ->paginate(4);
+                
+                $pageCount = ceil(count($doneServices) / 4);
+                if($page <= $pageCount) {
+                    if($doneServices->items()) {
+                        $fullMoney = 0;
+                        foreach($doneServices as $doneService) {
+                            // pra cada serviço realizado, pego o preço do serviço e incremento
+                            $price = HairdresserService::where('id', $doneService['hairdresser_service_id'])->pluck('price');
+                            $fullMoney += $price[0];
+                        }
+        
+                        $comission = $fullMoney * 0.06; // fazendo a porcentagem (6%)
+                        $comission = number_format($comission, 2, '.'); // arredondando a porcentagem
+                        $hairdresser['comission'] = 'R$ '.$comission;
+                        $hairdresser['done_services'] = count($doneServices);
+        
+                        $list['hairdresser'][] = $hairdresser;
+
+                        return view('comission', [
+                            'page' => $page,
+                            'date' => $date,
+                            'items' => 1,
+                            'list' => $list
+                        ]);
+                    }
+                }                
+            }
+        }
+        
+        return back();
+    }
+
     public function insertAction(Request $request) {
         $validator = $request->validate([
             'appointment' => 'required',

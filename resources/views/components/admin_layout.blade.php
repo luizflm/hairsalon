@@ -56,6 +56,7 @@
                                     <li><a class="dropdown-item" href={{route('services', ['page' => 1])}}>Ver todos</a></li>
                                 </ul>
                             </li>
+                             <li><a class="dropdown-item" href={{route('comission', ['page' => 1])}}>Comissão</a></li>
                         </x-nav.item-dropdown>
                     </ul>
                 </div>

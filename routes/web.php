@@ -45,6 +45,7 @@ Route::middleware('admin')->group(function() {
     // hd_done_services
     // Route::get('/done_services', [DoneServiceController::class, 'getDoneServices']); 
     // Route::get('/done_service/{id}', [DoneServiceController::class, 'getOne']);
+    Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission');
     Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action');
     // Route::delete('/done_service/delete/{id}', [DoneServiceController::class, 'delete']);
 });
