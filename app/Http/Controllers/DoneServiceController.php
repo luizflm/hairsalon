@@ -75,7 +75,9 @@ class DoneServiceController extends Controller
                 ->where('service_datetime', 'LIKE', '%'.$date.'%')
                 ->paginate(4);
                 
-                $pageCount = ceil(count($doneServices) / 4);
+                $servicesCount = count($doneServices);
+
+                $pageCount = ceil($servicesCount / 4);
                 if($page <= $pageCount) {
                     if($doneServices->items()) {
                         $fullMoney = 0;
@@ -88,14 +90,14 @@ class DoneServiceController extends Controller
                         $comission = $fullMoney * 0.06; // fazendo a porcentagem (6%)
                         $comission = number_format($comission, 2, '.'); // arredondando a porcentagem
                         $hairdresser['comission'] = 'R$ '.$comission;
-                        $hairdresser['done_services'] = count($doneServices);
+                        $hairdresser['done_services'] = $servicesCount;
         
                         $list['hairdresser'][] = $hairdresser;
 
                         return view('comission', [
                             'page' => $page,
                             'date' => $date,
-                            'items' => 1,
+                            'items' => $servicesCount,
                             'list' => $list
                         ]);
                     }
