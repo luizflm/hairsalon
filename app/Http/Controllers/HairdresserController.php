@@ -181,7 +181,55 @@ class HairdresserController extends Controller
     public function updateView($id) {
         $hairdresser = Hairdresser::find($id);
 
-        return view('edit_hairdresser', ['hairdresser' => $hairdresser]);
+        $hdAvailability = HairdresserAvailability::where('hairdresser_id', $id)->get();
+
+        // pegar toda a string "hours", dar um explode na ", " e pegar o primeiro e o ultimo valor
+        // e a partir desses valores, verificar em cada option se alguma se enquadra com o valor desejado
+        // no horario inicial tem q verificar se alguma option tem o value igual ao do primeiro item do array
+        // no horario final tem q verificar se alguma option tem o value igual ao do ultimo item do array
+
+        $times = [
+            '08:00',
+            '09:00',
+            '10:00',
+            '11:00',
+            '12:00',
+            '13:00',
+            '14:00',
+            '15:00',
+            '16:00',
+            '17:00',
+            '18:00',
+        ];
+
+        $days = [
+            '0' => 'Domingo',
+            '1' => 'Segunda',
+            '2' => 'Terça',
+            '3' => 'Quarta',
+            '4' => 'Quinta',
+            '5' => 'Sexta',
+            '6' => 'Sábado',
+        ];
+
+        $workDays = [];
+        foreach($days as $day) {
+            $dayKey = array_search($day, $days); // 0, 1, 2, 3, 4, 5, 6
+            
+            $availability = HairdresserAvailability::where('hairdresser_id', $id) // 7
+            ->where('weekday', $dayKey) // 0, 1, 2, 3, 4, 5, 6
+            ->first();
+            if($availability) {
+                $workDays[] = $availability['weekday'];
+            }
+        }
+
+        return view('edit_hairdresser', [
+            'hairdresser' => $hairdresser,
+            'workDays' => $workDays,
+            'days' => $days,
+            'times' => $times
+        ]);
     }
 
     public function updateAction($id, Request $request) {
