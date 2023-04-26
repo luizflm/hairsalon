@@ -7,19 +7,51 @@ use App\Models\HairdresserAvailability;
 use App\Models\HairdresserEvaluation;
 use App\Models\HairdresserService;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class HairdresserController extends Controller
 {
     public function insertView() {
-        return view('insert_hairdresser');
+        $times = [
+            '08:00',
+            '09:00',
+            '10:00',
+            '11:00',
+            '12:00',
+            '13:00',
+            '14:00',
+            '15:00',
+            '16:00',
+            '17:00',
+            '18:00',
+        ];
+
+        $days = [
+          '0' => 'Domingo',
+          '1' => 'Segunda',
+          '2' => 'Terça',
+          '3' => 'Quarta',
+          '4' => 'Quinta',
+          '5' => 'Sexta',
+          '6' => 'Sábado',  
+        ];
+
+
+        return view('insert_hairdresser', [
+            'times' => $times,
+            'days' => $days
+        ]);
     }
 
     public function insertAction(Request $request) {
         $validator = $request->validate([
             'name' => 'required|min:2',
             'specialties' => 'required',
+            'days' => 'required',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
             'avatar' => 'required|file|mimes:jpg,png',
         ]);
         if($validator) {
@@ -59,7 +91,45 @@ class HairdresserController extends Controller
                 'specialties' => $formatedSpecialty,
             ]);
 
-            return redirect()->back();
+            $startTime = $request->start_time;
+            $endTime = $request->end_time;
+            $carbonStartTime = Carbon::createFromFormat('H:i', $startTime);
+            $carbonEndTime = Carbon::createFromFormat('H:i', $endTime);
+
+            if($carbonEndTime->greaterThan($carbonStartTime)) {
+                $interval = $carbonEndTime->diffInMinutes($carbonStartTime);
+
+                $times = [];
+                
+                for ($i = 0; $i <= $interval; $i += 60) {
+                    $time = $carbonStartTime->copy()->addMinutes($i)->format('H:i');
+                    $times[] = $time;
+                }
+                // pra tirar o ultimo horario, já que o ultimo agendamento é por ex 15:00 a 16:00
+                // logo, se o hairdresser parar de trabalhar 16, o ultimo horario dele é 15h.
+                array_pop($times);
+
+                $workTime = implode(', ', $times);
+
+                $days = $request->days;
+                $weekdays = "";
+                $weekdays = explode(', ', $weekdays);
+                $weekdays = array_filter($weekdays);
+
+                foreach($days as $day) {
+                    HairdresserAvailability::create([
+                        'weekday' => $day,
+                        'hours' => $workTime,
+                        'hairdresser_id' => $newHairdresser['id'],
+                    ]);
+                }   
+
+                return redirect()->back();
+            } else {
+                return redirect()->back()->withErrors([
+                    'name' => 'O horário inicial deve ser antes que o final.',
+                ]);
+            }
         }
 
         return redirect()->back()->withInput($request->all());

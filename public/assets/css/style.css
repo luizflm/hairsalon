@@ -231,6 +231,11 @@ header {
     color: #000 !important;
 }
 
+#banner form label.btn {
+    background-color: #222;
+    width: 90px;
+}
+
 .dropdown-menu li {
     position: relative
 }
@@ -312,7 +317,7 @@ ul.spaceleft {
     #banner .form .container {
         max-width: 100vw;
         padding: 0 !important;
-        padding: 10px 0 !important;
+        padding: 10px 6px !important;
     }
 
 }

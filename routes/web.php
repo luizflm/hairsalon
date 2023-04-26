@@ -10,6 +10,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// tarefas 26/04: modificar a tela e método de edit user, verificar a home (caso algo esteja errado)
+
 Route::get('/', [HomeController::class, 'index'])->name('home'); //
 
 Route::middleware('guest')->group(function() {

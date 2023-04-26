@@ -1,1 +1,1 @@
-<div class="form-title">{{$title}}</div>
+<div class="form-title text-center">{{$title}}</div>
