@@ -11,17 +11,17 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home'); // responsive
+Route::get('/', [HomeController::class, 'index'])->name('home'); // responsiva
 
 Route::middleware('guest')->group(function() {
-    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); // 
+    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); // responsiva
     Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); //
-    Route::get('/login', [AuthController::class, 'loginView'])->name('login'); //
+    Route::get('/login', [AuthController::class, 'loginView'])->name('login'); // responsiva
     Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action'); //
 });
 
 Route::middleware('admin')->group(function() {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); //
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); // responsiva
 
     // cabelereiras
     Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser');

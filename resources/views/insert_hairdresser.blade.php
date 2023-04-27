@@ -2,8 +2,8 @@
 page="Hairsalon - Adicionar Cabelereiro(a)"
 increaseBanner="true"
 >
-<div class="container-fluid form py-3 py-lg-5">
-    <div class="container d-flex flex-column align-items-center px-3 py-2">
+<div class="container-fluid form p-0 pt-2 py-sm-5 py-lg-5">
+    <div class="container d-flex flex-column align-items-center pb-sm-3 px-sm-3 py-sm-2">
         <x-form.form_title title="Adicionar Funcionário" />
         <form method="POST" enctype="multipart/form-data" action={{route('insert_hairdresser_action')}} class="mt-2">
             @csrf
@@ -31,8 +31,18 @@ increaseBanner="true"
             </div>
 
             <label class="form-label">Dias</label>
+
             <div class="btn-group d-flex justify-content-center mb-3" role="group" aria-label="Basic checkbox toggle button group">
-                @for($i=0;$i<3;$i++)
+                    <x-form.checkbox
+                    name="days[]"
+                    id="day0"
+                    value="0"
+                    label="Domingo"
+                    />
+            </div>
+
+            <div class="btn-group d-flex justify-content-center mb-3" role="group" aria-label="Basic checkbox toggle button group">
+                @for($i=1;$i<4;$i++)
                     <x-form.checkbox
                     name="days[]"
                     id="day{{$i}}"
@@ -43,7 +53,7 @@ increaseBanner="true"
             </div>
 
             <div class="btn-group d-flex justify-content-center mb-3" role="group" aria-label="Basic checkbox toggle button group">
-                @for($i=3;$i<7;$i++)
+                @for($i=4;$i<7;$i++)
                     <x-form.checkbox
                     name="days[]"
                     id="day{{$i}}"
