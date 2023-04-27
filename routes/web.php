@@ -11,8 +11,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// mostrar os dados de availability na tela "Ver Todos"
-
 Route::get('/', [HomeController::class, 'index'])->name('home'); //
 
 Route::middleware('guest')->group(function() {
