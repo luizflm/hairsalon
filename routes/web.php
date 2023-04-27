@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\DoneServiceController;
 use App\Http\Controllers\HairdresserController;
 use App\Http\Controllers\HomeController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// tarefas 26/04: modificar a tela e método de edit user, verificar a home (caso algo esteja errado)
+// mostrar os dados de availability na tela "Ver Todos"
 
 Route::get('/', [HomeController::class, 'index'])->name('home'); //
 
@@ -47,6 +48,9 @@ Route::middleware('admin')->group(function() {
     // hd_done_services
     Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); // 
     Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action'); //
+
+    // availability
+    Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability');
 });
 
 Route::middleware('auth')->group(function(){
