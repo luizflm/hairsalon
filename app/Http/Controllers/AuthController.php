@@ -94,18 +94,18 @@ class AuthController extends Controller
     }
 
     public function loginAction(Request $request) {
-        $credentials = $request->validate([
+        $credentials = $request->validate([ // o login é feito com email e password
             'email' => 'required|email',
             'password' => 'required',
         ]);
+        // ao tentar logar com as informações dadas, irá retornar true se logou, e false se não
+        if(Auth::attempt($credentials)) {  // se true:
+            $request->session()->regenerate(); // gera outro token de sessão
 
-        if(Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return redirect()->route('home');
+            return redirect()->route('home'); // redireciona para a home
         }
-
-        return back()->withErrors([
+        // se der erro, volta pra view com o erro e com o input de email preenchido
+        return redirect()->back()->withErrors([
             'email' => 'O email e/ou senha estão incorretos.',
         ])->onlyInput('email');
     }
