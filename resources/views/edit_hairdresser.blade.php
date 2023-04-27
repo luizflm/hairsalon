@@ -91,20 +91,27 @@ increaseBanner="true"
                 name="start_time"
                 required="true"
                 >
-                    <option disabled selected>ex: 09:00</option>
                     @foreach($times as $time)
-                        <option value="{{$time}}">{{$time}}</option>
+                        @if($workHours[0] == $time)
+                            <option value="{{$time}}" selected>{{$time}}</option>
+                        @else
+                            <option value="{{$time}}">{{$time}}</option>
+                        @endif
                     @endforeach
                 </x-form.select>
+
                 <x-form.select
                 col="true"
                 label="Horário Final"
                 name="end_time"
                 required="true"
                 >
-                    <option disabled selected>ex: 16:00</option>
                     @foreach($times as $time)
-                        <option value="{{$time}}">{{$time}}</option>
+                        @if(last($workHours) == $time)
+                            <option value="{{$time}}" selected>{{$time}}</option>
+                        @else
+                            <option value="{{$time}}">{{$time}}</option>
+                        @endif
                     @endforeach
                 </x-form.select>
             </div>

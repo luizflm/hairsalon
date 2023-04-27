@@ -85,18 +85,18 @@ class HairdresserController extends Controller
             // removendo o ", " da string, no ultimo item das especialidades
             $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2); 
 
-            $newHairdresser = Hairdresser::create([
-                'name' => $formatedName,
-                'avatar' => $avatar,
-                'specialties' => $formatedSpecialty,
-            ]);
-
             $startTime = $request->start_time;
             $endTime = $request->end_time;
             $carbonStartTime = Carbon::createFromFormat('H:i', $startTime);
             $carbonEndTime = Carbon::createFromFormat('H:i', $endTime);
 
             if($carbonEndTime->greaterThan($carbonStartTime)) {
+                $newHairdresser = Hairdresser::create([
+                    'name' => $formatedName,
+                    'avatar' => $avatar,
+                    'specialties' => $formatedSpecialty,
+                ]);
+
                 $interval = $carbonEndTime->diffInMinutes($carbonStartTime);
 
                 $times = [];
@@ -112,9 +112,9 @@ class HairdresserController extends Controller
                 $workTime = implode(', ', $times);
 
                 $days = $request->days;
-                $weekdays = "";
-                $weekdays = explode(', ', $weekdays);
-                $weekdays = array_filter($weekdays);
+                // $weekdays = "";
+                // $weekdays = explode(', ', $weekdays);
+                // $weekdays = array_filter($weekdays);
 
                 foreach($days as $day) {
                     HairdresserAvailability::create([
@@ -183,10 +183,13 @@ class HairdresserController extends Controller
 
         $hdAvailability = HairdresserAvailability::where('hairdresser_id', $id)->get();
 
-        // pegar toda a string "hours", dar um explode na ", " e pegar o primeiro e o ultimo valor
-        // e a partir desses valores, verificar em cada option se alguma se enquadra com o valor desejado
-        // no horario inicial tem q verificar se alguma option tem o value igual ao do primeiro item do array
-        // no horario final tem q verificar se alguma option tem o value igual ao do ultimo item do array
+        $workHours = $hdAvailability[0]['hours'];
+        $workHours = explode(', ', $workHours);
+
+        $workDays = [];
+        foreach($hdAvailability as $availability) {
+            $workDays[] = $availability['weekday'];
+        }
 
         $times = [
             '08:00',
@@ -212,41 +215,34 @@ class HairdresserController extends Controller
             '6' => 'Sábado',
         ];
 
-        $workDays = [];
-        foreach($days as $day) {
-            $dayKey = array_search($day, $days); // 0, 1, 2, 3, 4, 5, 6
-            
-            $availability = HairdresserAvailability::where('hairdresser_id', $id) // 7
-            ->where('weekday', $dayKey) // 0, 1, 2, 3, 4, 5, 6
-            ->first();
-            if($availability) {
-                $workDays[] = $availability['weekday'];
-            }
-        }
-
         return view('edit_hairdresser', [
             'hairdresser' => $hairdresser,
             'workDays' => $workDays,
             'days' => $days,
-            'times' => $times
+            'times' => $times,
+            'workHours' => $workHours,
         ]);
     }
 
     public function updateAction($id, Request $request) {
         $validator = $request->validate([
             'name' => 'required|min:2',
+            'specialties' => 'required',
+            'days' => 'required',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
             'avatar' => 'file|mimes:jpg,png',
-            'specialties' => 'required'
-        ]);
-        if($validator) {
-            $hairdresser = Hairdresser::find($id);
+        ]); // validando os dados do form
+        if($validator) { // Se não deu nenhum erro
+            $hairdresser = Hairdresser::find($id); // pega o hairdresser
 
-            if($request->avatar) {
-                $avatar = $request->file('avatar')->store('public');
-                $avatar = last(explode('/', $avatar));
+            if($request->avatar) { // se foi enviado algum avatar para edição
+                $avatar = $request->file('avatar')->store('public'); // salva o avatar na public\storage
+                $avatar = last(explode('/', $avatar)); // formata o nome pra salvar no banco de dados
             }
        
             $name = $request->name; 
+            // retirando os espaços desnecessários da string
             $name = trim($name," ");
             // separando os nomes, "Luiz Felipe" nome[0] = "Luiz" nome[1] = "Felipe"
             $name = explode(' ', $name); 
@@ -269,25 +265,83 @@ class HairdresserController extends Controller
                 $formatedSpecialty .= $specialties[$spKey].', '; 
             }
             // removendo o ", " da string, no ultimo item das especialidades
-            $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2); 
+            $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2);
+            
+            $startTime = $request->start_time;
+            $endTime = $request->end_time;
+            $carbonStartTime = Carbon::createFromFormat('H:i', $startTime);
+            $carbonEndTime = Carbon::createFromFormat('H:i', $endTime);
 
-            if(!empty($avatar)) { 
-                $hairdresser->update([
-                    'name' => $formatedName,
-                    'avatar' => $avatar,
-                    'specialties' => $formatedSpecialty,
-                ]);
+            // verificando se o horário final é menor que o inicial, ex: 09:00 < 10:00?
+            if($carbonEndTime->greaterThan($carbonStartTime)) {
+                if(!empty($avatar)) {  // verificando se foi enviado algum avatar
+                    $hairdresser->update([
+                        'name' => $formatedName,
+                        'specialties' => $formatedSpecialty,
+                        'avatar' => $avatar,
+                    ]);
+                } else { // senão, atualizar apenas os dados obrigatórios.
+                    $hairdresser->update([
+                        'name' => $formatedName,
+                        'specialties' => $formatedSpecialty,
+                    ]);
+                }
+
+                // pegando os availabilities antigos e excluindo eles
+                $hdAvailabilities = HairdresserAvailability::where('hairdresser_id', $id)->get(); 
+                foreach($hdAvailabilities as $availability) {
+                    $availability->delete();
+                }
+
+                // diferença de minutos entre o tempo inicial e tempo final, ex: t.i 08:00 t.f 17:00
+                $interval = $carbonEndTime->diffInMinutes($carbonStartTime);
+
+                $times = []; // criando array que terá os horários de trabalho do hairdresser
+                
+                // enquanto $i for menor Ou igual ao intervalo, a cada iteração acrescentar 60.
+                // logo, $i fica se fosse minutos, ou seja, começa em 0, dps vai pra 60, dps pra 120
+                // até ficar igual ao intervalo entre o t.i e t.f
+                for ($i = 0; $i <= $interval; $i += 60) {  
+                    $time = $carbonStartTime->copy()->addMinutes($i)->format('H:i');
+                    $times[] = $time;
+                }
+                // pra tirar o ultimo horario, já que o ultimo agendamento é por ex 15:00 a 16:00
+                // logo, se o hairdresser parar de trabalhar 16, o ultimo horario dele é 15h.
+                array_pop($times);
+
+                // criando a string com os horários de trabalho, que será salva no banco de dados
+                $workTime = implode(', ', $times);
+
+                // pegando os dias de trabalhos escolhidos para o hairdresser
+                $days = $request->days;
+
+                // $weekdays = "";
+                // $weekdays = explode(', ', $weekdays); 
+                // $weekdays = array_filter($weekdays); 
+
+                // para cada dia escolhido, criar um registro com a key do dia, string dos horários e o
+                // id do hairdresser
+                foreach($days as $day) { 
+                    HairdresserAvailability::create([
+                        'weekday' => $day,
+                        'hours' => $workTime,
+                        'hairdresser_id' => $id,
+                    ]);
+                }   
+
+                // Não atualizei os dados de availability pois é bem mais fácil deletar os antigos e 
+                // inserir os novos, não teria falhas e não alteraria os agendamentos que foram feitos
+                // antes do hairdresser ser atualizado.
+
+                return redirect()->back(); // após a saída, redirecionar pra rota anterior
             } else {
-                $hairdresser->update([
-                    'name' => $formatedName,
-                    'specialties' => $formatedSpecialty,
+                return redirect()->back()->withErrors([
+                    'name' => 'O horário inicial deve ser antes que o final.',
                 ]);
             }
-            
-            return redirect()->back();
         }
 
-        return redirect()->back()->withInput($request->input());
+        return redirect()->back(); // se não entrar no validator, volta pra tela de edit com os erros
     }
 
     public function delete($id) {
