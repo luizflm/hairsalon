@@ -16,12 +16,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home'); //
 Route::middleware('guest')->group(function() {
     Route::get('/register', [AuthController::class, 'insertView'])->name('register'); //
     Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); //
-    Route::get('/login', [AuthController::class, 'loginView'])->name('login');
-    Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action');
+    Route::get('/login', [AuthController::class, 'loginView'])->name('login'); //
+    Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action'); //
 });
 
 Route::middleware('admin')->group(function() {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); //
 
     // cabelereiras
     Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser');

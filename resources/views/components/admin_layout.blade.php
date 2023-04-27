@@ -43,7 +43,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <x-nav.item-dropdown title="Agendamentos">
-                            <li><a class="dropdown-item" href={{route('appointments', ['page' => 1])}}>Ver todos</a></li>
+                            <li><a class="dropdown-item" href={{route('appointments', ['page' => 1])}}>Ver não concluídos</a></li>
                             <li><a class="dropdown-item" href={{route('appointments_done', ['page' => 1])}}>Ver concluídos</a></li>
                         </x-nav.item-dropdown>
                         <x-nav.item-dropdown title="Funcionários" class="spaceleft">
