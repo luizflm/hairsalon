@@ -142,38 +142,6 @@ class HairdresserController extends Controller
             $avatar = asset('storage/'.$hairdresser->avatar);
 
             $specialties = $hairdresser->specialties;
-            
-            // $availability = HairdresserAvailability::where('id_hairdresser', $hairdresser->id)->get();
-            // $hdAvail = [];
-            // foreach($availability as $avail) {
-            //     $weekday = $avail->weekday;
-            //     $days = [
-            //         1 => 'Segunda-Feira',
-            //         2 => 'Terça-Feira',
-            //         3 => 'Quarta-Feira',
-            //         4 => 'Quinta-Feira',
-            //         5 => 'Sexta-Feira',
-            //         6 => 'Sábado',
-            //         7 => 'Domingo'
-            //     ];
-
-            //     $hours = explode(', ', $avail->hours);
-
-            //     $hdAvail[] = [
-            //         'weekday' => $days[$weekday],
-            //         'hours' => $hours,
-            //     ];
-            // }
-
-            // services
-            // $services = HairdresserService::where('id_hairdresser', $hairdresser->id)->get();
-            // $hdServices = [];
-            // foreach($services as $service) {
-            //     $hdServices[] = [
-            //         'name' => $service->name,
-            //         'price' => $service->price,
-            //     ];
-            // }
         }
         return view('hairdressers', ['hairdressers' => $hairdressers]);
     }

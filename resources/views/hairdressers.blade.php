@@ -29,6 +29,7 @@ increaseBanner="true"
                                 <td>{{$hairdresser['specialties']}}</td>  
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
+                                        <a href={{route('hairdresser_availability', $hairdresser['id'])}} class="btn btn-edit me-4">Disponibilidade</a>
                                         <a href={{route('edit_hairdresser', $hairdresser['id'])}} class="btn btn-edit me-4">Editar</a>
                                         <form method="POST" action={{route('delete_hairdresser_action', $hairdresser['id'])}}>
                                             @csrf
