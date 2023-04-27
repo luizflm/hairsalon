@@ -11,10 +11,10 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home'); //
+Route::get('/', [HomeController::class, 'index'])->name('home'); // responsive
 
 Route::middleware('guest')->group(function() {
-    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); //
+    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); // 
     Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); //
     Route::get('/login', [AuthController::class, 'loginView'])->name('login'); //
     Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action'); //
