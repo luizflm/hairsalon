@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class HairdresserController extends Controller
 {
     public function insertView() {
+        // colocando todos os horários de funcionamento do salão em um array
         $times = [
             '08:00',
             '09:00',
@@ -28,14 +29,15 @@ class HairdresserController extends Controller
             '18:00',
         ];
 
+        // array com os dias da semana
         $days = [
-          '0' => 'Domingo',
-          '1' => 'Segunda',
-          '2' => 'Terça',
-          '3' => 'Quarta',
-          '4' => 'Quinta',
-          '5' => 'Sexta',
-          '6' => 'Sábado',  
+          'Domingo',
+          'Segunda',
+          'Terça',
+          'Quarta',
+          'Quinta',
+          'Sexta',
+          'Sábado',  
         ];
 
 
@@ -61,21 +63,22 @@ class HairdresserController extends Controller
             $avatar = last(explode('/', $avatar)); 
 
             $name = $request->name; 
+            // tirando espaços desnecessários do nome
             $name = trim($name," ");
             // separando os nomes, "Luiz Felipe" nome[0] = "Luiz" nome[1] = "Felipe"
             $name = explode(' ', $name); 
-            if(count($name) > 1) {
-                // se for nome composto ou c sobrenome "Luiz Felipe de Lima Martins" -> "Luiz Martins"
+            if(count($name) > 1) { // verificando se o array tem mais de um item
+                // se sim, pode nome composto ou c sobrenome "Luiz Felipe de Lima Martins" -> "Luiz Martins"
                 $formatedName = $name[0].' '.last($name);
             } else {
-                // se for apenas o nome "Luiz", "Pedro"
+                // senão, pode ser apenas o nome "Luiz", "Pedro"
                 $formatedName = $name[0]; 
             }
 
             $specialties = $request->specialties; 
-            // separando cada especialidade
+            // separando cada especialidade em um array
             $specialties = explode(',', $specialties);
-            $formatedSpecialty = '';
+            $formatedSpecialty = ''; // string onde vai ficar as especialidades
             foreach($specialties as $spKey => $spValue) {
                 // tirando espaços desnecessários de cada especialidade
                 $specialties[$spKey] = trim($specialties[$spKey]," "); 
@@ -87,45 +90,51 @@ class HairdresserController extends Controller
 
             $startTime = $request->start_time;
             $endTime = $request->end_time;
-            $carbonStartTime = Carbon::createFromFormat('H:i', $startTime);
+            // criando o tempo inicial e final como um objeto Carbon
+            $carbonStartTime = Carbon::createFromFormat('H:i', $startTime); 
             $carbonEndTime = Carbon::createFromFormat('H:i', $endTime);
-
+            // verificando se o horário final é depois que o horário inicial
             if($carbonEndTime->greaterThan($carbonStartTime)) {
+                // se sim, cria o hairdresser (pra criar o hairdresser o avatar é obrigatório)
                 $newHairdresser = Hairdresser::create([
                     'name' => $formatedName,
                     'avatar' => $avatar,
                     'specialties' => $formatedSpecialty,
                 ]);
 
+                // pegando o intervalo entre o horário final e inicial
                 $interval = $carbonEndTime->diffInMinutes($carbonStartTime);
 
-                $times = [];
+                // criando o array onde ficarão as horas de trabalho do hairdresser
+                $times = []; 
                 
+                // a cada iteração i += 60, ou seja, 60 "minutos", logo, quando $i for igual a $interval,
+                // a execucação do for para
                 for ($i = 0; $i <= $interval; $i += 60) {
+                    // adicionando os minutos pra cada horário de trabalho a partir do horário inicial
                     $time = $carbonStartTime->copy()->addMinutes($i)->format('H:i');
+                    // inserindo o horário no array
                     $times[] = $time;
                 }
                 // pra tirar o ultimo horario, já que o ultimo agendamento é por ex 15:00 a 16:00
                 // logo, se o hairdresser parar de trabalhar 16, o ultimo horario dele é 15h.
                 array_pop($times);
 
+                // transformando o array em uma string, com cada valor sendo separado por uma ", "
                 $workTime = implode(', ', $times);
 
-                $days = $request->days;
-                // $weekdays = "";
-                // $weekdays = explode(', ', $weekdays);
-                // $weekdays = array_filter($weekdays);
-
-                foreach($days as $day) {
+                $days = $request->days; 
+                // por fim, pra cada dia de trabalho, cria-se um registro no banco de dados
+                foreach($days as $day) { 
                     HairdresserAvailability::create([
                         'weekday' => $day,
                         'hours' => $workTime,
                         'hairdresser_id' => $newHairdresser['id'],
                     ]);
                 }   
-
+                // após a saída, retorna para a tela anterior
                 return redirect()->back();
-            } else {
+            } else { // caso o horário final seja antes que o inicial, volta pra view com os devidos erros.
                 return redirect()->back()->withErrors([
                     'name' => 'O horário inicial deve ser antes que o final.',
                 ]);
