@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 // tarefa: fazer a verificação se o horário escolhido no appointment é o ULTIMO horário da availability do 
 // hairdresser, caso seja, não permitir naquele horário, permitir apenas até o penultimo
 
+// ao terminar as verificações, popular o banco de dados e verificar se todas as views estão certas
+
 Route::get('/', [HomeController::class, 'index'])->name('home'); // responsiva
 
 Route::middleware('guest')->group(function() {
@@ -43,7 +45,7 @@ Route::middleware('admin')->group(function() {
     Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action'); //
 
     // appointments (admin)
-    Route::get('/appointments/admin', [AppointmentController::class, 'getAll'])->name('appointments');
+    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); //
     Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done');
 
     // hd_done_services
