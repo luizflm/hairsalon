@@ -333,7 +333,7 @@ class AppointmentController extends Controller
         // caso alguma verificação dê errado, retorna para a página anterior
         return redirect()->back();
     }
-
+    
     public function getAllDone(Request $request) {
         $page = $request->page;
         // pegando todos os agendamentos que estão conclúidos
