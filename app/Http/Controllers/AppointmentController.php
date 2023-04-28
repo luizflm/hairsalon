@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Appointment;
 use App\Models\Hairdresser;
 use App\Models\HairdresserAvailability;
@@ -15,24 +14,36 @@ use Illuminate\Support\Facades\Auth;
 class AppointmentController extends Controller
 {
     public function getMyAppointments() {
-        $idUser = Auth::user()->id;
+        $idUser = Auth::user()->id; // pegando o id do usuário logado
 
-        $appointments = Appointment::where('user_id', $idUser)
+        // pegando os agendamentos não concluídos com o id do usuário logado
+        $appointments = Appointment::where('user_id', $idUser) 
         ->where('was_done', '0')
         ->get();
-        foreach($appointments as $appointment) {
+ 
+        // criando array onde ficarão os appointments 
+        $data = [];
+        foreach($appointments as $appointment) { // pra cada agendamento
+            // encontrar o hairdresser responsável
             $hairdresser = Hairdresser::find($appointment->hairdresser_id);
-            $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
+            // $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
 
+            // encontrar o serviço do agendamento
             $service = HairdresserService::find($appointment->hairdresser_service_id);
 
+            // transformar a string de ap_datetime em um array separado pelo " " (espaço)
             $formatedApDatetime = explode(' ', $appointment->ap_datetime);
+            // atribuir o primeiro valor do array à $apDate ex: (2023-04-28)
             $apDate = $formatedApDatetime[0];
+            // separar a string em um array pelo "-" (traço)
             $apDate = explode('-', $apDate);
+            // formatar a string com o novo formato (20/04/2023)
             $formatedApDate = $apDate[2].'/'.$apDate[1].'/'.$apDate[0];
 
+            // atribuir o horário do agendamento à $apTime ex(09:00:00)
             $apTime = $formatedApDatetime[1];
 
+            // criar o modelo de $appointment
             $appointment = [
                 'id' => $appointment->id,
                 'hairdresser' => $hairdresser,
@@ -41,10 +52,17 @@ class AppointmentController extends Controller
                 'time' => $apTime,
             ];
 
-            $data['appointments'][] = $appointment;
+            // inserir o appointment no array $data a cada iteração
+            $data[] = $appointment;
         }
-
-        return view('user_appointments', $data);
+        if(count($data) != 0) { // se tem pelo menos um appointment em $data
+            // renderiza a view
+            return view('user_appointments', [
+                'appointments' => $data,
+            ]);
+        }
+        // se algo der errado, volta para a página anterior
+        return redirect()->back();
     }
     
     public function setAppointmentView() {
