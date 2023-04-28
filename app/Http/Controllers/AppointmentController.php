@@ -271,88 +271,109 @@ class AppointmentController extends Controller
         if($validator) {
             $apDay = $request->ap_day;
             $apTime = $request->ap_time;
+            // cria uma string com a data/horario do appoitment ex(2023-04-28 09:00)
             $apDatetime = $apDay.' '.$apTime;
             $hairdresserId = $request->hairdresser_id;
             $serviceId = $request->service_id;
-            $userId = Auth::user()->id;
+            $userId = Auth::user()->id; // pegando o id do usuário logado
 
+            // pegando o appointment com o id do usuário logado e o id do appointment que será editado
             $appointment = Appointment::where('user_id', $userId)
             ->where('id', $id)
             ->first();
-            if($appointment) {
+            if($appointment) { // verificando se o appointment foi encontrado
+                // se sim, verifica se o hairdresser existe
                 $hdExists = Hairdresser::find($hairdresserId);
-                if($hdExists) { // cabelereiro(a) existe
+                if($hdExists) {
+                    // se existe, verifica se o cabelereiro faz o serviço desejado
                     $hdService = HairdresserService::where('hairdresser_id', $hairdresserId)
                     ->where('id', $serviceId)
                     ->first();
-                    if($hdService) { // cabelereiro(a) faz o serviço?
+                    if($hdService) {
+                        // se faz, pega a data atual ex(2023-04-28 09:00:00)
                         $now = date('Y-m-d H:i');
+                        // cria um objeto carbon com o $apDatetime
                         $apDate = Carbon::createFromFormat('Y-m-d H:i', $apDatetime);
+                        // verifica se o horário marcado é para o futuro
                         $isDateFuture = $apDate->greaterThan($now);
-                        if($isDateFuture) { // usuário está marcando horário no futuro ou passado?
+                        if($isDateFuture) {
+                            // se sim, verifica se já existe algum appointment marcado com o hairdresser na data/horário desejado
                             $hasAppointments = Appointment::where('ap_datetime', $apDatetime)
                             ->where('hairdresser_id', $hairdresserId)
                             ->first();
+                            // se não tem ou se foi encontrado um appointment na condição da query, mas esse appointment é o mesmo que está sendo editado
                             if(!$hasAppointments || $hasAppointments->id == $appointment->id) { // há um agendamento no horário/dia desejado?
+                                // transforma a string de $apDatetime em um array
                                 $formatedDate = explode(' ', $apDatetime);
+                                // pega a key do dia da semana referente a data desejada para o appointment
                                 $ap_weekday = date('w', strtotime($formatedDate[0]));
-
+                                // pega todas as disponibilidades do hairdresser desejado
                                 $hdAvailability = HairdresserAvailability::where('hairdresser_id', $hairdresserId)
                                 ->get();
+                                // cria um array onde ficarão as keys dos dias da semana que o hairdresser trabalha
                                 $hdWeekdays = [];
                                 foreach($hdAvailability as $hdAvail) {
+                                    // atribui cada key para um indice no array
                                     $hdWeekdays[] = $hdAvail->weekday;
                                 }
-                                if(in_array($ap_weekday, $hdWeekdays)) { // cabelereiro(a) trabalha no dia desejado?
+                                // verifica se o dia desejado para o appointment está nos dias de trabalho do hairdresser
+                                if(in_array($ap_weekday, $hdWeekdays)) {
+                                    // se sim, pega os horários que o hairdresser trabalha
                                     $isTimeAvail = HairdresserAvailability::select(['hours'])
                                     ->where('hairdresser_id', $hairdresserId)
                                     ->where('weekday', $ap_weekday)
                                     ->first();
+                                    // atribui essa string à uma variável
                                     $availTimes = $isTimeAvail->hours;
 
+                                    // "quebra" essa string em um array, separando por " " (espaço)
                                     $hdTimes = explode(', ', $availTimes);
-                                    array_pop($hdTimes); // removendo ultimo horário para que o ultimo horário seja ex: 15:00 - 16:00
+                                    // remove o ultimo horário para que o ultimo horário seja ex: 15:00 - 16:00
+                                    array_pop($hdTimes);
+                                    // verifica se o horário desejado está no horário de trabalho do hairdresser
                                     if(in_array($formatedDate[1], $hdTimes)) {      
-                                        $apDatetime .= ':00';            
+                                        // se sim, formata a string $apDatetime para ficar ex: (2023-04-28 09:00:00)
+                                        $apDatetime .= ':00';          
+                                        // atualiza o appointment  
                                         $appointment->update([
                                             'hairdresser_id' => $hairdresserId,
                                             'user_id' => $userId,
                                             'hairdresser_service_id' => $serviceId,
                                             'ap_datetime' => $apDatetime,
                                         ]);
-
+                                        // após os processamentos, redireciona para a home
                                         return redirect()->route('home');
-                                    } else {
+                                    } else { // os erros são auto-explicativos de acordo com as mensagens
                                         return back()->withErrors([
                                             'ap_day' => 'O(a) cabelereiro(a) não trabalha no horário desejado.',
                                         ]);
                                     }
-                                } else {
+                                } else { // os erros são auto-explicativos de acordo com as mensagens
                                     return back()->withErrors([
                                         'ap_day' => 'O(a) cabelereiro(a) não trabalha no dia desejado.',
                                     ]);
                                 }
-                            } else {
+                            } else { // os erros são auto-explicativos de acordo com as mensagens
                                 return back()->withErrors([
                                     'ap_day' => 'Já há um agendamento para este dia/hora, tente em outro dia/horário.',
                                 ]);
                             }
-                        } else {
+                        } else { // os erros são auto-explicativos de acordo com as mensagens
                             return back()->withErrors([
                                 'ap_day' => 'Data e/ou hora inválida.',
                             ]);
                         }
-                    } else {
+                    } else { // os erros são auto-explicativos de acordo com as mensagens
                         return back()->withErrors([
                             'ap_day' => 'O(a) cabelereiro não faz o serviço solicitado.',
                         ]);
                     }
-                } else {
+                } else { // os erros são auto-explicativos de acordo com as mensagens
                     return back()->withErrors([
                         'ap_day' => 'O(a) cabelereiro(a) não foi encontrado.',
                     ]);
                 }
-            } else {
+            } else { // os erros são auto-explicativos de acordo com as mensagens
                 return redirect()->route('home');
             }
         }  
