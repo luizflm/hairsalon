@@ -80,13 +80,14 @@ class UserController extends Controller
     }
 
     public function delete($id) {
-        $loggedUser = Auth::user();
-        $user = User::find($id);
+        $loggedUser = Auth::user(); // pegando o usuário logado
+        $user = User::find($id); // pegando o usuário a ser deletado
 
-        if($id == $loggedUser->id) {
+        if($user['id'] == $loggedUser->id) { // se o usuário a ser deletado for o usuário logado
+            // deleta o usuário
             $user->delete();
         }
-        
+        // se deletar ou não o usuário, redireciona para a home
         return redirect()->route('home');
     }
 }
