@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Hairdresser;
 use App\Models\HairdresserAvailability;
-use Illuminate\Http\Request;
 
 class AvailabilityController extends Controller
 {
@@ -14,6 +13,7 @@ class AvailabilityController extends Controller
             // pegando as disponibilidades do hairdresser
             $hairdresserAvailability = HairdresserAvailability::where('hairdresser_id', $id)->get();
 
+            // array com os dias da semana
             $weekdays = [
                 'Domingo',
                 'Segunda-Feira',
@@ -23,8 +23,6 @@ class AvailabilityController extends Controller
                 'Sexta-Feira',
                 'Sábado',
             ];
-
-            
 
             // pra cada dia disponivel
             foreach($hairdresserAvailability as $availability) {
@@ -40,13 +38,14 @@ class AvailabilityController extends Controller
                 // pegando o horário final (último item do array)
                 $availability['end_time'] = last($workTimes);
             }
-    
+            
+            // renderizando a view com os dados necessários
             return view('hairdresser_availability', [
                 'hairdresser' => $hairdresser,
                 'availabilities' => $hairdresserAvailability,
             ]);
         }
-
+        // caso algo dê errado, volta para a página anterior
         return redirect()->back();
     }
 }

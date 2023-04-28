@@ -1,5 +1,5 @@
 <x-admin_layout
-page="Hairsalon - Agendamentos"
+page="Hairsalon - Agendamentos Concluídos"
 increaseBanner="true"
 >
     <div class="container-fluid pt-5">

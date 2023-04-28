@@ -1,5 +1,5 @@
 <x-admin_layout
-page="Hairsalon - Agendamentos"
+page="Hairsalon - Comissão de Funcionários"
 increaseBanner="true"
 >
     <div class="container-fluid pt-5">

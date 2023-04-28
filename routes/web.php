@@ -50,7 +50,7 @@ Route::middleware('admin')->group(function() {
 
     // hd_done_services
     Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); // responsiva
-    Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action');
+    Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action'); //
 
     // availability
     Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability');
