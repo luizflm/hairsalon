@@ -50,9 +50,11 @@ class ServiceController extends Controller
     }
 
     public function insertView() {
-        $hairdressers = Hairdresser::all();
+        $hairdressers = Hairdresser::all(); // pegando todos os hairdressers cadastrados
 
-        return view('insert_service', ['hairdressers' => $hairdressers]);
+        return view('insert_service', [
+            'hairdressers' => $hairdressers 
+        ]);
     }
 
     public function insertAction(Request $request) {
@@ -66,7 +68,7 @@ class ServiceController extends Controller
             $price = $request->price;
 
             $name = $request->name;
-            $name = trim($name," ");
+            $name = trim($name," "); // removendo os espaços desnecessários da string
 
             $hairdresser = Hairdresser::find($hairdresserId);
             // vendo se o hairdresser existe
@@ -75,20 +77,23 @@ class ServiceController extends Controller
                 $hasService = HairdresserService::where('hairdresser_id', $hairdresserId)
                 ->where('name', $name)
                 ->first();
-                if(!$hasService) {
+                if(!$hasService) { // se não tiver, cria o novo registro
                     HairdresserService::create([
                         'hairdresser_id' => $hairdresserId,
                         'name' => $name,
                         'price' => $price
                     ]);
 
-                    return redirect()->back();
+                    return redirect()->back(); // após criar o registro, volta pra página anterior
                 } else {
+                    // caso tenha o hairdresser já tenha aquele serviço cadastrado, retorna para a página
+                    // com os devidos erros.
                     return redirect()->back()->withErrors([
                         'name' => 'O(a) cabelereiro(a) já tem esse serviço cadastrado!',
                     ])->withInput($request->all());
                 }
             } else {
+                // caso o hairdresser não seja encontrado por algum motivo, retorna para a página com os erros
                 return redirect()->back()->withErrors([
                     'name' => 'O(a) cabelereiro(a) não foi encontrado.',
                 ])->withInput($request->all());
