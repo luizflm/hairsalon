@@ -336,27 +336,42 @@ class AppointmentController extends Controller
 
     public function getAllDone(Request $request) {
         $page = $request->page;
+        // pegando todos os agendamentos que estão conclúidos
         $fullAppointments = Appointment::where('was_done', 1)->count();
+        // pegando o número de páginas disponiveis, sendo 4 itens mostrados por página
         $pageCount = ceil($fullAppointments / 4);
-
+    
+        // pegando os agendamentos conclúidos, ordenando de forma decrescente o horário/data de agendamento
         $appointments = Appointment::where('was_done', 1)->orderBy('ap_datetime', 'DESC')->paginate(4);
-        if($appointments->items()) {
-            if($page != 0) {
+        if($appointments->items()) { // verificando se foi encontrado algum item de acordo com a query
+            if($page != 0) { // verificando se a página enviada não é 0
+                // verificando se a página desejada é igual ou menor ao  número de páginas disponíveis
                 if($page <= $pageCount) {
-                    foreach($appointments as $appointment) {
+                    foreach($appointments as $appointment) {  // pra cada agendamento encontrado
+                        // busca o hairdresser responsável
                         $hairdresserName = Hairdresser::where('id', $appointment['hairdresser_id'])->pluck('name');
+                        // busca o serviço do agendamento
                         $serviceName = HairdresserService::where('id', $appointment['hairdresser_service_id'])->pluck('name');
+                        // busca o usuário que fez o agendamento
                         $userName = User::where('id', $appointment['user_id'])->pluck('name');
-
+    
+                        // transforma a string de horário ex: "2023-04-28 09:00:00" em um array divido por espaço
                         $formatedDatetime = explode(' ', $appointment['ap_datetime']);
+                        // "joga" o primeiro item (2022-04-28) para a $apDate
                         $apDate = $formatedDatetime[0];
+                        // separa cada número de data em um array 
                         $apDate = explode('-', $apDate);
+                        // cria a string de data formatada, ex: (2023-04-28) -> (28/04/2023)
                         $formatedApDate = $apDate[2].'/'.$apDate[1].'/'.$apDate[0];
-
+    
+                        // "joga" o segundo item (09:00:00) para a $apTime  
                         $apTime = $formatedDatetime[1];
+                        // separa cada número de hora em um array
                         $apTime = explode(':', $apTime);
+                        // cria a string de horário formatada, ex: (09:00:00) -> (09:00)
                         $formatedApTime = $apTime[0].':'.$apTime[1];
-
+    
+                        // após esses processamentos, cria-se o "modelo" de appointment que será enviado para a view
                         $appointment = [
                             'id' => $appointment['id'],
                             'ap_date' => $formatedApDate,
@@ -365,9 +380,12 @@ class AppointmentController extends Controller
                             'hairdresser' => $hairdresserName[0],
                             'service' => $serviceName[0],
                         ];
-
+    
+                        // adiciona cada um (de acordo com o foreach) em um array
                         $apList[] = $appointment;
                     }
+    
+                    // após os processamentos anteriores, renderiza a view enviando os dados necessários
                     return view('appointments_done', [
                         'appointments' => $apList,
                         'page' => $page,
@@ -376,7 +394,7 @@ class AppointmentController extends Controller
                 }
             }
         }
-
+        // caso alguma verificação dê errado, retorna para a página anterior
         return redirect()->back();
     }
 }
