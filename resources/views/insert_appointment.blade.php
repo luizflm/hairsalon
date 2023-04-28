@@ -3,8 +3,8 @@ page="Hairsalon - Agendamento"
 increaseBanner="true"
 >
 <x-slot:bannerContent>
-    <div class="container-fluid form py-3 py-lg-5">
-        <div class="container d-flex flex-column align-items-center p-4">
+    <div class="container-fluid form p-0 pt-4 py-sm-5 py-lg-5">
+        <div class="container d-flex flex-column align-items-center pb-sm-3 px-sm-3 py-sm-2">
             <x-form.form_title title="Agendamento" />
             <form method="POST" action={{route('set_appointment_action')}} class="mt-2">
                 @csrf
