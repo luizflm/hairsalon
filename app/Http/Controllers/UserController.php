@@ -7,16 +7,18 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
     public function updateView($id) {
-        $loggedUser = Auth::user();
-        $user = User::find($id);
-        if($user && $loggedUser->id == $user->id) {
+        $loggedUser = Auth::user(); // pegando o usuário logado
+        $user = User::find($id); // pegando o usuário que será editado
+        // verificando se foi encontrado um usuário e se o usuário a ser editado é o usuário logado
+        if($user && $loggedUser->id == $user->id) { // se sim
+            // renderiza a view, enviando os dados do usuário a ser editado
             return view('edit_user', ['user' => $user]);
-        } else {
+        } else { // senão
+            // retorna para a home
             return redirect()->route('home');
         }
     }
