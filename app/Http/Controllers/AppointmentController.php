@@ -207,24 +207,58 @@ class AppointmentController extends Controller
     }
 
     public function updateView($id) {
-        $loggedUserId = Auth::user()->id;
+        // pegando todos os hairdressers
+        $hairdressers = Hairdresser::all();
 
-        $appointment = Appointment::find($id);
+        // pegando todos os serviços 
+        $services = HairdresserService::all();
 
+        // horário de funcionamento do salão
+        $times = [
+            '08:00',
+            '09:00',
+            '10:00',
+            '11:00',
+            '12:00',
+            '13:00',
+            '14:00',
+            '15:00',
+            '16:00',
+            '17:00',
+            '18:00',
+        ]; 
+
+        $loggedUserId = Auth::user()->id; // pegando o usuário logado
+
+        $appointment = Appointment::find($id); // achando o appointment com o id desejado
+
+        // verificando se quem quer editar o appointment é o dono do appointment
         if($appointment->user_id == $loggedUserId) {
+            // transformando a string ap_datetime em um array 
             $formatedApDatetime = explode(' ', $appointment->ap_datetime);
+            // atribuindo o primeiro valor do array à apDate ex(2023-04-20)
             $apDate = $formatedApDatetime[0];
 
+            // colocando o valor de $apDate pra day no appointment
             $appointment['day'] = $apDate;
+            // colocando o horário ex(09:00:00) à time no appointment
             $appointment['time'] = $formatedApDatetime[1];
 
+            // pegando o serviço do appointment que deseja-se editar
             $service = HairdresserService::find($appointment->hairdresser_service_id);
+            // atribuindo o nome do serviço à service no appointment
             $appointment['service'] = $service->name;
 
-            return view('edit_appointment', ['appointment' => $appointment]);
+            // após o processamento, renderiza a view com os dados necessários
+            return view('edit_appointment', [
+                'appointment' => $appointment,
+                'times' => $times,
+                'services' => $services,
+                'hairdressers' => $hairdressers,
+            ]);
         }
-
-        return back();
+        // caso algo dê errado, volta para a página anterior
+        return redirect()->back();
     }
 
     public function updateAction($id, Request $request) {
