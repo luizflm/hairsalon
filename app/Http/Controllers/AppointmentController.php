@@ -380,14 +380,17 @@ class AppointmentController extends Controller
     }
 
     public function delete($id) {
+        // pega o appointment com o id desejado para ser deletado
         $appointment = Appointment::find($id);
+        // pega o id do usuário logado
         $loggedUserId = Auth::user()->id;
-
+        // verifica se foi encontrado o appointment e se o usuário que fez o appointment é o usuário logado
         if($appointment && $appointment->user_id == $loggedUserId) {
+            // se sim, deleta o appointment
             $appointment->delete();
         }
-
-        return back();
+        // senão, retorna para a página anterior
+        return redirect()->back();
     }
 
     public function getAllUndone(Request $request) {
