@@ -144,15 +144,28 @@ class HairdresserController extends Controller
         return redirect()->back()->withInput($request->all());
     }
 
-    public function getAll() {
-        $hairdressers = Hairdresser::all();
-        foreach($hairdressers as $hairdresser) {
-            // arrumando o link da imagem
-            $avatar = asset('storage/'.$hairdresser->avatar);
+    public function getAll(Request $request) {
+        $hairdressersCount = Hairdresser::all()->count(); // pegando a quantidade de hairdressers
 
-            $specialties = $hairdresser->specialties;
+        $page = $request->page;
+        // pegando o número de páginas disponiveis, sendo 4 registros mostrados por página
+        $pageCount = ceil($hairdressersCount / 4); 
+
+        // pegando todos os hairdressers ordenados por id de forma crescente (1, 2...);
+        $hairdressers = Hairdresser::orderBy('id', 'ASC')->paginate(4); 
+        if($hairdressers->items()) { // verificando se $hairdressers tem pelo menos algum registro
+            if($page != 0) { // verificando se a página enviada pela url é diferente de 0
+                if($page <= $pageCount) { // verificando se o número da página é menor ou igual ao número de páginas disponiveis
+                    return view('hairdressers', [
+                        'hairdressers' => $hairdressers,
+                        'page' => $page,
+                        'items' => $hairdressersCount
+                    ]);
+                }
+            }
         }
-        return view('hairdressers', ['hairdressers' => $hairdressers]);
+
+        return redirect()->back(); // caso alguma verificação dê errado, volta pra página anterior
     }
 
     public function updateView($id) {
