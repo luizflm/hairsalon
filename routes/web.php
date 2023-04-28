@@ -53,7 +53,7 @@ Route::middleware('admin')->group(function() {
     Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action'); //
 
     // availability
-    Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability');
+    Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability'); // responsiva
 });
 
 Route::middleware('auth')->group(function(){

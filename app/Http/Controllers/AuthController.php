@@ -111,12 +111,12 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        Auth::logout();
+        Auth::logout(); // deslogando o usuário
 
-        $request->session()->invalidate();
+        $request->session()->invalidate(); // invalidando o token de sessão do usuário
 
-        $request->session()->regenerateToken();
+        $request->session()->regenerateToken(); // gerando um token de sessão novo para o usuário
 
-        return redirect()->route('home');
+        return redirect()->route('home'); // redirecionando para a home após todos os processamentos
     }
 }
