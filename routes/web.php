@@ -45,8 +45,8 @@ Route::middleware('admin')->group(function() {
     Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action'); //
 
     // appointments (admin)
-    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); //
-    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done');
+    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); // responsiva
+    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done'); // responsiva
 
     // hd_done_services
     Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission');

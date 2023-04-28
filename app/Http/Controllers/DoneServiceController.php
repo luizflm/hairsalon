@@ -13,54 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DoneServiceController extends Controller
 {
-    public function getDoneServices(Request $request) {
-        $array = ['error' => '', 'list' => []];
-
-        $date = $request->date;
-        $idHairdresser = $request->id_hairdresser;
-
-        $doneServices = HairdresserDoneService::where('id_hairdresser', $idHairdresser)
-        ->where('service_datetime','LIKE', $date.'%')
-        ->get();
-        foreach($doneServices as $doneService) {
-            $hairdresser = Hairdresser::find($idHairdresser);
-            $hairdresser->avatar = asset('storage/'.$hairdresser->avatar);
-
-            $idService = $doneService->id_service;
-            $service = HairdresserService::find($idService);
-
-            $array['list'][] = [
-                'id' => $doneService->id,
-                'hairdresser' => $hairdresser,
-                'service' => $service,
-                'service_datetime' => $doneService->service_datetime,
-            ];
-        }
-
-        return $array;
-    }
-
-    public function getOne($id) {
-        $array = ['error' => ''];
-
-        $doneService = HairdresserDoneService::find($id);
-        if($doneService) {
-            $hairdresser = Hairdresser::find($doneService->id_hairdresser);
-            $service = HairdresserService::find($doneService->id_service);
-
-            $array['data'] = [
-                'id' => $doneService->id,
-                'hairdresser' => $hairdresser,
-                'service' => $service
-            ];
-        } else {
-            $array['error'] = 'Não encontrado.';
-            return $array;
-        }
-
-        return $array;
-    }
-
     public function getComission(Request $request) {
         $page = $request->page;
         $currentDate = date('Y-m');
