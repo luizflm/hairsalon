@@ -11,8 +11,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// tarefa: fazer a verificação se o horário escolhido no appointment é o ULTIMO horário da availability do 
-// hairdresser, caso seja, não permitir naquele horário, permitir apenas até o penultimo
+// ao escolher um hairdresser no select, deve fazer uma requisição e mostrar no select de serviços apenas os serviços do hairdresser
 
 // ao terminar as verificações, popular o banco de dados e verificar se todas as views estão certas
 
@@ -71,4 +70,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment');
     Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action'); 
     Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action');
+
+    // services
+    Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax'])->name('get_hairdresser_all_services_ajax');
 });

@@ -28,27 +28,30 @@ increaseBanner="true"
                 name="ap_time"
                 required="true"
                 >
-                    <option value="09:00">09:00</option>
-                    <option value="10:00">10:00</option>
-                    <option value="11:00">11:00</option>
-                    <option value="13:00">13:00</option>
-                    <option value="14:00">14:00</option>
-                    <option value="15:00">15:00</option>
-                    <option value="16:00">16:00</option>
+                    <option disabled selected>ex: 09:00</option>
+                    @foreach($times as $time)
+                        @if($time != '12:00' && $time != last($times))
+                            <option value="{{$time}}">{{$time}}</option>
+                        @endif
+                    @endforeach
                 </x-form.select>
                 <x-form.select
-                label="Cabelereiro/a"
+                label="Cabelereiro(a)"
                 name="hairdresser_id"
                 required="true"
                 >
-                    <option value="1">Luiz</option>
+                    @foreach($hairdressers as $hairdresser)
+                        <option value="{{$hairdresser['id']}}">{{$hairdresser['name']}}</option>
+                    @endforeach
                 </x-form.select>
                 <x-form.select
                 label="Serviço"
                 name="service_id"
                 required="true"
                 >
-                    <option value="1">Unhas</option>
+                    @foreach($services as $service)
+                        <option value="{{$service['id']}}">{{$service['name']}}</option>
+                    @endforeach
                 </x-form.select>
 
                <x-form.submit_btn btnText="Criar agendamento" />

@@ -66,7 +66,32 @@ class AppointmentController extends Controller
     }
     
     public function setAppointmentView() {
-        return view('insert_appointment');
+        // pegando todos os hairdressers
+        $hairdressers = Hairdresser::all();
+
+        // pegando todos os serviços 
+        $services = HairdresserService::all();
+
+        // horário de funcionamento do salão
+        $times = [
+            '08:00',
+            '09:00',
+            '10:00',
+            '11:00',
+            '12:00',
+            '13:00',
+            '14:00',
+            '15:00',
+            '16:00',
+            '17:00',
+            '18:00',
+        ]; 
+
+        return view('insert_appointment', [
+            'times' => $times,
+            'hairdressers' => $hairdressers,
+            'services' => $services
+        ]);
     }
 
     public function setAppointmentAction(Request $request) {
@@ -77,80 +102,103 @@ class AppointmentController extends Controller
             'service_id' => 'required'
         ]);
         if($validator) {
+            // recebendo dados
             $apDay = $request->ap_day;
             $apTime = $request->ap_time;
+            // criando uma string com a data e o horário do appointment ex: (2023-04-20 09:00)
             $apDatetime = $apDay.' '.$apTime;
+            // recebendo mais dados
             $hairdresserId = $request->hairdresser_id;
             $serviceId = $request->service_id;
+            // pegando o id do usuário logado
             $userId = Auth::user()->id;
+            // pegando o hairdresser com o id do appointment
             $hdExists = Hairdresser::find($hairdresserId);
-            if($hdExists) { // cabelereiro(a) existe
+            if($hdExists) { // verificando se o(a) cabelereiro(a) existe
+                // se sim, pega o serviço desejado com o id do hairdresser e o id do serviço enviado
                 $hdService = HairdresserService::where('hairdresser_id', $hairdresserId)
                 ->where('id', $serviceId)
                 ->first();
-                if($hdService) { // cabelereiro(a) faz o serviço?
+                if($hdService) { // verifica se o cabelereiro(a) faz o serviço?
+                    // se sim, pega a data atual ex: (2023-04-28 09:00:00)
                     $now = date('Y-m-d H:i');
+                    // cria um objeto carbon com o $apDatetime
                     $apDate = Carbon::createFromFormat('Y-m-d H:i', $apDatetime);
+                    // verifica se a data do appointment é no futuro
                     $isDateFuture = $apDate->greaterThan($now);
                     if($isDateFuture) { // usuário está marcando horário no futuro ou passado?
+                        // se é no futuro, verifica se já existe um appointment naquele horário/data com aquele hairdresser
                         $hasAppointments = Appointment::where('ap_datetime', $apDatetime)
                         ->where('hairdresser_id', $hairdresserId)
                         ->count();
-                        if($hasAppointments == 0) { // há um agendamento no horário/dia desejado?
+                        if($hasAppointments == 0) { // se não há um agendamento no horário/dia desejado
+                            // transforma a string de data/horario em um array separados por " " (espaço)
                             $formatedDate = explode(' ', $apDatetime);
+                            // pega a key do dia da semana do appointment a partir da data desejada
                             $ap_weekday = date('w', strtotime($formatedDate[0]));
 
+                            // pega toda a disponibilidade do hairdresser do appointment
                             $hdAvailability = HairdresserAvailability::where('hairdresser_id', $hairdresserId)
                             ->get();
+                            // cria um array onde ficarão os dias de disponibilidade do hairdresser
                             $hdWeekdays = [];
                             foreach($hdAvailability as $hdAvail) {
+                                // atribui cada key de dia da semana em um indice do array
                                 $hdWeekdays[] = $hdAvail->weekday;
                             }
-                            if(in_array($ap_weekday, $hdWeekdays)) { // cabelereiro(a) trabalha no dia desejado?
+                            // verifica se a key do dia do appointment desejado está no array de keys de dias da semana que o hairdresser trabalha
+                            if(in_array($ap_weekday, $hdWeekdays)) { // se sim
+                                // pega os horários que o hairdresser trabalha no dia desejado para o appointment
                                 $isTimeAvail = HairdresserAvailability::select(['hours'])
                                 ->where('hairdresser_id', $hairdresserId)
                                 ->where('weekday', $ap_weekday)
                                 ->first();
+                                // atribui o valor a uma variavel
                                 $availTimes = $isTimeAvail->hours;
 
+                                // transforma a string de horários em um array
                                 $hdTimes = explode(', ', $availTimes);
-                                array_pop($hdTimes); // removendo ultimo horário para que o ultimo horário seja ex: 15:00 - 16:00
+                                // remove o  ultimo horário para que o ultimo horário seja ex: 15:00 - 16:00
+                                array_pop($hdTimes); 
+                                // verifica se o horário desejado está no horário de trabalho do hairdresser
                                 if(in_array($formatedDate[1], $hdTimes)) {      
+                                    // se sim, formata a string de horário ex: (09:00) -> (09:00:00)
                                     $apDatetime .= ':00';            
+                                    // cria o appointment
                                     Appointment::create([
                                         'hairdresser_id' => $hairdresserId,
                                         'user_id' => $userId,
                                         'hairdresser_service_id' => $serviceId,
                                         'ap_datetime' => $apDatetime,
                                     ]);
-
+                                    // após todo o processamento, retorna para a home
                                     return redirect()->route('home');
-                                } else {
+                                } else { // os erros são autoexplicativos de acordo com as mensagens
                                     return back()->withErrors([
                                         'ap_day' => 'O(a) cabelereiro(a) não trabalha no horário desejado.',
                                     ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
                                 }
-                            } else {
+                            } else { // os erros são autoexplicativos de acordo com as mensagens
                                 return back()->withErrors([
                                     'ap_day' => 'O(a) cabelereiro(a) não trabalha no dia desejado.',
-                                   ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
+                                ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
                             }
-                        } else {
+                        } else { // os erros são autoexplicativos de acordo com as mensagens
                             return back()->withErrors([
                                 'ap_day' => 'Já há um agendamento para este dia/hora, tente em outro dia/horário.',
-                               ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
-                        }
-                    } else {
+                            ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
+                        } 
+                    } else { // os erros são autoexplicativos de acordo com as mensagens
                         return back()->withErrors([
                             'ap_day' => 'Data e/ou hora inválida.',
-                           ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
+                        ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
                     }
-                } else {
+                } else { // os erros são autoexplicativos de acordo com as mensagens
                     return back()->withErrors([
                         'ap_day' => 'O(a) cabelereiro não faz o serviço solicitado.',
-                       ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
+                    ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);
                 }
-            } else {
+            } else { // os erros são autoexplicativos de acordo com as mensagens
                return back()->withErrors([
                 'ap_day' => 'O(a) cabelereiro(a) não foi encontrado.',
                ])->onlyInput(['ap_day', 'ap_time', 'hairdresser_id', 'service_id']);

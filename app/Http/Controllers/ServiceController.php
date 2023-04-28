@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    // esta função será utilizada apenas para a requisição ajax da view "insert_appointment"
+    public function getHairdresserAllAjax($id) {
+        // pegando os serviços do hairdresser desejado
+        $services = HairdresserService::where('hairdresser_id', $id)->get();
+        // retornando os serviços
+        return $services;
+    }
+
     public function getHairdresserAll(Request $request) {
         $page = $request->page;
         // pegando todos os serviços existentes
