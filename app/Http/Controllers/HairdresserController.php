@@ -340,89 +340,14 @@ class HairdresserController extends Controller
     }
 
     public function delete($id) {
+        // pegando o hairdresser que será deletado
         $hairdresser = Hairdresser::find($id);
-        if($hairdresser) {
-            $hairdresser->delete();
+        // verificando se ele existe
+        if($hairdresser) { 
+            $hairdresser->delete(); // se sim, deleta
         }
 
-        return redirect()->back();
+        return redirect()->back(); // se funcionar ou não, volta pra página anterior
     }
-
-    // public function getInfo($id) {
-    //     $array = ['error' => ''];
-
-    //     $hairdresser = Hairdresser::find($id);
-    //     if($hairdresser) {
-    //         $avatar = asset('storage/'.$hairdresser->avatar);
-
-    //         $specialties = $hairdresser->specialties;
-    //         $specialties = explode(',', $specialties);
-    //         foreach($specialties as $spKey => $spValue) {
-    //             $specialties[$spKey] = trim($specialties[$spKey]," ");
-    //         }
-           
-    //         $availability = HairdresserAvailability::where('id_hairdresser', $id)->get();
-    //         foreach($availability as $avail) {
-    //             $weekday = $avail->weekday;
-    //             $days = [
-    //                 1 => 'Segunda-Feira',
-    //                 2 => 'Terça-Feira',
-    //                 3 => 'Quarta-Feira',
-    //                 4 => 'Quinta-Feira',
-    //                 5 => 'Sexta-Feira',
-    //                 6 => 'Sábado',
-    //                 7 => 'Domingo'
-    //             ];
-
-    //             $hours = explode(', ', $avail->hours);
-
-    //             $hdAvail[] = [
-    //                 'weekday' => $days[$weekday],
-    //                 'hours' => $hours
-    //             ];
-    //         }
-
-    //         // services
-    //         $services = HairdresserService::where('id_hairdresser', $id)->get();
-    //         $hdServices = [];
-    //         foreach($services as $service) {
-    //             $hdServices[] = [
-    //                 'name' => $service->name,
-    //                 'price' => $service->price,
-    //             ];
-    //         }
-
-    //         // evaluations
-    //         $evaluations = HairdresserEvaluation::where('id_hairdresser', $id)
-    //         ->orderBy('stars', 'DESC')
-    //         ->get();
-    //         $hdEvaluations = [];
-    //         foreach($evaluations as $evaluation) {
-    //             $evaluationOwner = User::find($evaluation->id_user);
-
-    //             $hdEvaluations[] = [
-    //                 'evaluation_owner' => $evaluationOwner,
-    //                 'stars' => $evaluation->stars,
-    //                 'comment' => $evaluation->comment,
-    //             ];
-    //         }
-            
-    //         $array['data'] = [
-    //             'id' => $id,
-    //             'name' => $hairdresser->name,
-    //             'avatar' => $avatar,
-    //             'specialties' => $specialties,
-    //             'availability' => $hdAvail,
-    //             'services' => $hdServices,
-    //             'hd_evaluations' => $hdEvaluations,
-    //         ];
-    //     } else {
-    //         $array['error'] = 'Cabelereiro(a) não encontrado(a).';
-    //         return $array;
-    //     }
-
-    //     return $array;
-    // }
-
     
 }

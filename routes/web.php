@@ -32,7 +32,7 @@ Route::middleware('admin')->group(function() {
     Route::get('/hairdressers', [HairdresserController::class, 'getAll'])->name('hairdressers'); // responsiva
     Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser'); // responsiva
     Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action'); //
-    Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action');
+    Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action'); //
 
     // hd_services
     Route::get('/services', [ServiceController::class, 'getHairdresserAll'])->name('services');
