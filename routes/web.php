@@ -24,8 +24,8 @@ Route::middleware('admin')->group(function() {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); // responsiva
 
     // cabelereiras
-    Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser');
-    Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action');
+    Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser'); // responsiva
+    Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action'); //
     Route::get('/hairdressers', [HairdresserController::class, 'getAll'])->name('hairdressers');
     Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser');
     Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action');
