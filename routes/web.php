@@ -11,10 +11,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// ao escolher um hairdresser no select, deve fazer uma requisição e mostrar no select de serviços apenas os serviços do hairdresser
-
-// ao terminar as verificações, popular o banco de dados e verificar se todas as views estão certas
-
 Route::get('/', [HomeController::class, 'index'])->name('home'); // responsiva
 
 Route::middleware('guest')->group(function() {
@@ -70,4 +66,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment'); //
     Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action'); //
     Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action'); //
+
+    // ajax
+    Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax']); // 
 });

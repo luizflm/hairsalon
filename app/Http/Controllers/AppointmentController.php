@@ -71,6 +71,12 @@ class AppointmentController extends Controller
 
         // pegando todos os serviços 
         $services = HairdresserService::all();
+        foreach($services as $service) {
+            // pegando o preço de cada serviço e trocando o "." pelo "," na string
+            $price = str_replace(".", ",", $service['price']);
+            // trocando o valor do nome do serviço para, ex: (Unhas - R$ 29,99)
+            $service['name'] = $service['name'].' - R$ '.$price;
+        }
 
         // horário de funcionamento do salão
         $times = [
@@ -212,6 +218,13 @@ class AppointmentController extends Controller
 
         // pegando todos os serviços 
         $services = HairdresserService::all();
+        foreach($services as $service) {
+            // pegando o preço de cada serviço e trocando o "." pelo "," na string
+            $price = str_replace(".", ",", $service['price']);
+            // trocando o valor do nome do serviço para, ex: (Unhas - R$ 29,99)
+            $service['name'] = $service['name'].' - R$ '.$price;
+        }
+        
 
         // horário de funcionamento do salão
         $times = [
@@ -246,8 +259,12 @@ class AppointmentController extends Controller
 
             // pegando o serviço do appointment que deseja-se editar
             $service = HairdresserService::find($appointment->hairdresser_service_id);
+            // pegando o preço do serviço e trocando o "." por ","
+            $servicePrice = str_replace('.', ',', $service['price']);
+            // colocando o nome do serviço como, ex: (Unhas - R$ 29,99)
+            $service['name'] = $service['name'].' - R$ '.$servicePrice;
             // atribuindo o nome do serviço à service no appointment
-            $appointment['service'] = $service->name;
+            $appointment['service'] = $service['name'];
 
             // após o processamento, renderiza a view com os dados necessários
             return view('edit_appointment', [

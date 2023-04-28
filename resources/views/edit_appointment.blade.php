@@ -98,4 +98,29 @@ increaseBanner="true"
         }
     </script>
 
+    <script>
+        document.getElementById('hairdresser_id').addEventListener('change', function() {
+            var hairdresserId = this.value;
+
+            fetch('/hairdresser/services/' + hairdresserId)
+                .then(function(response) {
+                return response.json();
+                })
+                .then(function(data) {
+                    var serviceSelect = document.getElementById('service_id');
+
+                    // Limpa as opções existentes
+                    serviceSelect.innerHTML = '';
+
+                    // Adiciona as opções de serviço retornadas
+                    data.forEach(function(service) {
+                        var option = document.createElement('option');
+                        option.value = service.id;
+                        option.text = service.name + ' - R$ ' + service.price;
+                        serviceSelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
+
 </x-layout>
