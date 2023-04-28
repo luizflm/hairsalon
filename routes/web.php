@@ -49,7 +49,7 @@ Route::middleware('admin')->group(function() {
     Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done'); // responsiva
 
     // hd_done_services
-    Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission');
+    Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); // responsiva
     Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action');
 
     // availability

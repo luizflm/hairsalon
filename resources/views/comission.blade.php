@@ -39,12 +39,10 @@ increaseBanner="true"
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center py-2">
                     <li class="page-item">
-                        @if($items > 4)
-                            @if($page == 1)
-                                <a class="page-link" href={{route('comission', ['page' => $page])}}>Anterior</a>
-                            @else
-                                <a class="page-link" href={{route('comission', ['page' => $page - 1])}}>Anterior</a>
-                            @endif
+                        @if($page == 1)
+                            <a class="page-link" href={{route('comission', ['page' => $page])}}>Anterior</a>
+                        @else
+                            <a class="page-link" href={{route('comission', ['page' => $page - 1])}}>Anterior</a>
                         @endif
                     </li>
                     @php
@@ -64,11 +62,9 @@ increaseBanner="true"
                         <li class="page-item"><a class="page-link" href={{route('comission', ['page' => 2])}}>2</a></li>
                         <li class="page-item"><a class="page-link" href={{route('comission', ['page' => 3])}}>3</a></li>
                     @endif
-                    @if($items > 4)
-                        <li class="page-item">
-                            <a class="page-link" href={{route('comission', ['page' => $page + 1])}}>Próxima</a>
-                        </li>
-                    @endif
+                    <li class="page-item">
+                        <a class="page-link" href={{route('comission', ['page' => $page + 1])}}>Próxima</a>
+                    </li>
                 </ul>
             </nav>
         </div>
