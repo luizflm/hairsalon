@@ -78,58 +78,67 @@ class DoneServiceController extends Controller
             $appointmentId = $appointment['id'];
             $hairdresserId = $appointment['hairdresser_id'];
    
+            // buscando appointment com o id do hairdresser e o id do appointment
             $doneAppointment = Appointment::where('id', $appointmentId)
             ->where('hairdresser_id', $hairdresserId)
             ->first();
-            if($doneAppointment) {
-                $wasDone = $doneAppointment['was_done'];
+            if($doneAppointment) { // se o appointment foi encontrado
+                $wasDone = $doneAppointment['was_done']; 
                 // verificando se já foi colocado como concluido antes
-                if($wasDone === 0) {
+                if($wasDone === 0) { // se não
+                    // pega o id do serviço
                     $serviceId = $appointment['hairdresser_service_id'];
 
+                    // pega a data 
                     $apDate = $appointment['ap_date'];
+                    // transforma a string em um array, separando por barras ex(20/04/2023)
                     $formatedApDate = explode('/', $apDate);
+                    // formata o array criando uma string nova (2023-04-20)
                     $formatedApDate = $formatedApDate[2].'-'.$formatedApDate[1].'-'.$formatedApDate[0];
         
+                    // pega o horário
                     $apTime = $appointment['ap_time'];
+                    // concatena com ":00" pra ficar ex: (09:00:00)
                     $formatedApTime = $apTime.":00";
+
+                    // cria uma nova string formatada com a data e o horário, ex: (2023-04-20 09:00:00) 
                     $apDatetime = $formatedApDate.' '.$formatedApTime;
 
                     // verificando se o usuario esta finalizando um agendamento do futuro
                     $carbonApDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $apDatetime);
                     $now = date('Y-m-d H:i:s');
                     $isDateFuture = $carbonApDatetime->greaterThan($now);
-                    if($isDateFuture === false) {
-                        $doneAppointment->update([
+                    if($isDateFuture === false) { // se não
+                        $doneAppointment->update([ // marca o appointment como feito
                             'was_done' => 1,
                         ]);
-
+                        // cria um registro de serviço feito
                         HairdresserDoneService::create([
                             'service_datetime' => $apDatetime,
                             'hairdresser_id' => $hairdresserId,
                             'hairdresser_service_id' => $serviceId,
                         ]);
-
+                        // redireciona para a tela de agendamentos concluídos
                         return redirect()->route('appointments_done', ['page' => 1]);
                     }
                 }
             }
         }
-
+        // caso algo dê erro, retorna para a página anterior
         return back();
     }
 
-    public function delete($id) {
-        $array = ['error' => ''];
+    // public function delete($id) {
+    //     $array = ['error' => ''];
 
-        $doneService = HairdresserDoneService::find($id);
-        if($doneService) {
-            $doneService->delete();
-        } else {
-            $array['error'] = 'Não encontrado.';
-            return $array;
-        }
+    //     $doneService = HairdresserDoneService::find($id);
+    //     if($doneService) {
+    //         $doneService->delete();
+    //     } else {
+    //         $array['error'] = 'Não encontrado.';
+    //         return $array;
+    //     }
 
-        return $array;
-    }
+    //     return $array;
+    // }
 }
