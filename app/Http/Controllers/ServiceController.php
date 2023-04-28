@@ -10,25 +10,30 @@ class ServiceController extends Controller
 {
     public function getHairdresserAll(Request $request) {
         $page = $request->page;
-        $fullServices = HairdresserService::all()->count();
+        // pegando todos os serviços existentes
+        $fullServices = HairdresserService::all()->count(); 
+        // pegando o numero de paginas disponiveis, se forem mostrados 4 registros por página
         $pageCount = ceil($fullServices / 4);
-
+ 
+        // pegando os serviços, ordenandos de forma decrescente por preço, e de forma crescente por id
         $services = HairdresserService::orderBy('price', 'DESC')
         ->orderBy('id', 'ASC')
         ->paginate(4);
-        if($services->items()) {
-            if($page != 0) {
-                if($page <= $pageCount) {
-                    foreach($services as $service) {
+        if($services->items()) { // verificando se tem algum serviço 
+            if($page != 0) { // verificando se a página desejada não é 0
+                // verificando se a página enviada é menor ou igual ao número de páginas disponiveis
+                if($page <= $pageCount) { 
+                    foreach($services as $service) { 
+                        // pra cada serviço, encontrar o hairdresser "dono"
                         $hairdresser = Hairdresser::find($service->hairdresser_id);
-            
+                        // montar o serviço com os dados necessários
                         $service = [
                             'id' => $service->id,
                             'name' => $service->name,
                             'price' => $service->price,
                             'hairdresser' => $hairdresser,
                         ];
-            
+                        // colocar o serviço em um array, que será enviado pra view
                         $servicesList[] = $service;
                     }
         
@@ -41,7 +46,7 @@ class ServiceController extends Controller
             }
         }
 
-        return back();
+        return back(); // caso algo dê errado, retorna pra página anterior
     }
 
     public function insertView() {
