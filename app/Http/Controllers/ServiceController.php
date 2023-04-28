@@ -195,11 +195,13 @@ class ServiceController extends Controller
 
 
     public function delete($id) {
+        // encontrando o serviço com o id desejado
         $service = HairdresserService::find($id);
-        if($service) {
-            $service->delete();
+        if($service) { // caso tenha sido encontrado
+            $service->delete(); // deletar
         }
-        
+
+        // após deletar ou não o serviço, retorna para a página "Ver Todos" 
         return redirect()->route('services', ['page' => 1]);
     }
 }
