@@ -2,8 +2,8 @@
 page="Hairsalon - Editar Cabelereiro(a)"
 increaseBanner="true"
 >
-<div class="container-fluid form py-3 py-lg-5">
-    <div class="container d-flex flex-column align-items-center p-3">
+<div class="container-fluid form p-0 pt-2 py-sm-5 py-lg-5">
+    <div class="container d-flex flex-column align-items-center pb-sm-3 px-sm-3 py-sm-2">
         <x-form.form_title title="Editar Funcionário" />
         <form method="POST" enctype="multipart/form-data" action={{route('edit_hairdresser_action', $hairdresser['id'])}} class="mt-2">
             @csrf
@@ -32,11 +32,26 @@ increaseBanner="true"
             </div>
 
             <label class="form-label">Dias</label>
+
             <div class="btn-group d-flex justify-content-center mb-3" role="group" aria-label="Basic checkbox toggle button group">
-                @for($i=0;$i<3;$i++) {{--$i = 0 --}}
+                @php
+                    $dayKey =  array_search($days[0], $days);
+                    $isWorkDay = in_array($dayKey, $workDays);
+                @endphp
+                
+                <x-form.checkbox
+                name="days[]"
+                id="day0"
+                value="0"
+                label="Domingo"
+                />
+            </div>
+
+            <div class="btn-group d-flex justify-content-center mb-3" role="group" aria-label="Basic checkbox toggle button group">
+                @for($i=1;$i<4;$i++)
                     @php
-                        $dayKey =  array_search($days[$i], $days); // 1
-                        $isWorkDay = in_array($dayKey, $workDays); // 1 ["1", "2", "3", "4", "5"]
+                        $dayKey =  array_search($days[$i], $days);
+                        $isWorkDay = in_array($dayKey, $workDays);
                     @endphp
 
                     @if($isWorkDay)
@@ -59,7 +74,7 @@ increaseBanner="true"
             </div>
 
             <div class="btn-group d-flex justify-content-center mb-3" role="group" aria-label="Basic checkbox toggle button group">
-                @for($i=3;$i<7;$i++)
+                @for($i=4;$i<7;$i++)
                     @php
                         $dayKey =  array_search($days[$i], $days);
                         $isWorkDay = in_array($dayKey, $workDays);

@@ -11,6 +11,9 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// tarefa: fazer a verificação se o horário escolhido no appointment é o ULTIMO horário da availability do 
+// hairdresser, caso seja, não permitir naquele horário, permitir apenas até o penultimo
+
 Route::get('/', [HomeController::class, 'index'])->name('home'); // responsiva
 
 Route::middleware('guest')->group(function() {
@@ -26,9 +29,9 @@ Route::middleware('admin')->group(function() {
     // cabelereiras
     Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser'); // responsiva
     Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action'); //
-    Route::get('/hairdressers', [HairdresserController::class, 'getAll'])->name('hairdressers');
-    Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser');
-    Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action');
+    Route::get('/hairdressers', [HairdresserController::class, 'getAll'])->name('hairdressers'); // responsiva
+    Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser'); // responsiva
+    Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action'); //
     Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action');
 
     // hd_services

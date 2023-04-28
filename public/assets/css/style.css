@@ -272,6 +272,12 @@ ul.spaceleft {
     border-radius: 8px;
 }
 
+@media(max-width:1070px) {
+    #banner.increaseBanner {
+        height: calc(100vh + 250px);
+    }
+}
+
 @media(max-width:991px) {
     .container {
         max-width: 100vw;
@@ -322,10 +328,4 @@ ul.spaceleft {
         padding: 10px 6px !important;
     }
 
-}
-
-@media(max-width: 350px) {
-    #banner.increaseBanner {
-        height: calc(100vh + 250px);
-    }
 }

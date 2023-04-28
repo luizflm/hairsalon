@@ -169,18 +169,25 @@ class HairdresserController extends Controller
     }
 
     public function updateView($id) {
-        $hairdresser = Hairdresser::find($id);
-
+        // pegando o hairdresser de acordo com o id enviado
+        $hairdresser = Hairdresser::find($id); 
+        // pegando os registro de availability do hairdresser
         $hdAvailability = HairdresserAvailability::where('hairdresser_id', $id)->get();
 
-        $workHours = $hdAvailability[0]['hours'];
-        $workHours = explode(', ', $workHours);
+        // para todos os hairdressers, as horas em todos os registros de availability são iguais de acordo
+        // com a escolha quando o hairdresser foi adicionado (horario final e inicial)
+        // logo, para pegar as horas de trabalho, basta buscar em qualquer registro de availability a string
+        // com as horas de trabalho do hairdresser
+        $workHours = $hdAvailability[0]['hours']; // por ex, aqui eu pego do primeiro registro
+        $workHours = explode(', ', $workHours); // transformando a string em um array com cada horário
 
         $workDays = [];
         foreach($hdAvailability as $availability) {
-            $workDays[] = $availability['weekday'];
+            // colocando as keys dos dias de trabalho do hairdresser em um array
+            $workDays[] = $availability['weekday']; 
         }
 
+        // horário de funcionamento do salão
         $times = [
             '08:00',
             '09:00',
@@ -193,16 +200,17 @@ class HairdresserController extends Controller
             '16:00',
             '17:00',
             '18:00',
-        ];
+        ]; 
 
+        // dias da semana
         $days = [
-            '0' => 'Domingo',
-            '1' => 'Segunda',
-            '2' => 'Terça',
-            '3' => 'Quarta',
-            '4' => 'Quinta',
-            '5' => 'Sexta',
-            '6' => 'Sábado',
+            'Domingo',
+            'Segunda',
+            'Terça',
+            'Quarta',
+            'Quinta',
+            'Sexta',
+            'Sábado',
         ];
 
         return view('edit_hairdresser', [
@@ -297,17 +305,13 @@ class HairdresserController extends Controller
                 }
                 // pra tirar o ultimo horario, já que o ultimo agendamento é por ex 15:00 a 16:00
                 // logo, se o hairdresser parar de trabalhar 16, o ultimo horario dele é 15h.
-                array_pop($times);
+                // array_pop($times); comentei essa linha pq eu devo fazer essa verificação no proprio appointmentcontroller
 
                 // criando a string com os horários de trabalho, que será salva no banco de dados
                 $workTime = implode(', ', $times);
 
                 // pegando os dias de trabalhos escolhidos para o hairdresser
                 $days = $request->days;
-
-                // $weekdays = "";
-                // $weekdays = explode(', ', $weekdays); 
-                // $weekdays = array_filter($weekdays); 
 
                 // para cada dia escolhido, criar um registro com a key do dia, string dos horários e o
                 // id do hairdresser
@@ -324,7 +328,8 @@ class HairdresserController extends Controller
                 // antes do hairdresser ser atualizado.
 
                 return redirect()->back(); // após a saída, redirecionar pra rota anterior
-            } else {
+            } else { 
+                // caso a verificação dê horarios dê erro, volta pra view com os devidos erros.
                 return redirect()->back()->withErrors([
                     'name' => 'O horário inicial deve ser antes que o final.',
                 ]);
