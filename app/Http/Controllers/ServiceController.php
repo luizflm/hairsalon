@@ -102,13 +102,14 @@ class ServiceController extends Controller
     }
 
     public function updateView($id) {
-        $service = HairdresserService::find($id);
-        $hairdressers = Hairdresser::all();
+        $service = HairdresserService::find($id); // pegando o serviço a ser editado
+        $hairdressers = Hairdresser::all(); // pegando todos os hairdressers cadastrados
 
-        if($service) {
+        if($service) { // verificando se foi encontrado o serviço com o id desejado
+            // se sim, renderiza a view
             return view('edit_service', ['service' => $service, 'hairdressers' => $hairdressers]);
         }
-
+        // senão, volta para a página anterior
         return redirect()->back();
     }
 
@@ -123,6 +124,7 @@ class ServiceController extends Controller
             $price = $request->price;
 
             $name = $request->name;
+            // removendo os espaços desnecessários da string
             $name = trim($name," ");
 
             $hairdresser = Hairdresser::find($hairdresserId);
@@ -145,13 +147,15 @@ class ServiceController extends Controller
                             $hdServiceNameExists = HairdresserService::where('name', $name)
                             ->where('hairdresser_id', $hairdresserId)
                             ->first();
-                            if(!$hdServiceNameExists) {
+                            if(!$hdServiceNameExists) { // não tem serviço com o nome enviado
+                                // realiza o update
                                 $service->update([
                                     'hairdresser_id' => $hairdresserId,
                                     'name' => $name,
                                     'price' => $price,
                                 ]);
                             } else {
+                                // caso tenha serviço com o nome enviado, voltar para a página anterior com os erros
                                 return redirect()->back()->withErrors([
                                     'name' => 'O(a) cabelereiro(a) já tem esse serviço.'
                                 ])->withInput($request->input());
@@ -162,31 +166,31 @@ class ServiceController extends Controller
                         $hdServiceExists = HairdresserService::where('name', $name)
                         ->where('hairdresser_id', $hairdresserId)
                         ->first();
-                        if(!$hdServiceExists) {
+                        if(!$hdServiceExists) { // caso não tenha, atualizar o serviço
                             $service->update([
                                 'hairdresser_id' => $hairdresserId,
                                 'name' => $name,
                                 'price' => $price,
                             ]);
-                        } else {
+                        } else { // caso tenha, voltar para a página anterior com os erros
                             return redirect()->back()->withErrors([
                                 'name' => 'O(a) cabelereiro(a) já tem esse serviço.'
                             ])->withInput($request->input());
                         }
                     }
-                } else {
+                } else { // caso o serviço do hairdresser não tenha sido encontrado
                     return redirect()->back()->withErrors([
                         'name' => 'O serviço não foi encontrado.'
                     ])->withInput($request->input());
                 }
-            } else {
+            } else { // caso o hairdresser não tenha sido encontrado
                 return redirect()->back()->withErrors([
                     'name' => 'O(a) cabelereiro(a) não foi encontrado.'
                 ])->withInput($request->input());
             }
         }
-
-        return redirect()->back()->withInput($request->input());
+        // caso o validator ou algo mais tenha dado erro, volta para a página anterior com os erros
+        return redirect()->back()->withInput($request->input()); 
     }
 
 

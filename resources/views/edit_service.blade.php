@@ -1,8 +1,8 @@
 <x-admin_layout
 page="Hairsalon - Editar Serviço"
 >
-<div class="container-fluid form py-3 py-lg-5">
-    <div class="container d-flex flex-column align-items-center p-3">
+<div class="container-fluid form p-0 pt-2 py-sm-5 py-lg-5">
+    <div class="container d-flex flex-column align-items-center pb-sm-3 px-sm-3 py-sm-2">
         <x-form.form_title title="Editar Serviço" />
         <form method="POST" action={{route('edit_service_action', $service['id'])}} class="mt-2">
             @csrf
