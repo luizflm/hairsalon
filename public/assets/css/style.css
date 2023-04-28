@@ -227,6 +227,10 @@ header {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
+#banner .container.d-flex form {
+    width: 80%;
+}
+
 #banner form textarea {
     color: #000 !important;
 }
