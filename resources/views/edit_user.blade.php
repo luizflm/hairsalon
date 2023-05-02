@@ -59,7 +59,7 @@ increaseBanner="true"
                 <x-form.submit_btn btnText="Aplicar alterações" />                
             </form>
 
-            <form method="POST" action={{route('delete_user_action', $user['id'])}}>
+            <form method="POST" action={{route('delete_user_action', $user['id'])}} class="d-flex justify-content-center">
                 @csrf
                 @method('DELETE')
                 
