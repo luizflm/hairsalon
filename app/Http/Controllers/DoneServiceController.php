@@ -127,18 +127,4 @@ class DoneServiceController extends Controller
         // caso algo dê erro, retorna para a página anterior
         return back();
     }
-
-    // public function delete($id) {
-    //     $array = ['error' => ''];
-
-    //     $doneService = HairdresserDoneService::find($id);
-    //     if($doneService) {
-    //         $doneService->delete();
-    //     } else {
-    //         $array['error'] = 'Não encontrado.';
-    //         return $array;
-    //     }
-
-    //     return $array;
-    // }
 }
