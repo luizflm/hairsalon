@@ -208,6 +208,10 @@ header {
     margin-bottom: 0px !important;
 }
 
+.alert ul li {
+    text-align: center;
+}
+
 .btn-delete {
     background-color: #FF0000 !important;
     color: var(--white-color-text) !important;
