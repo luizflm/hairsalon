@@ -16,22 +16,22 @@ Neste sistema é possível: (Como cliente)
 
 Neste sistema é possivel: (Como administrador)
 - FUNCIONÁRIOS:
-- Cadastrar funcionários;
-- Alterar e excluir um usuário;
-- Ver todos os funcionários;
-- Ver disponibilidade de cada funcionário;
+- - Cadastrar funcionários;
+- - Alterar e excluir um usuário;
+- - Ver todos os funcionários;
+- - Ver disponibilidade de cada funcionário;
 - SERVIÇOS DE FUNCIONÁRIOS:
-- Criar serviços para um funcionário;
-- Alterar e excluir serviços de um funcionário;
-- Ver todos os serviços registrados no sistema;
+- - Criar serviços para um funcionário;
+- - Alterar e excluir serviços de um funcionário;
+- - Ver todos os serviços registrados no sistema;
 - COMISSÃO:
-- Ver comissão dos funcionários em um período escolhido (mês/ano);
-- AGENDAMENTOS:
-- Ver os agendamentos do sistema que não foram finalizados;
-- Alterar ou excluir agendamentos não finalizados;
-- Finalizar um agendamento;
-- Ver os agendamentos do sistema que foram finalizados;
-- Deletar agendamentos finalizados;
+- - Ver comissão dos funcionários em um período escolhido (mês/ano);
+- - AGENDAMENTOS:
+- - Ver os agendamentos do sistema que não foram finalizados;
+- - Alterar ou excluir agendamentos não finalizados;
+- - Finalizar um agendamento;
+- - Ver os agendamentos do sistema que foram finalizados;
+- - Deletar agendamentos finalizados;
 
 ***
 <br>
