@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class DoneServiceController extends Controller
 {
     public function getComission(Request $request) {
-        $page = $request->page;
+        $page = $request->page ?? 1;
         $currentDate = date('Y-m'); // pegando o ano e mês do dia atual
         // verificando: se foi enviado alguma data pela url, usa a data da url, senão, usa a data atual
         $date = $request->date ?? $currentDate;
