@@ -31,7 +31,7 @@ increaseBanner="true"
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <a href={{route('edit_service', $service['id'])}} class="btn btn-edit me-4">Editar</a>
-                                        <form method="POST" action={{route('delete_service_action', $service['id'])}}>
+                                        <form method="POST" action={{route('services.destroy', $service['id'])}}>
                                             @csrf
                                             @method('DELETE')
                                             
@@ -51,9 +51,9 @@ increaseBanner="true"
                 <ul class="pagination justify-content-center py-2">
                   <li class="page-item">
                     @if($page == 1)
-                        <a class="page-link" href={{route('services', ['page' => $page])}}>Anterior</a>
+                        <a class="page-link" href={{route('services.index', ['page' => $page])}}>Anterior</a>
                     @else
-                        <a class="page-link" href={{route('services', ['page' => $page - 1])}}>Anterior</a>
+                        <a class="page-link" href={{route('services.index', ['page' => $page - 1])}}>Anterior</a>
                     @endif
                   </li>
                   @php
@@ -62,19 +62,19 @@ increaseBanner="true"
                   @endphp
                   @if($items < 12)
                     @while($pageLoop <= $items)
-                        <li class="page-item"><a class="page-link" href={{route('services', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('services.index', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
                         @php
                             $pageValue++;
                             $pageLoop = $pageLoop + 4;
                         @endphp
                     @endwhile
                     @else
-                        <li class="page-item"><a class="page-link" href={{route('services', ['page' => 1])}}>1</a></li>
-                        <li class="page-item"><a class="page-link" href={{route('services', ['page' => 2])}}>2</a></li>
-                        <li class="page-item"><a class="page-link" href={{route('services', ['page' => 3])}}>3</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('services.index', ['page' => 1])}}>1</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('services.index', ['page' => 2])}}>2</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('services.index', ['page' => 3])}}>3</a></li>
                     @endif
                     <li class="page-item">
-                        <a class="page-link" href={{route('services', ['page' => $page + 1])}}>Próxima</a>
+                        <a class="page-link" href={{route('services.index', ['page' => $page + 1])}}>Próxima</a>
                     </li>
                 </ul>
             </nav>

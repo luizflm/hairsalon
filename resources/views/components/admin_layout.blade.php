@@ -52,8 +52,8 @@
                             <li>
                                 <a class="dropdown-item" href="#">Serviços &raquo; </a>
                                 <ul class="dropdown-menu dropdown-submenu dropdown-submenu-left">
-                                    <li><a class="dropdown-item" href={{route('insert_service')}}>Adicionar serviço</a></li>
-                                    <li><a class="dropdown-item" href={{route('services', ['page' => 1])}}>Ver todos</a></li>
+                                    <li><a class="dropdown-item" href={{route('services.create')}}>Adicionar serviço</a></li>
+                                    <li><a class="dropdown-item" href={{route('services.index', ['page' => 1])}}>Ver todos</a></li>
                                 </ul>
                             </li>
                              <li><a class="dropdown-item" href={{route('comission', ['page' => 1])}}>Comissão</a></li>

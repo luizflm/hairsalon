@@ -25,13 +25,7 @@ Route::middleware('admin')->group(function() {
 
     Route::resource('hairdressers', HairdresserController::class)->except(['show']);   
 
-    // hd_services
-    Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service'); 
-    Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action');
-    Route::get('/services', [ServiceController::class, 'getHairdresserAll'])->name('services'); 
-    Route::get('/service/edit/{id}', [ServiceController::class, 'updateView'])->name('edit_service'); 
-    Route::put('/service/edit/{id}', [ServiceController::class, 'updateAction'])->name('edit_service_action');
-    Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action');
+    Route::resource('services', ServiceController::class)->except(['show']);
 
     // appointments (admin)
     Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); 
