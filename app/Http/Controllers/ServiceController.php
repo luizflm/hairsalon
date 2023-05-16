@@ -190,6 +190,6 @@ class ServiceController extends Controller
             $service->delete();
         }
 
-        return redirect()->route('services', ['page' => 1]);
+        return redirect()->route('services.index', ['page' => 1]);
     }
 }
