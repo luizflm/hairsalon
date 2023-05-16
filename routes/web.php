@@ -23,9 +23,8 @@ Route::middleware('guest')->group(function() {
 Route::middleware('admin')->group(function() {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); 
 
-
     Route::resource('hairdressers', HairdresserController::class)->except(['show']);   
-    
+
     // hd_services
     Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service'); 
     Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action');
