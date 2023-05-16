@@ -30,8 +30,8 @@ increaseBanner="true"
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <a href={{route('hairdresser_availability', $hairdresser['id'])}} class="btn btn-edit me-4">Disponibilidade</a>
-                                        <a href={{route('edit_hairdresser', $hairdresser['id'])}} class="btn btn-edit me-4">Editar</a>
-                                        <form method="POST" action={{route('delete_hairdresser_action', $hairdresser['id'])}}>
+                                        <a href={{route('hairdressers.edit', $hairdresser['id'])}} class="btn btn-edit me-4">Editar</a>
+                                        <form method="POST" action={{route('hairdressers.destroy', $hairdresser['id'])}}>
                                             @csrf
                                             @method('DELETE')
                                             
@@ -52,9 +52,9 @@ increaseBanner="true"
             <ul class="pagination justify-content-center py-2">
               <li class="page-item">
                 @if($page == 1)
-                    <a class="page-link" href={{route('hairdressers', ['page' => $page])}}>Anterior</a>
+                    <a class="page-link" href={{route('hairdressers.index', ['page' => $page])}}>Anterior</a>
                 @else
-                    <a class="page-link" href={{route('hairdressers', ['page' => $page - 1])}}>Anterior</a>
+                    <a class="page-link" href={{route('hairdressers.index', ['page' => $page - 1])}}>Anterior</a>
                 @endif
               </li>
               @php
@@ -63,19 +63,19 @@ increaseBanner="true"
               @endphp
               @if($items < 12)
                 @while($pageLoop <= $items)
-                    <li class="page-item"><a class="page-link" href={{route('hairdressers', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
+                    <li class="page-item"><a class="page-link" href={{route('hairdressers.index', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
                     @php
                         $pageValue++;
                         $pageLoop = $pageLoop + 4;
                     @endphp
                 @endwhile
                 @else
-                    <li class="page-item"><a class="page-link" href={{route('hairdressers', ['page' => 1])}}>1</a></li>
-                    <li class="page-item"><a class="page-link" href={{route('hairdressers', ['page' => 2])}}>2</a></li>
-                    <li class="page-item"><a class="page-link" href={{route('hairdressers', ['page' => 3])}}>3</a></li>
+                <li class="page-item"><a class="page-link" href={{route('hairdressers.index', ['page' => 1])}}>1</a></li>
+                <li class="page-item"><a class="page-link" href={{route('hairdressers.index', ['page' => 2])}}>2</a></li>
+                <li class="page-item"><a class="page-link" href={{route('hairdressers.index', ['page' => 3])}}>3</a></li>
                 @endif
                 <li class="page-item">
-                    <a class="page-link" href={{route('hairdressers', ['page' => $page + 1])}}>Próxima</a>
+                    <a class="page-link" href={{route('hairdressers.index', ['page' => $page + 1])}}>Próxima</a>
                 </li>
             </ul>
         </nav>

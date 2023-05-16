@@ -47,8 +47,8 @@
                             <li><a class="dropdown-item" href={{route('appointments_done', ['page' => 1])}}>Ver concluídos</a></li>
                         </x-nav.item-dropdown>
                         <x-nav.item-dropdown title="Funcionários" class="spaceleft">
-                            <li><a class="dropdown-item" href={{route('insert_hairdresser')}}>Adicionar</a></li>
-                            <li><a class="dropdown-item" href={{route('hairdressers', ['page' => 1])}}>Ver todos</a></li>
+                            <li><a class="dropdown-item" href={{route('hairdressers.create')}}>Adicionar</a></li>
+                            <li><a class="dropdown-item" href={{route('hairdressers.index', ['page' => 1])}}>Ver todos</a></li>
                             <li>
                                 <a class="dropdown-item" href="#">Serviços &raquo; </a>
                                 <ul class="dropdown-menu dropdown-submenu dropdown-submenu-left">

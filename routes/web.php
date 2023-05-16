@@ -11,62 +11,57 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home'); // responsiva
+Route::get('/', [HomeController::class, 'index'])->name('home'); 
 
 Route::middleware('guest')->group(function() {
-    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); // responsiva
-    Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); //
-    Route::get('/login', [AuthController::class, 'loginView'])->name('login'); // responsiva
-    Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action'); //
+    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); 
+    Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); 
+    Route::get('/login', [AuthController::class, 'loginView'])->name('login'); 
+    Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action');
 });
 
 Route::middleware('admin')->group(function() {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); // responsiva
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin_home'); 
 
-    // cabelereiras
-    Route::get('/hairdresser', [HairdresserController::class, 'insertView'])->name('insert_hairdresser'); // responsiva
-    Route::post('/hairdresser', [HairdresserController::class, 'insertAction'])->name('insert_hairdresser_action'); //
-    Route::get('/hairdressers', [HairdresserController::class, 'getAll'])->name('hairdressers'); // responsiva
-    Route::get('/hairdresser/edit/{id}', [HairdresserController::class, 'updateView'])->name('edit_hairdresser'); // responsiva
-    Route::put('/hairdresser/edit/{id}', [HairdresserController::class, 'updateAction'])->name('edit_hairdresser_action'); //
-    Route::delete('/hairdresser/delete/{id}', [HairdresserController::class, 'delete'])->name('delete_hairdresser_action'); //
 
+    Route::resource('hairdressers', HairdresserController::class)->except(['show']);   
+    
     // hd_services
-    Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service'); // responsiva
-    Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action'); //
-    Route::get('/services', [ServiceController::class, 'getHairdresserAll'])->name('services'); // responsiva
-    Route::get('/service/edit/{id}', [ServiceController::class, 'updateView'])->name('edit_service'); // responsiva
-    Route::put('/service/edit/{id}', [ServiceController::class, 'updateAction'])->name('edit_service_action'); //
-    Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action'); //
+    Route::get('/service', [ServiceController::class, 'insertView'])->name('insert_service'); 
+    Route::post('/service', [ServiceController::class, 'insertAction'])->name('insert_service_action');
+    Route::get('/services', [ServiceController::class, 'getHairdresserAll'])->name('services'); 
+    Route::get('/service/edit/{id}', [ServiceController::class, 'updateView'])->name('edit_service'); 
+    Route::put('/service/edit/{id}', [ServiceController::class, 'updateAction'])->name('edit_service_action');
+    Route::delete('/service/delete/{id}', [ServiceController::class, 'delete'])->name('delete_service_action');
 
     // appointments (admin)
-    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); // responsiva
-    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done'); // responsiva
+    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); 
+    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done'); 
 
     // hd_done_services
-    Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); // responsiva
-    Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action'); //
+    Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); 
+    Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action');
 
     // availability
-    Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability'); // responsiva
+    Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability'); 
 });
 
 Route::middleware('auth')->group(function(){
-    Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout'); // 
+    Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
     
     // user
-    Route::get('/user/edit/{id}', [UserController::class, 'updateView'])->name('edit_user'); // responsiva
-    Route::put('/user/edit/{id}', [UserController::class, 'updateAction'])->name('edit_user_action'); // 
-    Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('delete_user_action'); //
+    Route::get('/user/edit/{id}', [UserController::class, 'updateView'])->name('edit_user'); 
+    Route::put('/user/edit/{id}', [UserController::class, 'updateAction'])->name('edit_user_action');
+    Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('delete_user_action');
 
     // appointments
-    Route::get('/appointments', [AppointmentController::class, 'getMyAppointments'])->name('user_appointments'); // responsiva
-    Route::get('/appointment', [AppointmentController::class, 'setAppointmentView'])->name('set_appointment'); // responsiva
-    Route::post('/appointment', [AppointmentController::class, 'setAppointmentAction'])->name('set_appointment_action'); // 
-    Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment'); //
-    Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action'); //
-    Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action'); //
+    Route::get('/appointments', [AppointmentController::class, 'getMyAppointments'])->name('user_appointments'); 
+    Route::get('/appointment', [AppointmentController::class, 'setAppointmentView'])->name('set_appointment'); 
+    Route::post('/appointment', [AppointmentController::class, 'setAppointmentAction'])->name('set_appointment_action');
+    Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment');
+    Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action');
+    Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action');
 
     // ajax
-    Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax']); // 
+    Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax']);
 });

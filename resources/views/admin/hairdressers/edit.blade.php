@@ -5,7 +5,7 @@ increaseBanner="true"
 <div class="container-fluid form p-0 pt-4 py-sm-5 py-lg-5">
     <div class="container d-flex flex-column align-items-center pb-sm-3 px-sm-3 py-sm-2">
         <x-form.form_title title="Editar Funcionário" />
-        <form method="POST" enctype="multipart/form-data" action={{route('edit_hairdresser_action', $hairdresser['id'])}} class="mt-2">
+        <form method="POST" enctype="multipart/form-data" action={{route('hairdressers.update', $hairdresser['id'])}} class="mt-2">
             @csrf
             @method('PUT')
 
