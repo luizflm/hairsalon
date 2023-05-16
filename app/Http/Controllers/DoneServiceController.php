@@ -56,7 +56,7 @@ class DoneServiceController extends Controller
             // verifica se a página enviada é menor ou igual ao número de páginas disponíveis
             if($page <= $pageCount) { 
             // após todo o processamento, renderiza a view com os dados necessários (fora do foreach)
-                return view('comission', [
+                return view('admin.pages.comission', [
                     'page' => $page,
                     'date' => $date,
                     'items' => $servicesCount,

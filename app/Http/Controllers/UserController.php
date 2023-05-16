@@ -16,7 +16,7 @@ class UserController extends Controller
         // verificando se foi encontrado um usuário e se o usuário a ser editado é o usuário logado
         if($user && $loggedUser->id == $user->id) { // se sim
             // renderiza a view, enviando os dados do usuário a ser editado
-            return view('edit_user', ['user' => $user]);
+            return view('auth.edit_user', ['user' => $user]);
         } else { // senão
             // retorna para a home
             return redirect()->route('home');

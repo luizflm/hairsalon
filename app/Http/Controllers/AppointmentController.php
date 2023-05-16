@@ -57,7 +57,7 @@ class AppointmentController extends Controller
         }
         if(count($data) != 0) { // se tem pelo menos um appointment em $data
             // renderiza a view
-            return view('user_appointments', [
+            return view('appointments.user_appointments', [
                 'appointments' => $data,
             ]);
         }
@@ -93,7 +93,7 @@ class AppointmentController extends Controller
             '18:00',
         ]; 
 
-        return view('insert_appointment', [
+        return view('appointments.insert_appointment', [
             'times' => $times,
             'hairdressers' => $hairdressers,
             'services' => $services
@@ -267,7 +267,7 @@ class AppointmentController extends Controller
             $appointment['service'] = $service['name'];
 
             // após o processamento, renderiza a view com os dados necessários
-            return view('edit_appointment', [
+            return view('appointments.edit_appointment', [
                 'appointment' => $appointment,
                 'times' => $times,
                 'services' => $services,
@@ -463,7 +463,7 @@ class AppointmentController extends Controller
                     }
 
                     // após os processamentos anteriores, renderiza a view enviando os dados necessários
-                    return view('appointments', [
+                    return view('admin.appointments.appointments', [
                         'appointments' => $apList,
                         'page' => $page,
                         'items' => $fullAppointments,
@@ -527,7 +527,7 @@ class AppointmentController extends Controller
                     }
     
                     // após os processamentos anteriores, renderiza a view enviando os dados necessários
-                    return view('appointments_done', [
+                    return view('admin.appointments.appointments_done', [
                         'appointments' => $apList,
                         'page' => $page,
                         'items' => $fullAppointments,

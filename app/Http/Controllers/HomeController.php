@@ -23,6 +23,6 @@ class HomeController extends Controller
             $hairdresser['avatar'] = asset('/storage/'.$hairdresser['avatar']);
         }
 
-        return view('home', ['user' => $user, 'hairdressers' => $hairdressers,]);
+        return view('pages.home', ['user' => $user, 'hairdressers' => $hairdressers,]);
     }
 }

@@ -40,7 +40,7 @@ class AvailabilityController extends Controller
             }
             
             // renderizando a view com os dados necessários
-            return view('hairdresser_availability', [
+            return view('admin.availabilities.hairdresser_availability', [
                 'hairdresser' => $hairdresser,
                 'availabilities' => $hairdresserAvailability,
             ]);
