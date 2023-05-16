@@ -30,7 +30,7 @@ increaseBanner="true"
                                 <td>{{$service['hairdresser']['name']}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a href={{route('edit_service', $service['id'])}} class="btn btn-edit me-4">Editar</a>
+                                        <a href={{route('services.edit', $service['id'])}} class="btn btn-edit me-4">Editar</a>
                                         <form method="POST" action={{route('services.destroy', $service['id'])}}>
                                             @csrf
                                             @method('DELETE')
