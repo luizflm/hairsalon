@@ -119,7 +119,7 @@ class DoneServiceController extends Controller
                             'hairdresser_service_id' => $serviceId,
                         ]);
                         // redireciona para a tela de agendamentos concluídos
-                        return redirect()->route('appointments_done', ['page' => 1]);
+                        return redirect()->route('appointments.done', ['page' => 1]);
                     }
                 }
             }

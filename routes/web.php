@@ -28,8 +28,8 @@ Route::middleware('admin')->group(function() {
     Route::resource('services', ServiceController::class)->except(['show']);
 
     // appointments (admin)
-    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments'); 
-    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments_done'); 
+    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments.undone'); 
+    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments.done'); 
 
     // hd_done_services
     Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); 
@@ -48,14 +48,6 @@ Route::middleware('auth')->group(function(){
     Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('delete_user_action');
 
     Route::resource('appointments', AppointmentController::class)->except(['show']);
-
-    // appointments
-    // Route::get('/appointments', [AppointmentController::class, 'getMyAppointments'])->name('user_appointments'); 
-    // Route::get('/appointment', [AppointmentController::class, 'setAppointmentView'])->name('set_appointment'); 
-    // Route::post('/appointment', [AppointmentController::class, 'setAppointmentAction'])->name('set_appointment_action');
-    // Route::get('/appointment/edit/{id}', [AppointmentController::class, 'updateView'])->name('edit_appointment');
-    // Route::put('/appointment/edit/{id}', [AppointmentController::class, 'updateAction'])->name('edit_appointment_action');
-    // Route::delete('/appointment/delete/{id}', [AppointmentController::class, 'delete'])->name('delete_appointment_action');
 
     // ajax
     Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax']);

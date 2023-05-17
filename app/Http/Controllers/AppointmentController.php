@@ -43,7 +43,7 @@ class AppointmentController extends Controller
         }
 
         if(count($data) != 0) {
-            return view('appointments.user_appointments', [
+            return view('appointments.index', [
                 'appointments' => $data,
             ]);
         }
@@ -75,7 +75,7 @@ class AppointmentController extends Controller
             '18:00',
         ]; 
 
-        return view('appointments.insert_appointment', [
+        return view('appointments.create', [
             'times' => $times,
             'hairdressers' => $hairdressers,
             'services' => $services
@@ -216,7 +216,7 @@ class AppointmentController extends Controller
             $service['name'] = $service['name'].' - R$ '.$servicePrice;
             $appointment['service'] = $service['name'];
 
-            return view('appointments.edit_appointment', [
+            return view('appointments.edit', [
                 'appointment' => $appointment,
                 'times' => $times,
                 'services' => $services,
@@ -371,7 +371,7 @@ class AppointmentController extends Controller
                         $apList[] = $appointment;
                     }
 
-                    return view('admin.appointments.appointments', [
+                    return view('admin.appointments.undone', [
                         'appointments' => $apList,
                         'page' => $page,
                         'items' => $fullAppointments,
@@ -419,7 +419,7 @@ class AppointmentController extends Controller
                         $apList[] = $appointment;
                     }
     
-                    return view('admin.appointments.appointments_done', [
+                    return view('admin.appointments.done', [
                         'appointments' => $apList,
                         'page' => $page,
                         'items' => $fullAppointments,
