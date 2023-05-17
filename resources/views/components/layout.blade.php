@@ -56,9 +56,9 @@
                         @endif
                         <x-nav.item-dropdown title="Agendamentos">
                             @auth
-                                <li><a class="dropdown-item" href={{route('user_appointments')}}>Meus agendamentos</a></li>
+                                <li><a class="dropdown-item" href={{route('appointments.index')}}>Meus agendamentos</a></li>
                             @endauth
-                            <li><a class="dropdown-item" href={{route('set_appointment')}}>Fazer agendamento</a></li>
+                            <li><a class="dropdown-item" href={{route('appointments.create')}}>Fazer agendamento</a></li>
                         </x-nav.item-dropdown>
                         <li class="nav-item"><a href="{{route('home')}}" class="nav-link">Home</a></li>
                     </ul>
