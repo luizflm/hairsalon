@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index() {    
+    public function index() 
+    {    
         $user = Auth::user();
 
         $hairdressers = Hairdresser::all();

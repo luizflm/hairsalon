@@ -32,7 +32,6 @@ Route::middleware('admin')->group(function() {
 
     Route::resource('comissions', DoneServiceController::class)->only(['index', 'store']);
 
-    // availability
     Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability'); 
 });
 
@@ -43,6 +42,5 @@ Route::middleware('auth')->group(function(){
 
     Route::resource('appointments', AppointmentController::class)->except(['show']);
 
-    // ajax
     Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax']);
 });

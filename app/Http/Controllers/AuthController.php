@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function insertAction(Request $request) {
+    public function insertAction(Request $request) 
+    {
         $cpf_regex = '/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/';
 
         $validator = $request->validate([
@@ -74,7 +75,8 @@ class AuthController extends Controller
         }
     }
 
-    public function loginAction(Request $request) {
+    public function loginAction(Request $request) 
+    {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -90,7 +92,8 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request) 
+    {
         Auth::logout();
 
         $request->session()->invalidate();

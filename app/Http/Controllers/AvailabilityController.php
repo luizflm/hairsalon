@@ -7,7 +7,8 @@ use App\Models\HairdresserAvailability;
 
 class AvailabilityController extends Controller
 {
-    public function getHairdresserAvailability($id) {
+    public function getHairdresserAvailability($id) 
+    {
         $hairdresser = Hairdresser::find($id); // pegando o hairdresser
         if($hairdresser) { // verificando se existe/foi encontrado
             // pegando as disponibilidades do hairdresser
