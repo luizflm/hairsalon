@@ -27,7 +27,6 @@ Route::middleware('admin')->group(function() {
 
     Route::resource('services', ServiceController::class)->except(['show']);
 
-    // appointments (admin)
     Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments.undone'); 
     Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments.done'); 
 
@@ -42,10 +41,7 @@ Route::middleware('admin')->group(function() {
 Route::middleware('auth')->group(function(){
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
     
-    // user
-    Route::get('/user/edit/{id}', [UserController::class, 'updateView'])->name('edit_user'); 
-    Route::put('/user/edit/{id}', [UserController::class, 'updateAction'])->name('edit_user_action');
-    Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('delete_user_action');
+    Route::resource('users', UserController::class)->only(['edit', 'update', 'destroy']);
 
     Route::resource('appointments', AppointmentController::class)->except(['show']);
 

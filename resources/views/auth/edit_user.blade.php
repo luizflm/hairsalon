@@ -6,7 +6,7 @@ increaseBanner="true"
     <div class="container-fluid form p-0 pt-4 py-sm-5 py-lg-5">
         <div class="container d-flex flex-column align-items-center pb-sm-3 px-sm-3 py-sm-2">
             <x-form.form_title title="Configurações" />
-            <form method="POST" action="{{route('edit_user_action', ['id' => $user['id']])}}" class="mt-2">
+            <form method="POST" action={{route('users.update', $user['id'])}} class="mt-2">
                 @method('PUT')
                 @csrf
 
@@ -59,7 +59,7 @@ increaseBanner="true"
                 <x-form.submit_btn btnText="Aplicar alterações" />                
             </form>
 
-            <form method="POST" action={{route('delete_user_action', $user['id'])}} class="d-flex justify-content-center">
+            <form method="POST" action={{route('users.destroy', $user['id'])}} class="d-flex justify-content-center">
                 @csrf
                 @method('DELETE')
                 
