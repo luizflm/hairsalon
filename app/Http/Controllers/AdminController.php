@@ -8,7 +8,7 @@ class AdminController extends Controller
 {
     public function index() 
     {
-        $user = Auth::user(); // pegando o usuário logado
+        $user = Auth::user();
 
         return view('admin.pages.admin_home', ['user' => $user]);
     }
