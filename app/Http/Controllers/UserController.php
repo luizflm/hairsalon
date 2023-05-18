@@ -15,7 +15,7 @@ class UserController extends Controller
         $loggedUser = Auth::user();
         $user = User::find($id);
         if($user && $loggedUser->id == $user->id) { 
-            return view('auth.edit_user', ['user' => $user]);
+            return view('auth.edit', ['user' => $user]);
         } else {
             return redirect()->route('home');
         }
