@@ -25,7 +25,7 @@
                             <span>{{Auth::user()->name}}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href={{route('edit_user', ['id' => Auth::user()->id])}}>Configurações</a></li>
+                            <li><a class="dropdown-item" href={{route('users.edit', Auth::user()->id)}}>Configurações</a></li>
                             <li><a class="dropdown-item" href={{route('logout')}}>Sair</a></li>
                         </ul>
                     </div>
@@ -56,7 +56,7 @@
                                     <li><a class="dropdown-item" href={{route('services.index', ['page' => 1])}}>Ver todos</a></li>
                                 </ul>
                             </li>
-                             <li><a class="dropdown-item" href={{route('comission', ['page' => 1])}}>Comissão</a></li>
+                             <li><a class="dropdown-item" href={{route('comissions.index', ['page' => 1])}}>Comissão</a></li>
                         </x-nav.item-dropdown>
                     </ul>
                 </div>

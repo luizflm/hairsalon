@@ -30,9 +30,7 @@ Route::middleware('admin')->group(function() {
     Route::get('/appointments/undone', [AppointmentController::class, 'getAllUndone'])->name('appointments.undone'); 
     Route::get('/appointments/done', [AppointmentController::class, 'getAllDone'])->name('appointments.done'); 
 
-    // hd_done_services
-    Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); 
-    Route::post('/done_service', [DoneServiceController::class, 'insertAction'])->name('insert_done_service_action');
+    Route::resource('comissions', DoneServiceController::class)->only(['index', 'store']);
 
     // availability
     Route::get('/hairdresser/availability/{id}', [AvailabilityController::class, 'getHairdresserAvailability'])->name('hairdresser_availability'); 

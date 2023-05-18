@@ -34,7 +34,7 @@ increaseBanner="true"
                                 <td>{{$appointment['user']}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <form method="POST" action={{route('insert_done_service_action',
+                                        <form method="POST" action={{route('comissions.store',
                                         ['appointment' => [
                                             'id' => $appointment['id'],
                                             'ap_date' => $appointment['ap_date'],
