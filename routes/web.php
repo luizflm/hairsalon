@@ -15,9 +15,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('guest')->group(function() {
     Route::view('/register', 'auth.register')->name('register'); 
-    Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); 
+    Route::post('/auth/register', [AuthController::class, 'insertAction'])->name('register_action'); 
     Route::view('/login', 'auth.login')->name('login'); 
-    Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action');
+    Route::post('/auth/login', [AuthController::class, 'loginAction'])->name('login_action');
 });
 
 Route::middleware('admin')->group(function() {
@@ -42,5 +42,5 @@ Route::middleware('auth')->group(function(){
 
     Route::resource('appointments', AppointmentController::class)->except(['show']);
 
-    Route::get('/hairdresser/services/{id}', [ServiceController::class, 'getHairdresserAllAjax']);
+    Route::get('/hairdresser/{id}/services', [ServiceController::class, 'getHairdresserAllAjax']);
 });
