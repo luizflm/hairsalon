@@ -27,8 +27,8 @@ Route::middleware('admin')->group(function() {
 
     Route::resource('services', ServiceController::class)->except(['show']);
 
-    Route::get('/appointments/admin', [AppointmentController::class, 'getAllUndone'])->name('appointments.undone'); 
-    Route::get('/appointments/admin/done', [AppointmentController::class, 'getAllDone'])->name('appointments.done'); 
+    Route::get('/appointments/undone', [AppointmentController::class, 'getAllUndone'])->name('appointments.undone'); 
+    Route::get('/appointments/done', [AppointmentController::class, 'getAllDone'])->name('appointments.done'); 
 
     // hd_done_services
     Route::get('/comission', [DoneServiceController::class, 'getComission'])->name('comission'); 
