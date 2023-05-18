@@ -33,7 +33,7 @@ class AvailabilityController extends Controller
                 $availability['end_time'] = last($workTimes);
             }
             
-            return view('admin.availabilities.hairdresser_availability', [
+            return view('admin.availabilities.index', [
                 'hairdresser' => $hairdresser,
                 'availabilities' => $hairdresserAvailability,
             ]);
