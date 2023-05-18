@@ -49,13 +49,13 @@ btnText="Fazer Login"
                         imgName="telefone.png"
                         imgAlt="Telefone"
                         text="+55 21 99999-9999"
-                        mt="mt-4"
+                        class="mt-4"
                         />
                         <x-contact-info
                         imgName="carta.png"
                         imgAlt="Email"
                         text="teste@noreply.com"
-                        mt="mt-4"
+                        class="mt-4"
                         />
                     </div>
                 </div>

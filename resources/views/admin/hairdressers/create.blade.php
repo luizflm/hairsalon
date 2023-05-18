@@ -65,7 +65,7 @@ increaseBanner="true"
             
             <div class="row">
                 <x-form.select
-                col="true"
+                class="col"
                 label="Horário Inicial"
                 name="start_time"
                 required="true"
@@ -76,7 +76,7 @@ increaseBanner="true"
                     @endforeach
                 </x-form.select>
                 <x-form.select
-                col="true"
+                class="col"
                 label="Horário Final"
                 name="end_time"
                 required="true"
