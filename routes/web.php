@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home'); 
 
 Route::middleware('guest')->group(function() {
-    Route::get('/register', [AuthController::class, 'insertView'])->name('register'); 
+    Route::view('/register', 'auth.register')->name('register'); 
     Route::post('register', [AuthController::class, 'insertAction'])->name('register_action'); 
-    Route::get('/login', [AuthController::class, 'loginView'])->name('login'); 
+    Route::view('/login', 'auth.login')->name('login'); 
     Route::post('/login', [AuthController::class, 'loginAction'])->name('login_action');
 });
 
