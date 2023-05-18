@@ -53,7 +53,4 @@ increaseBanner="true"
             </div>
         </div>        
     </x-slot:bannerContent>
-
-
-
 </x-layout>

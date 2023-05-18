@@ -69,7 +69,7 @@ increaseBanner="true"
 
     <script>
         const apTime = document.getElementById('appointment_time').value;
-        const formatedApTime = apTime.substring(0, 5); // ex: 09:00:00 -> 09:00
+        const formatedApTime = apTime.substring(0, 5);
         const apTimeSelect = document.getElementById("ap_time");
         for (let i = 0; i < apTimeSelect.options.length; i++) {
             if(apTimeSelect.options[i].textContent == formatedApTime) {
@@ -109,10 +109,8 @@ increaseBanner="true"
                 .then(function(data) {
                     var serviceSelect = document.getElementById('service_id');
 
-                    // Limpa as opções existentes
                     serviceSelect.innerHTML = '';
 
-                    // Adiciona as opções de serviço retornadas
                     data.forEach(function(service) {
                         var option = document.createElement('option');
                         option.value = service.id;

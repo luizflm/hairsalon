@@ -10,6 +10,6 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        return view('admin.pages.admin_home', ['user' => $user]);
+        return view('admin.pages.home', ['user' => $user]);
     }
 }

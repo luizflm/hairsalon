@@ -95,6 +95,7 @@ increaseBanner="true"
             label="Foto"
             value="{{old('avatar')}}"
             />
+            
             <x-form.submit_btn btnText="Adicionar" />
 
         </form>
