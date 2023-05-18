@@ -60,7 +60,7 @@ increaseBanner="true"
                 <x-form.submit_btn btnText="Fazer registro" />
                 
                 <div class="mb-3 d-flex justify-content-center">
-                    <a href="{{route('login')}}" class="btn">Já tem uma conta? Faça login</a>
+                    <a href={{route('login')}} class="btn">Já tem uma conta? Faça login</a>
                 </div>
             </form>
         </div>
