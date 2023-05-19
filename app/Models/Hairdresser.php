@@ -21,10 +21,6 @@ class Hairdresser extends Model
         return $this->hasMany(HairdresserService::class);
     }
 
-    public function evaluations() {
-        return $this->hasMany(HairdresserEvaluation::class);
-    }
-
     public function doneServices() {
         return $this->hasMany(HairdresserDoneService::class);
     }

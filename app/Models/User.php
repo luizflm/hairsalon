@@ -24,10 +24,6 @@ class User extends Authenticatable
         'password'
     ];
 
-    public function evaluations() {
-        return $this->hasMany(HairdresserEvaluation::class);
-    }
-
     public function appointments() {
         return $this->hasMany(Appointment::class);
     }
