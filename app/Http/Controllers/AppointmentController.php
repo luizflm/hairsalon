@@ -15,7 +15,7 @@ class AppointmentController extends Controller
 {
     public function index()
     {
-        $idUser = Auth::user()->id;
+        $idUser = Auth::id();
 
         $appointments = Appointment::where('user_id', $idUser) 
         ->where('was_done', '0')
@@ -97,7 +97,7 @@ class AppointmentController extends Controller
 
             $hairdresserId = $request->hairdresser_id;
             $serviceId = $request->service_id;
-            $userId = Auth::user()->id;
+            $userId = Auth::id();
 
             $hdExists = Hairdresser::find($hairdresserId);
             if($hdExists) {
@@ -199,7 +199,7 @@ class AppointmentController extends Controller
             '18:00',
         ]; 
 
-        $loggedUserId = Auth::user()->id;
+        $loggedUserId = Auth::id();
 
         $appointment = Appointment::find($id);
 
@@ -241,7 +241,7 @@ class AppointmentController extends Controller
             $apDatetime = $apDay.' '.$apTime;
             $hairdresserId = $request->hairdresser_id;
             $serviceId = $request->service_id;
-            $userId = Auth::user()->id;
+            $userId = Auth::id();
 
             $appointment = Appointment::where('user_id', $userId)
             ->where('id', $id)
@@ -327,7 +327,7 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         $appointment = Appointment::find($id);
-        $loggedUserId = Auth::user()->id;
+        $loggedUserId = Auth::id();
         if($appointment && $appointment->user_id == $loggedUserId) {
             $appointment->delete();
         }
