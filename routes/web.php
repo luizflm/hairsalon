@@ -18,7 +18,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('guest')->group(function() {
     Route::view('/register', 'auth.register')->name('register'); 
-    Route::post('/auth/register', [AuthController::class, 'insertAction'])->name('register_action'); 
+    Route::post('/auth/register', [AuthController::class, 'registerAction'])->name('register_action'); 
     Route::view('/login', 'auth.login')->name('login'); 
     Route::post('/auth/login', [AuthController::class, 'loginAction'])->name('login_action');
 });

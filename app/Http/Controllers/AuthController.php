@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function insertAction(Request $request) 
+    public function registerAction(Request $request) 
     {
         $cpf_regex = '/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/';
 
