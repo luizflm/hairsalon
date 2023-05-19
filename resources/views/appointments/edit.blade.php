@@ -102,7 +102,7 @@ increaseBanner="true"
         document.getElementById('hairdresser_id').addEventListener('change', function() {
             var hairdresserId = this.value;
 
-            fetch('/hairdresser/services/' + hairdresserId)
+            fetch('/hairdresser/' + hairdresserId + '/services/')
                 .then(function(response) {
                 return response.json();
                 })
