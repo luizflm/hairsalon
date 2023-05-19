@@ -17,21 +17,9 @@ return new class extends Migration
             $table->id();
             $table->dateTime('ap_datetime');
             $table->boolean('was_done')->default(0);
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('hairdresser_id');
-            $table->unsignedBigInteger('hairdresser_service_id');
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('CASCADE');
-            $table->foreign('hairdresser_id')
-                ->references('id')
-                ->on('hairdressers')
-                ->onDelete('CASCADE');
-            $table->foreign('hairdresser_service_id')
-                ->references('id')
-                ->on('hairdresser_services')
-                ->onDelete('CASCADE');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hairdresser_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hairdresser_service_id')->constrained()->onDelete('cascade');
         });
     }
 

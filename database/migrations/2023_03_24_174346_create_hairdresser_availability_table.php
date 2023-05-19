@@ -17,12 +17,8 @@ return new class extends Migration
         Schema::create('hairdresser_availability', function (Blueprint $table) {
             $table->id();
             $table->integer('weekday');
-            $table->text('hours');      
-            $table->unsignedBigInteger('hairdresser_id');
-            $table->foreign('hairdresser_id')
-                ->references('id')
-                ->on('hairdressers')
-                ->onDelete('CASCADE');
+            $table->text('hours');
+            $table->foreignId('hairdresser_id')->constrained()->onDelete('cascade');
         });
     }
     /**

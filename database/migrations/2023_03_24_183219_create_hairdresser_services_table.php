@@ -17,11 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('price')->default(0);
-            $table->unsignedBigInteger('hairdresser_id');
-            $table->foreign('hairdresser_id')
-                ->references('id')
-                ->on('hairdressers')
-                ->onDelete('CASCADE');
+            $table->foreignId('hairdresser_id')->constrained()->onDelete('cascade');
         });
     }
 

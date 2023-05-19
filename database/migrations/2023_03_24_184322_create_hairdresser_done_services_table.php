@@ -16,16 +16,8 @@ return new class extends Migration
         Schema::create('hairdresser_done_services', function (Blueprint $table) {
             $table->id();
             $table->dateTime('service_datetime');
-            $table->unsignedBigInteger('hairdresser_id');
-            $table->unsignedBigInteger('hairdresser_service_id');
-            $table->foreign('hairdresser_id')
-                ->references('id')
-                ->on('hairdressers')
-                ->onDelete('CASCADE');
-            $table->foreign('hairdresser_service_id')
-                ->references('id')
-                ->on('hairdresser_services')
-                ->onDelete('CASCADE');
+            $table->foreignId('hairdresser_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hairdresser_service_id')->constrained()->onDelete('cascade');
         });
     }
 
