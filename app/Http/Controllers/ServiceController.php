@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditServiceRequest;
 use App\Http\Requests\StoreServiceRequest;
 use App\Models\Hairdresser;
 use App\Models\HairdresserService;
@@ -105,52 +106,30 @@ class ServiceController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(EditServiceRequest $request, $id)
     {
-        $validator = $request->validate([
-            'name' => 'required|min:2',
-            'price' => 'required',
-            'hairdresser_id' => 'required'
-        ]);
-        if($validator) {
-            $hairdresserId = $request->hairdresser_id;
-            $price = $request->price;
+        $hairdresserId = $request->hairdresser_id;
+        $price = $request->price;
 
-            $name = $request->name;
-            $name = trim($name," ");
+        $name = $request->name;
+        $name = trim($name," ");
 
-            $hairdresser = Hairdresser::find($hairdresserId);
-            if($hairdresser) {
-                $service = HairdresserService::find($id);
-                if($service) {
-                    if($service['hairdresser_id'] == $hairdresserId) {
-                        if($service['name'] == $name) {
-                            $service->update([
-                                'hairdresser_id' => $hairdresserId,
-                                'name' => $name,
-                                'price' => $price,
-                            ]);
-                        } else {
-                            $hdServiceNameExists = HairdresserService::where('name', $name)
-                            ->where('hairdresser_id', $hairdresserId)
-                            ->first();
-                            if(!$hdServiceNameExists) {
-                                $service->update([
-                                    'hairdresser_id' => $hairdresserId,
-                                    'name' => $name,
-                                    'price' => $price,
-                                ]);
-                            } else {
-                                return redirect()->back()->withErrors([
-                                    'name' => 'O(a) cabelereiro(a) já tem esse serviço.'
-                                ])->withInput($request->input());
-                            }
-                        }
+        $hairdresser = Hairdresser::find($hairdresserId);
+        if($hairdresser) {
+            $service = HairdresserService::find($id);
+            if($service) {
+                if($service['hairdresser_id'] == $hairdresserId) {
+                    if($service['name'] == $name) {
+                        $service->update([
+                            'hairdresser_id' => $hairdresserId,
+                            'name' => $name,
+                            'price' => $price,
+                        ]);
                     } else {
-                        $hdServiceExists = HairdresserService::where('name', $name)
+                        $hdServiceNameExists = HairdresserService::where('name', $name)
                         ->where('hairdresser_id', $hairdresserId)
                         ->first();
-                        if(!$hdServiceExists) {
+                        if(!$hdServiceNameExists) {
                             $service->update([
                                 'hairdresser_id' => $hairdresserId,
                                 'name' => $name,
@@ -163,15 +142,30 @@ class ServiceController extends Controller
                         }
                     }
                 } else {
-                    return redirect()->back()->withErrors([
-                        'name' => 'O serviço não foi encontrado.'
-                    ])->withInput($request->input());
+                    $hdServiceExists = HairdresserService::where('name', $name)
+                    ->where('hairdresser_id', $hairdresserId)
+                    ->first();
+                    if(!$hdServiceExists) {
+                        $service->update([
+                            'hairdresser_id' => $hairdresserId,
+                            'name' => $name,
+                            'price' => $price,
+                        ]);
+                    } else {
+                        return redirect()->back()->withErrors([
+                            'name' => 'O(a) cabelereiro(a) já tem esse serviço.'
+                        ])->withInput($request->input());
+                    }
                 }
             } else {
                 return redirect()->back()->withErrors([
-                    'name' => 'O(a) cabelereiro(a) não foi encontrado.'
+                    'name' => 'O serviço não foi encontrado.'
                 ])->withInput($request->input());
             }
+        } else {
+            return redirect()->back()->withErrors([
+                'name' => 'O(a) cabelereiro(a) não foi encontrado.'
+            ])->withInput($request->input());
         }
 
         return redirect()->back()->withInput($request->input()); 
