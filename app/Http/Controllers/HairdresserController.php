@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditHairdresserRequest;
 use App\Http\Requests\StoreHairdresserRequest;
 use App\Models\Hairdresser;
 use App\Models\HairdresserAvailability;
@@ -174,88 +175,78 @@ class HairdresserController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(EditHairdresserRequest $request, $id)
     {
-        $validator = $request->validate([
-            'name' => 'required|min:2',
-            'specialties' => 'required',
-            'days' => 'required',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i',
-            'avatar' => 'file|mimes:jpg,png',
-        ]);
-        if($validator) {
-            $hairdresser = Hairdresser::find($id);
+        $hairdresser = Hairdresser::find($id);
 
-            if($request->avatar) {
-                $avatar = $request->file('avatar')->store('public');
-                $avatar = last(explode('/', $avatar));
-            }
-       
-            $name = $request->name; 
-            $name = trim($name," ");
-            $name = explode(' ', $name); 
-            if(count($name) > 1) {
-                $formatedName = $name[0].' '.last($name);
+        if($request->avatar) {
+            $avatar = $request->file('avatar')->store('public');
+            $avatar = last(explode('/', $avatar));
+        }
+    
+        $name = $request->name; 
+        $name = trim($name," ");
+        $name = explode(' ', $name); 
+        if(count($name) > 1) {
+            $formatedName = $name[0].' '.last($name);
+        } else {
+            $formatedName = $name[0]; 
+        }
+
+        $specialties = $request->specialties; 
+        $specialties = explode(',', $specialties);
+        $formatedSpecialty = '';
+        foreach($specialties as $spKey => $spValue) {
+            $specialties[$spKey] = trim($specialties[$spKey]," "); 
+            $formatedSpecialty .= $specialties[$spKey].', '; 
+        }
+        $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2);
+        
+        $startTime = $request->start_time;
+        $endTime = $request->end_time;
+        $carbonStartTime = Carbon::createFromFormat('H:i', $startTime);
+        $carbonEndTime = Carbon::createFromFormat('H:i', $endTime);
+        if($carbonEndTime->greaterThan($carbonStartTime)) {
+            if(!empty($avatar)) {
+                $hairdresser->update([
+                    'name' => $formatedName,
+                    'specialties' => $formatedSpecialty,
+                    'avatar' => $avatar,
+                ]);
             } else {
-                $formatedName = $name[0]; 
-            }
-
-            $specialties = $request->specialties; 
-            $specialties = explode(',', $specialties);
-            $formatedSpecialty = '';
-            foreach($specialties as $spKey => $spValue) {
-                $specialties[$spKey] = trim($specialties[$spKey]," "); 
-                $formatedSpecialty .= $specialties[$spKey].', '; 
-            }
-            $formatedSpecialty = substr($formatedSpecialty, 0, strlen($formatedSpecialty) - 2);
-            
-            $startTime = $request->start_time;
-            $endTime = $request->end_time;
-            $carbonStartTime = Carbon::createFromFormat('H:i', $startTime);
-            $carbonEndTime = Carbon::createFromFormat('H:i', $endTime);
-            if($carbonEndTime->greaterThan($carbonStartTime)) {
-                if(!empty($avatar)) {
-                    $hairdresser->update([
-                        'name' => $formatedName,
-                        'specialties' => $formatedSpecialty,
-                        'avatar' => $avatar,
-                    ]);
-                } else {
-                    $hairdresser->update([
-                        'name' => $formatedName,
-                        'specialties' => $formatedSpecialty,
-                    ]);
-                }
-
-                $hdAvailabilities = HairdresserAvailability::where('hairdresser_id', $id)->get(); 
-                foreach($hdAvailabilities as $availability) {
-                    $availability->delete();
-                }
-
-                $interval = $carbonEndTime->diffInMinutes($carbonStartTime);
-                $times = [];
-                for ($i = 0; $i <= $interval; $i += 60) {  
-                    $time = $carbonStartTime->copy()->addMinutes($i)->format('H:i');
-                    $times[] = $time;
-                }
-                $workTime = implode(', ', $times);
-
-                $days = $request->days;
-                foreach($days as $day) { 
-                    HairdresserAvailability::create([
-                        'weekday' => $day,
-                        'hours' => $workTime,
-                        'hairdresser_id' => $id,
-                    ]);
-                }   
-
-                return redirect()->back();
-            } else {
-                return redirect()->back()->withErrors([
-                    'name' => 'O horário inicial deve ser antes que o final.',
+                $hairdresser->update([
+                    'name' => $formatedName,
+                    'specialties' => $formatedSpecialty,
                 ]);
             }
+
+            $hdAvailabilities = HairdresserAvailability::where('hairdresser_id', $id)->get(); 
+            foreach($hdAvailabilities as $availability) {
+                $availability->delete();
+            }
+
+            $interval = $carbonEndTime->diffInMinutes($carbonStartTime);
+            $times = [];
+            for ($i = 0; $i <= $interval; $i += 60) {  
+                $time = $carbonStartTime->copy()->addMinutes($i)->format('H:i');
+                $times[] = $time;
+            }
+            $workTime = implode(', ', $times);
+
+            $days = $request->days;
+            foreach($days as $day) { 
+                HairdresserAvailability::create([
+                    'weekday' => $day,
+                    'hours' => $workTime,
+                    'hairdresser_id' => $id,
+                ]);
+            }   
+
+            return redirect()->back();
+        } else {
+            return redirect()->back()->withErrors([
+                'name' => 'O horário inicial deve ser antes que o final.',
+            ]);
         }
 
         return redirect()->back();
