@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreServiceRequest extends FormRequest
+class EditServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class StoreServiceRequest extends FormRequest
         return [
             'name' => 'required|min:2',
             'price' => 'required',
-            'hairdresser_id' => 'required',
+            'hairdresser_id' => 'required'
         ];
     }
 }

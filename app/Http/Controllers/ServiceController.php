@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EditServiceRequest;
-use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\Admin\EditServiceRequest;
+use App\Http\Requests\Admin\StoreServiceRequest;
 use App\Models\Hairdresser;
 use App\Models\HairdresserService;
 use Illuminate\Http\Request;
