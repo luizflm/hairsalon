@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreHairdresserRequest extends FormRequest
+class EditHairdresserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +29,7 @@ class StoreHairdresserRequest extends FormRequest
             'days' => 'required',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
-            'avatar' => 'required|file|mimes:jpg,png',
+            'avatar' => 'file|mimes:jpg,png',
         ];
     }
 }
