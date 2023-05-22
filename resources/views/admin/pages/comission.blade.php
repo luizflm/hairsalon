@@ -42,7 +42,7 @@ increaseBanner="true"
                         @if($page == 1)
                             <a class="page-link" href={{route('comissions.index', ['page' => $page])}}>Anterior</a>
                         @else
-                            <a class="page-link" href={{route('comission.index', ['page' => $page - 1])}}>Anterior</a>
+                            <a class="page-link" href={{route('comissions.index', ['page' => $page - 1])}}>Anterior</a>
                         @endif
                     </li>
                     @php
@@ -51,19 +51,19 @@ increaseBanner="true"
                     @endphp
                     @if($items < 12)
                         @while($pageLoop <= $items)
-                            <li class="page-item"><a class="page-link" href={{route('comission.index', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
+                            <li class="page-item"><a class="page-link" href={{route('comissions.index', ['page' => $pageValue])}}>{{$pageValue}}</a></li>
                             @php
                                 $pageValue++;
                                 $pageLoop = $pageLoop + 4;
                             @endphp
                         @endwhile
                     @else
-                        <li class="page-item"><a class="page-link" href={{route('comission.index', ['page' => 1])}}>1</a></li>
-                        <li class="page-item"><a class="page-link" href={{route('comission.index', ['page' => 2])}}>2</a></li>
-                        <li class="page-item"><a class="page-link" href={{route('comission.index', ['page' => 3])}}>3</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('comissions.index', ['page' => 1])}}>1</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('comissions.index', ['page' => 2])}}>2</a></li>
+                        <li class="page-item"><a class="page-link" href={{route('comissions.index', ['page' => 3])}}>3</a></li>
                     @endif
                     <li class="page-item">
-                        <a class="page-link" href={{route('comission.index', ['page' => $page + 1])}}>Próxima</a>
+                        <a class="page-link" href={{route('comissions.index', ['page' => $page + 1])}}>Próxima</a>
                     </li>
                 </ul>
             </nav>

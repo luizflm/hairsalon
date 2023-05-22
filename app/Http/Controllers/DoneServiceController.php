@@ -25,13 +25,14 @@ class DoneServiceController extends Controller
             foreach($hairdressers as $hairdresser) {
                 $doneServices = HairdresserDoneService::where('hairdresser_id', $hairdresser['id'])
                 ->where('service_datetime', 'LIKE', '%'.$date.'%')
+                ->with('service')
                 ->paginate(4);
                 $servicesCount += count($doneServices);  
                 if($doneServices->items()) {
                     $fullMoney = 0;
                     foreach($doneServices as $doneService) {
-                        $price = HairdresserService::where('id', $doneService['hairdresser_service_id'])->pluck('price');
-                        $fullMoney += $price[0];
+                        $price = $doneService->service->price;
+                        $fullMoney += $price;
                     }
 
                     $comission = $fullMoney * 0.06;
