@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAppointmentRequest;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Hairdresser;
@@ -82,15 +83,9 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreAppointmentRequest $request)
     {
-        $validator = $request->validate([
-            'ap_day' => 'required|date_format:Y-m-d',
-            'ap_time' => 'required|date_format:H:i',
-            'hairdresser_id' => 'required',
-            'service_id' => 'required'
-        ]);
-        if($validator) {
+        if($request->validated()) {
             $apDay = $request->ap_day;
             $apTime = $request->ap_time;
             $apDatetime = $apDay.' '.$apTime;
