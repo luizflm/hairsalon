@@ -375,15 +375,12 @@ class AppointmentController extends Controller
         $fullAppointments = Appointment::where('was_done', 1)->count();
         $pageCount = ceil($fullAppointments / 4);
     
-        $appointments = Appointment::where('was_done', 1)->orderBy('ap_datetime', 'DESC')->paginate(4);
+        $appointments = Appointment::where('was_done', 1)->orderBy('ap_datetime', 'DESC')
+        ->with(['hairdresser', 'service', 'user'])->paginate(4);
         if($appointments->items()) {
             if($page != 0) {
                 if($page <= $pageCount) {
                     foreach($appointments as $appointment) {
-                        $hairdresserName = Hairdresser::where('id', $appointment['hairdresser_id'])->pluck('name');
-                        $serviceName = HairdresserService::where('id', $appointment['hairdresser_service_id'])->pluck('name');
-                        $userName = User::where('id', $appointment['user_id'])->pluck('name');
-    
                         $formatedDatetime = explode(' ', $appointment['ap_datetime']);
                         $apDate = $formatedDatetime[0];
                         $apDate = explode('-', $apDate);
@@ -397,9 +394,9 @@ class AppointmentController extends Controller
                             'id' => $appointment['id'],
                             'ap_date' => $formatedApDate,
                             'ap_time' => $formatedApTime,
-                            'user' => $userName[0],
-                            'hairdresser' => $hairdresserName[0],
-                            'service' => $serviceName[0],
+                            'user' => $appointment->user->name,
+                            'hairdresser' => $appointment->hairdresser->name,
+                            'service' => $appointment->service->name,
                         ];
     
                         $apList[] = $appointment;
