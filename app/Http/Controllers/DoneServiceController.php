@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDoneServiceRequest;
 use App\Models\Appointment;
 use App\Models\Hairdresser;
 use App\Models\HairdresserDoneService;
@@ -32,12 +33,12 @@ class DoneServiceController extends Controller
                         $price = HairdresserService::where('id', $doneService['hairdresser_service_id'])->pluck('price');
                         $fullMoney += $price[0];
                     }
-    
+
                     $comission = $fullMoney * 0.06;
                     $comission = number_format($comission, 2, '.');
                     $hairdresser['comission'] = 'R$ '.$comission; 
                     $hairdresser['done_services'] = $servicesCount;
-    
+
                     $list['hairdresser'][] = $hairdresser;
                 }            
             }
@@ -56,49 +57,44 @@ class DoneServiceController extends Controller
         return back();
     }
 
-    public function store(Request $request) 
+    public function store(StoreDoneServiceRequest $request) 
     {
-        $validator = $request->validate([
-            'appointment' => 'required',
-        ]);
-        if($validator) {
-            $appointment = $request->appointment;
+        $appointment = $request->appointment;
 
-            $appointmentId = $appointment['id'];
-            $hairdresserId = $appointment['hairdresser_id'];
-   
-            $doneAppointment = Appointment::where('id', $appointmentId)
-            ->where('hairdresser_id', $hairdresserId)
-            ->first();
-            if($doneAppointment) {
-                $wasDone = $doneAppointment['was_done']; 
-                if($wasDone === 0) {
-                    $serviceId = $appointment['hairdresser_service_id'];
+        $appointmentId = $appointment['id'];
+        $hairdresserId = $appointment['hairdresser_id'];
 
-                    $apDate = $appointment['ap_date'];
-                    $formatedApDate = explode('/', $apDate);
-                    $formatedApDate = $formatedApDate[2].'-'.$formatedApDate[1].'-'.$formatedApDate[0];
-        
-                    $apTime = $appointment['ap_time'];
-                    $formatedApTime = $apTime.":00";
-                    $apDatetime = $formatedApDate.' '.$formatedApTime;
+        $doneAppointment = Appointment::where('id', $appointmentId)
+        ->where('hairdresser_id', $hairdresserId)
+        ->first();
+        if($doneAppointment) {
+            $wasDone = $doneAppointment['was_done']; 
+            if($wasDone === 0) {
+                $serviceId = $appointment['hairdresser_service_id'];
 
-                    $carbonApDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $apDatetime);
-                    $now = date('Y-m-d H:i:s');
-                    $isDateFuture = $carbonApDatetime->greaterThan($now);
-                    if($isDateFuture === false) {
-                        $doneAppointment->update([
-                            'was_done' => 1,
-                        ]);
+                $apDate = $appointment['ap_date'];
+                $formatedApDate = explode('/', $apDate);
+                $formatedApDate = $formatedApDate[2].'-'.$formatedApDate[1].'-'.$formatedApDate[0];
+    
+                $apTime = $appointment['ap_time'];
+                $formatedApTime = $apTime.":00";
+                $apDatetime = $formatedApDate.' '.$formatedApTime;
 
-                        HairdresserDoneService::create([
-                            'service_datetime' => $apDatetime,
-                            'hairdresser_id' => $hairdresserId,
-                            'hairdresser_service_id' => $serviceId,
-                        ]);
+                $carbonApDatetime = Carbon::createFromFormat('Y-m-d H:i:s', $apDatetime);
+                $now = date('Y-m-d H:i:s');
+                $isDateFuture = $carbonApDatetime->greaterThan($now);
+                if($isDateFuture === false) {
+                    $doneAppointment->update([
+                        'was_done' => 1,
+                    ]);
 
-                        return redirect()->route('appointments.done', ['page' => 1]);
-                    }
+                    HairdresserDoneService::create([
+                        'service_datetime' => $apDatetime,
+                        'hairdresser_id' => $hairdresserId,
+                        'hairdresser_service_id' => $serviceId,
+                    ]);
+
+                    return redirect()->route('appointments.done', ['page' => 1]);
                 }
             }
         }
