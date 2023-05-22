@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,9 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        $cpf_regex = '/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/';
-
         return [
-            'email' => 'required|email|unique:users,email',
-            'name' => 'required|min:2',
-            'cpf' => ['required', 'regex:'.$cpf_regex],
-            'password' => 'required|min:4',
-            'password_confirm' => 'required|same:password'
+            'email' => 'required|email',
+            'password' => 'required',
         ];
     }
 }

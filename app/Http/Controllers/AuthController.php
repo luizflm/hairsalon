@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,21 +64,19 @@ class AuthController extends Controller
         return redirect()->route('home');   
     }
 
-    public function loginAction(Request $request) 
+    public function loginAction(LoginRequest $request) 
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->validated();
+
         if(Auth::attempt($credentials)) { 
             $request->session()->regenerate();
 
             return redirect()->route('home');
+        } else {
+            return redirect()->back()->withErrors([
+                'email' => 'O email e/ou senha estão incorretos.',
+            ])->onlyInput('email');
         }
-
-        return redirect()->back()->withErrors([
-            'email' => 'O email e/ou senha estão incorretos.',
-        ])->onlyInput('email');
     }
 
     public function logout(Request $request) 
