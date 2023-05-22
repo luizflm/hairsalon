@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreServiceRequest;
 use App\Models\Hairdresser;
 use App\Models\HairdresserService;
 use Illuminate\Http\Request;
@@ -59,43 +60,36 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreServiceRequest $request)
     {
-        $validator = $request->validate([
-            'name' => 'required|min:2',
-            'price' => 'required',
-            'hairdresser_id' => 'required',
-        ]);
-        if($validator) {
-            $hairdresserId = $request->hairdresser_id;
-            $price = $request->price;
+        $hairdresserId = $request->hairdresser_id;
+        $price = $request->price;
 
-            $name = $request->name;
-            $name = trim($name," ");
+        $name = $request->name;
+        $name = trim($name," ");
 
-            $hairdresser = Hairdresser::find($hairdresserId);
-            if($hairdresser) {
-                $hasService = HairdresserService::where('hairdresser_id', $hairdresserId)
-                ->where('name', $name)
-                ->first();
-                if(!$hasService) {
-                    HairdresserService::create([
-                        'hairdresser_id' => $hairdresserId,
-                        'name' => $name,
-                        'price' => $price
-                    ]);
+        $hairdresser = Hairdresser::find($hairdresserId);
+        if($hairdresser) {
+            $hasService = HairdresserService::where('hairdresser_id', $hairdresserId)
+            ->where('name', $name)
+            ->first();
+            if(!$hasService) {
+                HairdresserService::create([
+                    'hairdresser_id' => $hairdresserId,
+                    'name' => $name,
+                    'price' => $price
+                ]);
 
-                    return redirect()->back();
-                } else {
-                    return redirect()->back()->withErrors([
-                        'name' => 'O(a) cabelereiro(a) já tem esse serviço cadastrado!',
-                    ])->withInput($request->all());
-                }
+                return redirect()->back();
             } else {
                 return redirect()->back()->withErrors([
-                    'name' => 'O(a) cabelereiro(a) não foi encontrado.',
+                    'name' => 'O(a) cabelereiro(a) já tem esse serviço cadastrado!',
                 ])->withInput($request->all());
             }
+        } else {
+            return redirect()->back()->withErrors([
+                'name' => 'O(a) cabelereiro(a) não foi encontrado.',
+            ])->withInput($request->all());
         }
     }
 
