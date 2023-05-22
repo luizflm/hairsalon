@@ -27,7 +27,7 @@ increaseBanner="true"
                                 <th scope="row">{{$row}}</th>
                                 <td>{{$service['name']}}</td>
                                 <td>{{$service['price']}}</td>
-                                <td>{{$service['hairdresser']['name']}}</td>
+                                <td>{{$service['hairdresser']}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <a href={{route('services.edit', $service['id'])}} class="btn btn-edit me-4">Editar</a>

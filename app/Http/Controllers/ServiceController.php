@@ -25,12 +25,13 @@ class ServiceController extends Controller
  
         $services = HairdresserService::orderBy('price', 'DESC')
         ->orderBy('id', 'ASC')
+        ->with(['hairdresser'])
         ->paginate(4);
         if($services->items()) {
             if($page != 0) {
                 if($page <= $pageCount) { 
                     foreach($services as $service) {
-                        $hairdresser = Hairdresser::find($service->hairdresser_id);
+                        $hairdresser = $service->hairdresser->name;
                         $service = [
                             'id' => $service->id,
                             'name' => $service->name,
