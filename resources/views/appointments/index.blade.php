@@ -28,7 +28,7 @@ increaseBanner="true"
                                 <tr>
                                     <th scope="row">{{$row}}</th>
                                     <td>{{$appointment['service']}}</td>
-                                    <td>{{$appointment['hairdresser']['name']}}</td>
+                                    <td>{{$appointment['hairdresser']}}</td>
                                     <td>{{$appointment['day']}}</td>
                                     <td>{{$appointment['time']}}</td>  
                                     <td>

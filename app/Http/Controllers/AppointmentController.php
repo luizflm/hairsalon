@@ -20,13 +20,11 @@ class AppointmentController extends Controller
         $idUser = Auth::id();
 
         $appointments = Appointment::where('user_id', $idUser) 
+        ->with(['hairdresser', 'service'])
         ->where('was_done', '0')
         ->get();
         $data = [];
         foreach($appointments as $appointment) {
-            $hairdresser = Hairdresser::find($appointment->hairdresser_id);
-            $service = HairdresserService::find($appointment->hairdresser_service_id);
-
             $formatedApDatetime = explode(' ', $appointment->ap_datetime);
             $apDate = $formatedApDatetime[0];
             $apDate = explode('-', $apDate);
@@ -35,8 +33,8 @@ class AppointmentController extends Controller
 
             $appointment = [
                 'id' => $appointment->id,
-                'hairdresser' => $hairdresser,
-                'service' => $service->name,
+                'hairdresser' => $appointment->hairdresser->name,
+                'service' => $appointment->service->name,
                 'day' => $formatedApDate,
                 'time' => $apTime,
             ];
