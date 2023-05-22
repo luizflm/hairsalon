@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EditHairdresserRequest;
-use App\Http\Requests\StoreHairdresserRequest;
+use App\Http\Requests\Admin\EditHairdresserRequest;
+use App\Http\Requests\Admin\StoreHairdresserRequest;
 use App\Models\Hairdresser;
 use App\Models\HairdresserAvailability;
 use Carbon\Carbon;

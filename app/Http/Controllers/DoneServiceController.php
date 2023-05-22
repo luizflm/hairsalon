@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDoneServiceRequest;
+use App\Http\Requests\Admin\StoreDoneServiceRequest;
 use App\Models\Appointment;
 use App\Models\Hairdresser;
 use App\Models\HairdresserDoneService;
