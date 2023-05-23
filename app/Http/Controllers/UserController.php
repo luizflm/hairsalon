@@ -12,7 +12,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $loggedUser = Auth::user();
-        if($user && $loggedUser->id == $user->id) { 
+        if($loggedUser->id == $user->id) { 
             return view('auth.edit', ['user' => $user]);
         } else {
             return redirect()->route('home');
@@ -24,7 +24,7 @@ class UserController extends Controller
         $loggedUser = Auth::user();
         $request['cpf'] = str_replace(['.', '-'], '', $request['cpf']); 
 
-        if($user && $loggedUser->id == $user->id) {
+        if($loggedUser->id == $user->id) {
             $name = $request->name;
             $email = $request->email;
             $password = $request->password;
