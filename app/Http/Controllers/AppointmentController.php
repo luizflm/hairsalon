@@ -226,7 +226,7 @@ class AppointmentController extends Controller
         $serviceId = $request->service_id;
         $userId = Auth::id();
 
-        if($appointment && $appointment->user_id == $userId) {
+        if($appointment->user_id == $userId) {
             $hdExists = Hairdresser::find($hairdresserId);
             if($hdExists) {
                 $hdService = HairdresserService::where('hairdresser_id', $hairdresserId)
@@ -306,7 +306,7 @@ class AppointmentController extends Controller
     public function destroy(Appointment $appointment)
     {
         $loggedUserId = Auth::id();
-        if($appointment && $appointment->user_id == $loggedUserId) {
+        if($appointment->user_id == $loggedUserId) {
             $appointment->delete();
         }
 
