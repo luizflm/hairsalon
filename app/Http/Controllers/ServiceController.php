@@ -172,10 +172,8 @@ class ServiceController extends Controller
 
     public function destroy(HairdresserService $service)
     {
-        if($service) {
-            $service->delete();
-        }
-
+        $service->delete();
+        
         return redirect()->route('services.index', ['page' => 1]);
     }
 }
