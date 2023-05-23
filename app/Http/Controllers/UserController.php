@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditUserRequest;
 use App\Models\User;
-use Illuminate\Validation\Rule;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function edit($id)
+    public function edit(User $user)
     {
         $loggedUser = Auth::user();
-        $user = User::find($id);
         if($user && $loggedUser->id == $user->id) { 
             return view('auth.edit', ['user' => $user]);
         } else {
@@ -22,10 +19,9 @@ class UserController extends Controller
         }
     }
 
-    public function update(EditUserRequest $request, $id)
+    public function update(EditUserRequest $request, User $user)
     {
         $loggedUser = Auth::user();
-        $user = User::find($id);
         $request['cpf'] = str_replace(['.', '-'], '', $request['cpf']); 
 
         if($user && $loggedUser->id == $user->id) {
@@ -62,12 +58,11 @@ class UserController extends Controller
         return redirect()->route('users.edit', ['id' => $loggedUser->id]);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
         $loggedUser = Auth::user();
-        $user = User::find($id);
 
-        if($user['id'] == $loggedUser->id) {
+        if($user->id == $loggedUser->id) {
             $user->delete();
         }
         
