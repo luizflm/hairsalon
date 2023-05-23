@@ -129,10 +129,9 @@ class HairdresserController extends Controller
         return redirect()->back()->withInput($request->all());
     }
 
-    public function edit($id)
+    public function edit(Hairdresser $hairdresser)
     {
-        $hairdresser = Hairdresser::find($id);
-        $hdAvailability = HairdresserAvailability::where('hairdresser_id', $id)->get();
+        $hdAvailability = HairdresserAvailability::where('hairdresser_id', $hairdresser->id)->get();
 
         $workHours = $hdAvailability[0]['hours'];
         $workHours = explode(', ', $workHours);
@@ -175,10 +174,8 @@ class HairdresserController extends Controller
         ]);
     }
 
-    public function update(EditHairdresserRequest $request, $id)
+    public function update(EditHairdresserRequest $request, Hairdresser $hairdresser)
     {
-        $hairdresser = Hairdresser::find($id);
-
         if($request->avatar) {
             $avatar = $request->file('avatar')->store('public');
             $avatar = last(explode('/', $avatar));
@@ -220,7 +217,7 @@ class HairdresserController extends Controller
                 ]);
             }
 
-            $hdAvailabilities = HairdresserAvailability::where('hairdresser_id', $id)->get(); 
+            $hdAvailabilities = HairdresserAvailability::where('hairdresser_id', $hairdresser->id)->get(); 
             foreach($hdAvailabilities as $availability) {
                 $availability->delete();
             }
@@ -238,7 +235,7 @@ class HairdresserController extends Controller
                 HairdresserAvailability::create([
                     'weekday' => $day,
                     'hours' => $workTime,
-                    'hairdresser_id' => $id,
+                    'hairdresser_id' => $hairdresser->id,
                 ]);
             }   
 
@@ -252,9 +249,8 @@ class HairdresserController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id)
+    public function destroy(Hairdresser $hairdresser)
     {
-        $hairdresser = Hairdresser::find($id);
         if($hairdresser) { 
             $hairdresser->delete();
         }
