@@ -167,7 +167,7 @@ class AppointmentController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Appointment $appointment)
     {
         $hairdressers = Hairdresser::all();
 
@@ -193,8 +193,6 @@ class AppointmentController extends Controller
 
         $loggedUserId = Auth::id();
 
-        $appointment = Appointment::find($id);
-
         if($appointment->user_id == $loggedUserId) {
             $formatedApDatetime = explode(' ', $appointment->ap_datetime);
             $apDate = $formatedApDatetime[0];
@@ -219,7 +217,7 @@ class AppointmentController extends Controller
         return redirect()->back();
     }
 
-    public function update(EditAppointmentRequest $request, $id)
+    public function update(EditAppointmentRequest $request, Appointment $appointment)
     {
         $apDay = $request->ap_day;
         $apTime = $request->ap_time;
@@ -228,10 +226,7 @@ class AppointmentController extends Controller
         $serviceId = $request->service_id;
         $userId = Auth::id();
 
-        $appointment = Appointment::where('user_id', $userId)
-        ->where('id', $id)
-        ->first();
-        if($appointment) {
+        if($appointment && $appointment->user_id == $userId) {
             $hdExists = Hairdresser::find($hairdresserId);
             if($hdExists) {
                 $hdService = HairdresserService::where('hairdresser_id', $hairdresserId)
@@ -308,9 +303,8 @@ class AppointmentController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Appointment $appointment)
     {
-        $appointment = Appointment::find($id);
         $loggedUserId = Auth::id();
         if($appointment && $appointment->user_id == $loggedUserId) {
             $appointment->delete();
