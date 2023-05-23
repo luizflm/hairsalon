@@ -45,5 +45,5 @@ Route::middleware('auth')->group(function(){
 
     Route::resource('appointments', AppointmentController::class)->except(['show']);
 
-    Route::get('/hairdresser/{id}/services', [ServiceController::class, 'getHairdresserAllAjax']);
+    Route::get('/hairdresser/{hairdresser}/services', [ServiceController::class, 'getHairdresserAllAjax']);
 });
