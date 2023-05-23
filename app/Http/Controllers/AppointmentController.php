@@ -380,21 +380,13 @@ class AppointmentController extends Controller
                         $apTime = $formatedDatetime[1];
                         $apTime = explode(':', $apTime);
                         $formatedApTime = $apTime[0].':'.$apTime[1];
-    
-                        $appointment = [
-                            'id' => $appointment['id'],
-                            'ap_date' => $formatedApDate,
-                            'ap_time' => $formatedApTime,
-                            'user' => $appointment->user->name,
-                            'hairdresser' => $appointment->hairdresser->name,
-                            'service' => $appointment->service->name,
-                        ];
-    
-                        $apList[] = $appointment;
+
+                        $appointment['ap_date'] = $formatedApDate;
+                        $appointment['ap_time'] = $formatedApTime;
                     }
     
                     return view('admin.appointments.done', [
-                        'appointments' => $apList,
+                        'appointments' => $appointments,
                         'page' => $page,
                         'items' => $fullAppointments,
                     ]);

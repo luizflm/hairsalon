@@ -29,9 +29,9 @@ increaseBanner="true"
                                 <th scope="row">{{$row}}</th>
                                 <td>{{$appointment['ap_date']}}</td>
                                 <td>{{$appointment['ap_time']}}</td>
-                                <td>{{$appointment['service']}}</td>
-                                <td>{{$appointment['hairdresser']}}</td>
-                                <td>{{$appointment['user']}}</td>
+                                <td>{{$appointment['service']['name']}}</td>
+                                <td>{{$appointment['hairdresser']['name']}}</td>
+                                <td>{{$appointment['user']['name']}}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <form method="POST" action={{route('appointments.destroy', $appointment['id'])}}>
