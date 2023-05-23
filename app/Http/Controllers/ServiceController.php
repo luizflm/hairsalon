@@ -99,11 +99,8 @@ class ServiceController extends Controller
     {
         $hairdressers = Hairdresser::all();
 
-        if($service) {
-            return view('admin.services.edit', ['service' => $service, 'hairdressers' => $hairdressers]);
-        } else {
-            return redirect()->back();
-        }
+        return view('admin.services.edit', ['service' => $service, 'hairdressers' => $hairdressers]);
+        
     }
 
     public function update(EditServiceRequest $request, HairdresserService $service)
