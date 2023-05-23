@@ -251,10 +251,8 @@ class HairdresserController extends Controller
 
     public function destroy(Hairdresser $hairdresser)
     {
-        if($hairdresser) { 
-            $hairdresser->delete();
-        }
-
+        $hairdresser->delete();
+    
         return redirect()->back();
     }
 }
