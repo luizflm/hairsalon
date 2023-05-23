@@ -95,9 +95,8 @@ class ServiceController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(HairdresserService $service)
     {
-        $service = HairdresserService::find($id);
         $hairdressers = Hairdresser::all();
 
         if($service) {
@@ -107,7 +106,7 @@ class ServiceController extends Controller
         }
     }
 
-    public function update(EditServiceRequest $request, $id)
+    public function update(EditServiceRequest $request, HairdresserService $service)
     {
         $hairdresserId = $request->hairdresser_id;
         $price = $request->price;
@@ -117,7 +116,6 @@ class ServiceController extends Controller
 
         $hairdresser = Hairdresser::find($hairdresserId);
         if($hairdresser) {
-            $service = HairdresserService::find($id);
             if($service) {
                 if($service['hairdresser_id'] == $hairdresserId) {
                     if($service['name'] == $name) {
@@ -172,9 +170,8 @@ class ServiceController extends Controller
         return redirect()->back()->withInput($request->input()); 
     }
 
-    public function destroy($id)
+    public function destroy(HairdresserService $service)
     {
-        $service = HairdresserService::find($id);
         if($service) {
             $service->delete();
         }
