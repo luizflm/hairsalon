@@ -35,7 +35,7 @@ Route::middleware('admin')->group(function() {
 
     Route::resource('comissions', DoneServiceController::class)->only(['index', 'store']);
 
-    Route::get('/hairdresser/{id}/availability', [AvailabilityController::class, 'index'])->name('hairdresser_availability'); 
+    Route::get('/hairdresser/{hairdresser}/availability', [AvailabilityController::class, 'index'])->name('hairdresser_availability'); 
 });
 
 Route::middleware('auth')->group(function(){

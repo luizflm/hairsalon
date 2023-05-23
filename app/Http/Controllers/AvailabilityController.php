@@ -7,11 +7,10 @@ use App\Models\HairdresserAvailability;
 
 class AvailabilityController extends Controller
 {
-    public function index($id) 
+    public function index(Hairdresser $hairdresser) 
     {
-        $hairdresser = Hairdresser::find($id);
         if($hairdresser) {
-            $hairdresserAvailability = HairdresserAvailability::where('hairdresser_id', $id)->get();
+            $hairdresserAvailability = HairdresserAvailability::where('hairdresser_id', $hairdresser->id)->get();
 
             $weekdays = [
                 'Domingo',
