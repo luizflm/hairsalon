@@ -17,7 +17,7 @@ class HairdresserSeeder extends Seeder
      */
     public function run()
     {
-        Hairdresser::factory(5)  
+        Hairdresser::factory(1)  
         ->has(HairdresserService::factory()->count(3), 'services')
         ->has(HairdresserAvailability::factory()->count(5), 'availability')
         ->create();
