@@ -19,11 +19,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Hairdresser::factory()
-        ->count(5)
-        ->has(HairdresserService::factory()->count(3), 'services')
-        ->has(HairdresserAvailability::factory()->count(5), 'availability')
-        ->has(Appointment::factory()->count(10))
-        ->create();
+        $this->call(AdminUserSeeder::class);
+        // Hairdresser::factory()
+        // ->count(5)
+        // ->has(HairdresserService::factory()->count(3), 'services')
+        // ->has(HairdresserAvailability::factory()->count(5), 'availability')
+        // ->has(Appointment::factory()->count(10))
+        // ->create();
     }
 }
