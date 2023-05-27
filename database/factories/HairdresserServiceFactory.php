@@ -16,8 +16,11 @@ class HairdresserServiceFactory extends Factory
      */
     public function definition()
     {
+        $price = rand(14, 99) + 0.99;
+
         return [
-            //
+            'name' => fake()->text(20),
+            'price' => $price,
         ];
     }
 }

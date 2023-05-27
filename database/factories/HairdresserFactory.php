@@ -17,7 +17,9 @@ class HairdresserFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name(),
+            'specialties' => fake()->text(30),
+            'avatar' => 'default.jpg'
         ];
     }
 }
